@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:views="clr-namespace:PickPixForEver.Views"
+             x:Class="PickPixForEver.Views.MainPage"
+             Visual="Material">
+
+    <MasterDetailPage.Master>
+        <ContentPage Title="Menu">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
+                    <Image Source="upload.png"/>
+                    <Label Text="Upload Photos" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Upload" Tapped="Upload_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
+                    <Image Source="gallery.png"/>
+                    <Label Text="Gallery" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Gallery" Tapped="Gallery_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>                
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
+                    <Image Source="admin_view.png"/>
+                    <Label Text="Album" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="AdminView" Tapped="AdminView_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
+                    <Image Source="tags.png"/>
+                    <Label Text="Manage Tags" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Tags" Tapped="Tags_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20"  >
+                    <Image Source="logout.png"/>
+                    <Label Text="Logout" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Logout" Tapped="Logout_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </StackLayout>
+        </ContentPage>
+    </MasterDetailPage.Master>
+    
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <views:GalleryPage />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>
