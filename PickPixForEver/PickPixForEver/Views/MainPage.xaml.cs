@@ -23,8 +23,16 @@ namespace PickPixForEver.Views
 
         private void Logout_Tapped(object sender, EventArgs e)
         {
-            Preferences.Set("fullName", string.Empty);
-            Preferences.Set("email", string.Empty);
+            if (Device.RuntimePlatform != Device.macOS)
+            {
+                Preferences.Set("fullName", string.Empty);
+                Preferences.Set("email", string.Empty);
+            }
+            else
+            {
+                App.Current.Properties["fullName"] = string.Empty;
+                App.Current.Properties["email"] = string.Empty;
+            }
             Application.Current.MainPage = new Login();
         }
 
