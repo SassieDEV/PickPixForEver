@@ -1,4 +1,6 @@
 ﻿using AppKit;
+using System;
+using System.IO;
 using Foundation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
@@ -10,7 +12,13 @@ namespace PickPixForEver.MacOS
     {
         NSWindow window;
 
-        public override NSWindow MainWindow => window;
+        public override NSWindow MainWindow
+        {
+            get
+            {
+                return window;
+            }
+        }
 
         public AppDelegate()
         {
@@ -24,19 +32,18 @@ namespace PickPixForEver.MacOS
 
         public override void DidFinishLaunching(NSNotification notification)
         {
+            SQLitePCL.Batteries.Init();
+            var parentFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var dbPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/PickPixForEver";
+            if (!Directory.Exists(dbPath))
+            {
+                Directory.CreateDirectory(dbPath);
+            }
+            dbPath = Path.Combine(dbPath, "PickPixForever.db");
+
             Forms.Init();
-
-            //SQLitePCL.Batteries.Init();
-            //var libPath = Path.Combine(
-            //    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            //    , "..", "Library", "data");
-            //if (!Directory.Exists(libPath))
-            //{
-            //    Directory.CreateDirectory(libPath);
-            //}
-            //var dbPath = Path.Combine(libPath, "PickPixForever.db");
-
-            LoadApplication(new App(""));
+            LoadApplication(new App(dbPath, true));
             base.DidFinishLaunching(notification);
         }
 

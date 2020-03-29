@@ -46,13 +46,15 @@ namespace PickPixForEver.AuthViews
                 return;
             }
             var user = await this.accountRepository.GetUser(entEmail.Text).ConfigureAwait(false);
-             if (user == null || (user.Password != PasswordUtility.EncryptPassword(entPassword.Text, user.PasswordHash).Key))
-                {
+            if (user == null || (user.Password != PasswordUtility.EncryptPassword(entPassword.Text, user.PasswordHash).Key))
+            {
                 await DisplayAlert("Error", "Incorrect email or password", "Ok").ConfigureAwait(false);
                 return;
-               }
-            Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
-            Preferences.Set("email", user.Email);
+            }
+
+
+            //Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
+            //Preferences.Set("email", user.Email);
             Application.Current.MainPage = new MainPage();
         }        
     }

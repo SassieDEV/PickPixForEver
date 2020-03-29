@@ -28,6 +28,14 @@ namespace PickPixForEver
 
         }
 
+        public App(string filePath, bool isMac)
+        {
+            InitializeComponent();
+            Debug.WriteLine($"Database located at: {filePath}");
+            FilePath = filePath;
+            MainPage = new Login();
+        }
+
         protected override void OnStart()
         {
         }
