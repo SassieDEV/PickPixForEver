@@ -20,7 +20,26 @@ namespace PickPixForEver.Services
         }
         public async Task<int> EnterPicture(Picture picture)
         {
-            return 1;
+            try
+            {
+                using (var dbContext = new PickPixDbContext(filePath))
+                {
+                    var tracker = await dbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
+                    await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                }
+                //TO-DO: Handle null ID
+                //NOTE: should we put something like this in account repository as well?
+                /*if (picture.Id == "NULL")
+                {
+
+                }*/
+                return picture.Id;
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
         }
         public async Task<Picture> GetPicture(int ID)
         {
