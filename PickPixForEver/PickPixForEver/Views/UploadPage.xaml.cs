@@ -16,9 +16,7 @@ namespace PickPixForEver.Views
     public partial class UploadPage : ContentPage
     {
         //TODO: Refactor dbContext and possibly PictureRepository to main page after login
-        //TODO: Figure out more elegent DI
-        static PickPixDbContext dbContext = new PickPixDbContext("/Testdb");
-        PictureRepository picRep = new PictureRepository(dbContext);
+        PictureRepository picRep = new PictureRepository(App.FilePath);
 
         public UploadPage()
         {

@@ -10,7 +10,8 @@ namespace PickPixForEver.Services
     public interface IPictureRepository
     {
         Task<int> EnterPicture(Picture picture);
-        Task<Picture> GetPicture(int ID);
+        Task<IEnumerable<Picture>> GetPictures();
+        Task<Picture> GetPicture(int id);
         Task<int> EnterPictureSource(Image image);
     }
 }
