@@ -10,6 +10,9 @@
             <Label Text="Upload pictures page placeholder!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
+            <Button Text="Pick File" Clicked="SelectImagesButton_Clicked" HorizontalOptions="Center"  
+               VerticalOptions="Center"/>
+            <Label Text="File Is :" x:Name="lbl"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
