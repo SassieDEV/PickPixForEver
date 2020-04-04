@@ -6,27 +6,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExifLib;
+using Xamarin.Forms;
 
 namespace PickPixForEver.Services
 {
     public class PictureRepository : IPictureRepository
     {
-        private readonly string filePath;
+        PickPixDbContext DbContext;
 
-        public PictureRepository(string filePath)
+        public PictureRepository(PickPixDbContext dbContext)
         {
-            this.filePath = filePath;
+            this.DbContext = dbContext;
 
         }
         public async Task<int> EnterPicture(Picture picture)
         {
             try
             {
-                using (var dbContext = new PickPixDbContext(filePath))
-                {
-                    var tracker = await dbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
-                    await dbContext.SaveChangesAsync().ConfigureAwait(false);
-                }
+                var tracker = await DbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
+                await DbContext.SaveChangesAsync().ConfigureAwait(false);
                 //TO-DO: Handle null ID
                 //NOTE: should we put something like this in account repository as well?
                 /*if (picture.Id == "NULL")
@@ -35,21 +34,33 @@ namespace PickPixForEver.Services
                 }*/
                 return picture.Id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return 0;
             }
         }
         public async Task<Picture> GetPicture(int ID)
         {
             Picture pic;
-
-            using (var dbContext = new PickPixDbContext(filePath)) {
-                var pic1 = dbContext.Pictures.Select(s => s).FirstOrDefault();
-                pic = await dbContext.Pictures.
-                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
-                return pic1;
+            var pic1 = DbContext.Pictures.Select(s => s).FirstOrDefault();
+            pic = await DbContext.Pictures.
+            Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+            return pic1;
+        }
+        //TODO: Consider whether picture repository should be responsible for creating Picture from Image
+        public async Task<int> EnterPictureSource(Image image)
+        {
+            try
+            {
+                Picture newPic = new Picture(image);
+                await EnterPicture(newPic);
+                return newPic.Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
             }
         }
     }
