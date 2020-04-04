@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Xam.Plugin.FilePicker" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PickPixForEver\PickPixForEver\PickPixForEver.csproj" />
   </ItemGroup>
 
