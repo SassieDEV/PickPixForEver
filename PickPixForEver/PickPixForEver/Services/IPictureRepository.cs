@@ -11,6 +11,6 @@ namespace PickPixForEver.Services
     {
         Task<int> EnterPicture(Picture picture);
         Task<Picture> GetPicture(int ID);
-        Task<int> EnterPictureSource(Image image)
+        Task<int> EnterPictureSource(Image image);
     }
 }
