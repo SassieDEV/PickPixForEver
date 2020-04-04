@@ -14,6 +14,7 @@ namespace PickPixForEver.Models
         public DateTime Updated { get; set; }
         public string PictureMetaData { get; set; }
         public List<PictureTag> PictureTags { get; set; }
+        public string Notes { get; set; }
         public Picture(Image image)
         {
             string path = image.Source.ToString();
