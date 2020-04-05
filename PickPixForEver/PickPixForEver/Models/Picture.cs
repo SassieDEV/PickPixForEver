@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using ExifLib;
 
 namespace PickPixForEver.Models
 {
     public class Picture
     {
-        Image bitmap;
+        Image image;
         public int Id { get; set; }
         public byte [] RawData { get; set; }
         public int Privacy { get; set; }
@@ -17,14 +18,21 @@ namespace PickPixForEver.Models
         public string Notes { get; set; }
         public Picture(Image image)
         {
-            string path = image.Source.ToString();
-            //TODO: Set up image creation and addition to list
-            /*ExifReader exRead = new ExifReader();
-            bitmap = bit
-            Created =*/ 
+            this.image = image;
+            //TODO: Set up image creation and addition to list along with metadata tags
+            try
+            {
+                using (ExifReader exRead = new ExifReader(image.Source.ToString()))
+                {
+                    DateTime createDate;
+                    if (exRead.GetTagValue<DateTime>(ExifTags.DateTimeDigitized, out createDate)) ;
+                    Created = createDate;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-        //{
-          //  Created = image.
-        //}
     }
 }
