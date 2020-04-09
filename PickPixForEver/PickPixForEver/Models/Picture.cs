@@ -16,15 +16,10 @@ namespace PickPixForEver.Models
         public string PictureMetaData { get; set; }
         public List<PictureTag> PictureTags { get; set; }
         public string Notes { get; set; }
-        public Picture(Image image)
-        {
-            this.image = image;
-            //TODO: Set up image creation and addition to list along with metadata tags
+        public Picture(Image image) {
             try
             {
-                //ImageMetadataReader.ReadMetadata(image.Source.ToString().Remove(0,5));
-                //DateTime createDate;
-                //Created = createDate;
+                this.image = image;
             }
             catch (Exception ex)
             {

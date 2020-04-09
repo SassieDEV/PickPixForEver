@@ -62,12 +62,18 @@ namespace PickPixForEver.Services
         {
             try
             {
-                DateTime createDate;
-                string path = image.Source.ToString().Remove(0,6);
-                path = string.Format(path);
-                //string Created = createDate.ToString();
                 Picture newPic = new Picture(image);
-                IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata(path);
+                DateTime createDate;
+                if (Device.RuntimePlatform == "Android")
+                {
+                    var uri = image.Source.GetValue(UriImageSource.UriProperty);
+                    //IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata();
+                }
+                else if (Device.RuntimePlatform == "UWP")
+                {
+                    var file = image.Source.GetValue(FileImageSource.FileProperty);
+                    //IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata(file);
+                }
                 await EnterPicture(newPic);
                 return newPic.Id;
             }
