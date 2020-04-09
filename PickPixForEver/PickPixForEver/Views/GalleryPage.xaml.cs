@@ -35,19 +35,20 @@ namespace PickPixForEver.Views
                 galleryView.RowDefinitions.Add(new RowDefinition() { Height = 100 });
                 for (int col = 0; col < 2; col++)
                 {
-                    var embeddedImage = new Image()
-                    {
-                        Source = ImageSource.FromResource("PickPixForEver.Resources.Applogo.png")
-                        //, typeof(PickPixForEver).GetTypeInfo().Assembly
-                         // )
-                    };
+                    //var embeddedImage = new Image()
+                    //{
+                    //    Source = ImageSource.FromResource("PickPixForEver.Resources.Applogo.png")
+                    //    //, typeof(PickPixForEver).GetTypeInfo().Assembly
+                    //     // )
+                    //};
+
                     var img = new Image()
                     {
                         Source = "logo.png"//PickPixForEver.Resources.logo.png
                     };
                     var localImg = new Image()
                     {
-                        Source = ImageSource.FromUri(new Uri("file://Users/salehsultan/Desktop/AppLogo.png"))
+                        Source = ImageSource.FromFile("file:///Users/salehsultan/Desktop/AppLogo.png")
                     };
 
                     galleryView.Children.Add(localImg, col, row);
