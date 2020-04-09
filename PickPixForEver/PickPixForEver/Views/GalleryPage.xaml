@@ -7,10 +7,22 @@
              x:Class="PickPixForEver.Views.GalleryPage"
              Title="Gallery">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Gallery page placeholder!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" FontSize="Medium" />
-        </StackLayout>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout>
+                <Label Text="Gallery page placeholder!"
+                    VerticalOptions="CenterAndExpand" 
+                    HorizontalOptions="CenterAndExpand" FontSize="Medium" />
+            </StackLayout>
+            <StackLayout VerticalOptions="FillAndExpand">
+                <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
