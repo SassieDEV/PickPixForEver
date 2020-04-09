@@ -132,6 +132,9 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="cover1.png" />
+    <Content Include="cover2.png" />
+    <Content Include="cover3.png" />
     <Content Include="gallery.png" />
     <Content Include="logo.png" />
     <Content Include="logout.png" />
