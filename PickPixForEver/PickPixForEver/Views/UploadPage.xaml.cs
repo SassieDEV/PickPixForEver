@@ -52,11 +52,23 @@ namespace PickPixForEver.Views
 
                 if (pickedFile != null)
                 {
-                    string label = pickedFile.FileName;
-                    string path = pickedFile.FilePath;
+                    //string label = pickedFile.FileName;
+                    //string path = pickedFile.FilePath;
+                    selectedImage.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                     Image pickedImage = new Image();
-                    pickedImage.Source = ImageSource.FromFile(path);
-                    await picRep.EnterPictureSource(pickedImage);
+                    //Image pickedImage = new Image;
+                    if (Device.RuntimePlatform == "Android")
+                    {
+                        Uri uri = new Uri(pickedFile.FilePath);
+                        selectedImage.Source = ImageSource.FromUri(uri);
+                        await picRep.EnterPictureSource(pickedImage);
+                    }
+                    else if (Device.RuntimePlatform == "UWP")
+                    {
+                        string path = pickedFile.FilePath;
+                        selectedImage.Source = ImageSource.FromFile(path);
+                        await picRep.EnterPictureSource(pickedImage);
+                    }
                 }
             }
             catch (Exception ex)
