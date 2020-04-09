@@ -24,8 +24,6 @@ namespace PickPixForEver.Services
             User user;
             using(var dbContext = new PickPixDbContext(filePath))
             {
-                var user1 = dbContext.Users.Select(s => s).FirstOrDefault();
-
                  user = await dbContext.Users.
                 Where(s => s.Email.ToLower() == email.ToLower())
                 .SingleOrDefaultAsync().ConfigureAwait(false);

@@ -8,10 +8,68 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <!--Colors-->
+            <Color x:Key="NavigationPrimary">#262626</Color>
+            <Color x:Key="DarkBackgroundColor">#262626</Color>
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Secondary">#018786</Color>
+            <Color x:Key="Warning">#CF6679</Color>
+            <Color x:Key="HeaderText">White</Color>
+            
+            
+            <!--font sizes-->
+            <x:Double x:Key="TitleFontSize">24</x:Double>
+            <x:Double x:Key="SubTitleFontSize">20</x:Double>
+            <x:Double x:Key="BodyFontSize">18</x:Double>
+            <x:Double x:Key="ButtonLargeSize">22</x:Double>
+            <x:Double x:Key="ButtonMediumSize">16</x:Double>
+            <x:Double x:Key="ButtonSmallSize">10</x:Double>
+
+
+
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}"/>
                 <Setter Property="BarTextColor" Value="White"/>
+            </Style>
+            <Style x:Key="HeaderLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderText}"/>
+                <Setter Property="FontSize" Value="{StaticResource TitleFontSize}"/>
+                <Setter Property="FontFamily" Value="sans-serif-medium"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="SubHeaderLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource HeaderText}"/>
+                <Setter Property="FontSize" Value="{StaticResource SubTitleFontSize}"/>
+                <Setter Property="FontFamily" Value="sans-serif-medium"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="DescriptionLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="FontSize" Value="{StaticResource BodyFontSize}"/>
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="PrimaryButtonLarge" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <Setter Property="FontSize" Value="{StaticResource ButtonLargeSize}"/>
+                <Setter Property="CornerRadius" Value="3"/>
+            </Style>
+            <Style x:Key="PrimaryButtonMedium" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <Setter Property="FontSize" Value="{StaticResource ButtonMediumSize}"/>
+                <Setter Property="CornerRadius" Value="2"/>
+            </Style>
+            <Style x:Key="PrimaryButtonSmall" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <Setter Property="FontSize" Value="{StaticResource ButtonSmallSize}"/>
+                <Setter Property="CornerRadius" Value="1"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>
