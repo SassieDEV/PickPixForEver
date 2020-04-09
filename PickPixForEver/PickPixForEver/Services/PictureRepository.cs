@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using ExifLib;
+using MetadataExtractor;
 
 namespace PickPixForEver.Services
 {
@@ -62,12 +62,9 @@ namespace PickPixForEver.Services
         {
             try
             {
-                using (ExifReader exRead = new ExifReader(image.Source.ToString()))
-                {
-                    DateTime createDate;
-                    if (exRead.GetTagValue<DateTime>(ExifTags.DateTimeDigitized, out createDate)) ;
-                    string Created = createDate.ToString();
-                }
+                DateTime createDate;
+                ImageMetadataReader.ReadMetadata(image.Source.ToString());
+                //string Created = createDate.ToString();
                 Picture newPic = new Picture(image);
                 await EnterPicture(newPic);
                 return newPic.Id;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using ExifLib;
+using MetadataExtractor;
 
 namespace PickPixForEver.Models
 {
@@ -22,12 +22,9 @@ namespace PickPixForEver.Models
             //TODO: Set up image creation and addition to list along with metadata tags
             try
             {
-                using (ExifReader exRead = new ExifReader(image.Source.ToString()))
-                {
-                    DateTime createDate;
-                    if (exRead.GetTagValue<DateTime>(ExifTags.DateTimeDigitized, out createDate)) ;
-                    Created = createDate;
-                }
+                ImageMetadataReader.ReadMetadata(image.Source.ToString());
+                DateTime createDate;
+                //Created = createDate;
             }
             catch (Exception ex)
             {
