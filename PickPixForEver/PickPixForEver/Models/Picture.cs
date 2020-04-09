@@ -22,8 +22,8 @@ namespace PickPixForEver.Models
             //TODO: Set up image creation and addition to list along with metadata tags
             try
             {
-                ImageMetadataReader.ReadMetadata(image.Source.ToString());
-                DateTime createDate;
+                //ImageMetadataReader.ReadMetadata(image.Source.ToString().Remove(0,5));
+                //DateTime createDate;
                 //Created = createDate;
             }
             catch (Exception ex)

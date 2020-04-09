@@ -63,9 +63,11 @@ namespace PickPixForEver.Services
             try
             {
                 DateTime createDate;
-                ImageMetadataReader.ReadMetadata(image.Source.ToString());
+                string path = image.Source.ToString().Remove(0,6);
+                path = string.Format(path);
                 //string Created = createDate.ToString();
                 Picture newPic = new Picture(image);
+                IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata(path);
                 await EnterPicture(newPic);
                 return newPic.Id;
             }
