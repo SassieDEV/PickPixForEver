@@ -17,11 +17,7 @@ namespace PickPixForEver
             InitializeComponent();
             Debug.WriteLine($"Database located at: {filePath}");
             FilePath = filePath;
-
-            bool isLoggedIn = Device.RuntimePlatform == Device.macOS ?
-                !string.IsNullOrEmpty(App.Current.Properties["email"].ToString()) :
-                !string.IsNullOrEmpty(Preferences.Get("email", ""));
-            if (isLoggedIn)
+            if (!string.IsNullOrEmpty(Preferences.Get("email", "")))
             {
                 MainPage = new MainPage();
             }
@@ -30,6 +26,14 @@ namespace PickPixForEver
                 MainPage = new Login();
             }
 
+        }
+
+        public App(string filePath, bool isMac)
+        {
+            InitializeComponent();
+            Debug.WriteLine($"Database located at: {filePath}");
+            FilePath = filePath;
+            MainPage = new Login();
         }
 
         protected override void OnStart()

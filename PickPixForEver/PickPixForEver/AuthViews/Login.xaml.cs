@@ -51,18 +51,10 @@ namespace PickPixForEver.AuthViews
                 await DisplayAlert("Error", "Incorrect email or password", "Ok").ConfigureAwait(false);
                 return;
             }
-            
-            if (Device.RuntimePlatform != Device.macOS)
-            {
-                Preferences.Set("fullName", $"{user.FirstName} {user.LastName}");
-                Preferences.Set("email", user.Email);
-            }
-            else
-            {
-                App.Current.Properties["fullName"] = $"{user.FirstName} {user.LastName}";
-                App.Current.Properties["email"] = user.Email;
-            }
-            
+
+
+            //Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
+            //Preferences.Set("email", user.Email);
             Application.Current.MainPage = new MainPage();
         }        
     }

@@ -43,7 +43,7 @@ namespace PickPixForEver.MacOS
             dbPath = Path.Combine(dbPath, "PickPixForever.db");
 
             Forms.Init();
-            LoadApplication(new App(dbPath));
+            LoadApplication(new App(dbPath, true));
             base.DidFinishLaunching(notification);
         }
 
