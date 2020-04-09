@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PickPixForEver.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Reflection;
 
 namespace PickPixForEver.Views
 {
@@ -34,14 +35,22 @@ namespace PickPixForEver.Views
                 galleryView.RowDefinitions.Add(new RowDefinition() { Height = 100 });
                 for (int col = 0; col < 2; col++)
                 {
-                    var lbl = new Label()
+                    var embeddedImage = new Image()
                     {
-                        BackgroundColor = Color.Red,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                        VerticalOptions = LayoutOptions.FillAndExpand
+                        Source = ImageSource.FromResource("PickPixForEver.Resources.Applogo.png")
+                        //, typeof(PickPixForEver).GetTypeInfo().Assembly
+                         // )
                     };
-                    lbl.Text = "this is my picture";
-                    galleryView.Children.Add(lbl, col, row);
+                    var img = new Image()
+                    {
+                        Source = "logo.png"//PickPixForEver.Resources.logo.png
+                    };
+                    var localImg = new Image()
+                    {
+                        Source = ImageSource.FromUri(new Uri("file://Users/salehsultan/Desktop/AppLogo.png"))
+                    };
+
+                    galleryView.Children.Add(localImg, col, row);
                 }
             }
             PhotoGallery.Content = galleryView;

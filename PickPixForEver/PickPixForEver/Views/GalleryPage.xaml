@@ -5,24 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PickPixForEver.Views.GalleryPage"
+             xmlns:local ="clr-namespace: PickPixForEver"
              Title="Gallery">
     <ContentPage.Content>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackLayout>
-                <Label Text="Gallery page placeholder!"
-                    VerticalOptions="CenterAndExpand" 
-                    HorizontalOptions="CenterAndExpand" FontSize="Medium" />
-            </StackLayout>
-            <StackLayout VerticalOptions="FillAndExpand">
-                <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
-            </StackLayout>
-        </Grid>
+
+        <StackLayout VerticalOptions="FillAndExpand">
+            <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
