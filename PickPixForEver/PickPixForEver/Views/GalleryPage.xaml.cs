@@ -27,31 +27,30 @@ namespace PickPixForEver.Views
 
         private void CreateGrid(IEnumerable<Picture> pictures)
         {
-            galleryView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0.5, GridUnitType.Star) });
-            galleryView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0.5, GridUnitType.Star) });
+            var colCount = Application.Current.MainPage.Width / 100;
+            for (int i=0; i<colCount; i++)
+            {
+                galleryView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength((float)1/(float)colCount, GridUnitType.Star) });
+            }
 
             for (int row = 0; row < 12; row++) //pictures.ToList().Count
             {
                 galleryView.RowDefinitions.Add(new RowDefinition() { Height = 100 });
-                for (int col = 0; col < 2; col++)
+                for (int col = 0; col < colCount; col++)
                 {
-                    //var embeddedImage = new Image()
-                    //{
-                    //    Source = ImageSource.FromResource("PickPixForEver.Resources.Applogo.png")
-                    //    //, typeof(PickPixForEver).GetTypeInfo().Assembly
-                    //     // )
-                    //};
-
                     var img = new Image()
                     {
                         Source = "logo.png"//PickPixForEver.Resources.logo.png
                     };
-                    var localImg = new Image()
+                    var tapAction = new TapGestureRecognizer
                     {
-                        Source = ImageSource.FromFile("file:///Users/salehsultan/Desktop/AppLogo.png")
+                        TappedCallback = (v, o) => {
+                            Console.WriteLine("Image clicked");
+                        },
+                        NumberOfTapsRequired = 1
                     };
-
-                    galleryView.Children.Add(localImg, col, row);
+                    img.GestureRecognizers.Add(tapAction);
+                    galleryView.Children.Add(img, col, row);
                 }
             }
             PhotoGallery.Content = galleryView;
