@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="PickPixForEver.Views.AlbumPage"
              BackgroundColor="{StaticResource DarkBackgroundColor}"
-             Title="Albums"
+             Title="{Binding Title}"
              >
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
@@ -16,17 +16,15 @@
         </Grid.RowDefinitions>
         <StackLayout Margin="20,5,20,5" Grid.Row="0" >
             <StackLayout Orientation="Horizontal">
-                <Button HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonLarge}"/>
+                <Button x:Name="btnCreate" Clicked="btnCreate_Clicked" HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonLarge}"/>
             </StackLayout>
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>            
         </StackLayout>
         <StackLayout Margin="20,20,20,5" Grid.Row="1">
             <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" />
         </StackLayout>
-        <ScrollView Margin="20,20,20,5" Grid.Row="2" >
-            <Grid x:Name="albumsGrid" RowSpacing="5" ColumnSpacing="5" WidthRequest="1200">
-            </Grid>
-        </ScrollView>
-        
+        <StackLayout x:Name="albumsStackLayout" Margin="20,20,20,5" Grid.Row="2">
+            
+        </StackLayout> 
     </Grid>
 </ContentPage>

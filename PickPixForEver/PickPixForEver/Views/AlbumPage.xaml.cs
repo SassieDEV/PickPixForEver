@@ -1,7 +1,9 @@
 ﻿using PickPixForEver.Models;
 using PickPixForEver.ViewModel;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,44 +17,71 @@ namespace PickPixForEver.Views
     public partial class AlbumPage : ContentPage
     {
         AlbumsViewModel albumsViewModel;
-        private static readonly int COL_LENGTH=5;
+        private static readonly int COL_LENGTH = 5;
         public AlbumPage()
         {
             InitializeComponent();
             BindingContext = albumsViewModel = new AlbumsViewModel(App.FilePath);
+            MessagingCenter.Subscribe<AddAlbum>(this, "CreateAlbumPopupClosed",  (sender) =>
+            {
+                populateGrid();
+            });
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-                albumsViewModel.LoadAlbumsCommand.Execute(null);
-                populateGrid();
-                
+            albumsViewModel.LoadAlbumsCommand.Execute(null);
+            populateGrid();
+
         }
 
 
-        private void Album_Tapped(object sender, EventArgs e)
+        private async void Album_Tapped(object sender, EventArgs e)
         {
-           //To Do
+            StackLayout stackLayout = (StackLayout)sender;
+            if (stackLayout.GestureRecognizers.Count > 0)
+            {
+                try
+                {
+                    var gesture = (TapGestureRecognizer)stackLayout.GestureRecognizers[0];
+                    Album album = (Album)gesture.CommandParameter;
+                    await Navigation.PushAsync(new AlbumDetailPage(new AlbumDetailViewModel(App.FilePath, album))).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
         }
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
-            if(searchBar!=null && !string.IsNullOrEmpty(searchBar.Text.Trim())){
+            if (searchBar != null && !string.IsNullOrEmpty(searchBar.Text.Trim()))
+            {
                 albumsViewModel.SearchAlbumsComand.Execute(searchBar.Text.ToLower().Trim());
             }
             else
             {
-                albumsViewModel.LoadAlbumsCommand.Execute(null);               
+                albumsViewModel.LoadAlbumsCommand.Execute(null);
             }
             populateGrid();
         }
 
         private void populateGrid()
         {
-            albumsGrid.Children.Clear();
+            albumsStackLayout.Children.Clear();
+            var albumsScrollView = new ScrollView();
+            var albumsGrid = new Grid();
+            albumsGrid.RowSpacing = 5;
+            albumsGrid.ColumnSpacing = 5;
+            albumsGrid.WidthRequest = 1200;
+
+            albumsScrollView.Content = albumsGrid;
+            albumsStackLayout.Children.Add(albumsScrollView);
             if (albumsViewModel.Albums.Count == 0)
                 return;
 
@@ -106,15 +135,15 @@ namespace PickPixForEver.Views
                     lblAlbumName.HorizontalOptions = LayoutOptions.StartAndExpand;
                     lblAlbumName.Style = (Style)Application.Current.Resources["SubHeaderLabel"];
 
-                    lblPrivacy.Text = $"Privacy: {GetPrivacy(album.Privacy)}";
+                    lblPrivacy.Text = $"Privacy: {album.Privacy}";
                     lblPrivacy.HorizontalOptions = LayoutOptions.StartAndExpand;
                     lblPrivacy.Style = (Style)Application.Current.Resources["DescriptionLabel"];
 
                     //Stacklayout click handler
                     var tapGestureRecognizer = new TapGestureRecognizer();
+                    tapGestureRecognizer.CommandParameter = album;
                     tapGestureRecognizer.Tapped += Album_Tapped;
                     stackLayout.GestureRecognizers.Add(tapGestureRecognizer);
-
 
                     frame.Content = stackLayout;
                     stackLayout.Children.Add(albumCover);
@@ -126,22 +155,9 @@ namespace PickPixForEver.Views
                 }
             }
         }
-
-
-        private string GetPrivacy(int value)
+        private async void btnCreate_Clicked(object sender, EventArgs e)
         {
-            //Remember to refactor this method
-            switch (value)
-            {
-                case 1:
-                    return "Private";
-                case 2:
-                    return "Public";
-                default:
-                    return "Public";
-            }
+            await PopupNavigation.Instance.PushAsync(new AddAlbum()).ConfigureAwait(false);
         }
-
-        
     }
 }

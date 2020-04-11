@@ -24,6 +24,9 @@ namespace PickPixForEver.Services
             {
                 using(var cxt = new PickPixDbContext(this.filePath))
                 {
+                    album.CreatedAt = DateTime.Now;
+                    album.UpdatedAt = DateTime.Now;
+                    album.Active = true;
                     cxt.Albums.Add(album);
                     await cxt.SaveChangesAsync().ConfigureAwait(false);
                     result = true;
@@ -80,9 +83,33 @@ namespace PickPixForEver.Services
             return albums;
         }
 
-        public Task<bool> UpdateItemAsync(Album item)
+        public async Task<bool> UpdateItemAsync(Album item)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                using(var ctx = new PickPixDbContext(this.filePath))
+                {
+                    Album album = ctx.Albums.SingleOrDefault(A => A.Id == item.Id);
+                    if (album != null)
+                    {
+                        album.Name = item.Name;
+                        album.Description = item.Description;
+                        album.Privacy = item.Privacy;
+                        album.Active = item.Active;
+                        album.UpdatedAt = item.UpdatedAt;
+                        await ctx.SaveChangesAsync().ConfigureAwait(false);
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
         }
     }
 }
