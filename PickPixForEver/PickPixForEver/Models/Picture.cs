@@ -13,6 +13,8 @@ namespace PickPixForEver.Models
         public DateTime Updated { get; set; }
         public string PictureMetaData { get; set; }
         public int AlbumId { get; set; }
+        public string Notes { get; set; }
+
         //public Album Album { get; set; }
         //public List<PictureTag> PictureTags { get; set; }
 
