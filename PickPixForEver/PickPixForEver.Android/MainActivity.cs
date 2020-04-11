@@ -26,6 +26,7 @@ namespace PickPixForEver.Droid
             string fileName = "PickPixForever.db";
             string folderPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string completePath = Path.Combine(folderPath, fileName);
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             LoadApplication(new App(completePath));
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

@@ -16,110 +16,25 @@ namespace PickPixForEver.ViewModel
         public ObservableCollection<Album> Albums { get; set; }
         public IDataStore<Album> DataStore { get; set; }
         public Command LoadAlbumsCommand { get; set; }
-
         public Command SearchAlbumsComand { get; set; }
 
-        #region Pirvate fields
-            int id;
-            string name = string.Empty;
-            string description = string.Empty;
-            DateTime createdAt;
-            DateTime updatedAt;
-            int privacy;
-            bool active;
-            bool isBusy;
-        #endregion
-
-        #region Property setters and getters
-
-        public int Id
-        {
-            get { return id; }
-            set
-            {
-                id = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-        public string Description
-        {
-            get { return description; }
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
-        }
-        public DateTime CreatedAt
-        {
-            get { return createdAt; }
-            set
-            {
-                createdAt = value;
-                OnPropertyChanged();
-            }
-        }
-        public DateTime UpdatedAt
-        {
-            get { return updatedAt; }
-            set
-            {
-                updatedAt = value;
-                OnPropertyChanged();
-            }
-        }
-        public int Privacy
-        {
-            get { return privacy; }
-            set
-            {
-                privacy = value;
-                OnPropertyChanged(nameof(Privacy));
-            }
-        }
-
-        public bool Active
-        {
-            get { return active; }
-            set
-            {
-                active = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsBusy
-        {
-            get
-            {
-                return isBusy;
-            }
-            set
-            {
-                isBusy = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        #endregion
-
+        public Command AddAlbumCommand { get; set; }
 
         public AlbumsViewModel(string filePath)
         {
+            Title = "Albums";
             DataStore = new AlbumRepository(filePath);
             Albums = new ObservableCollection<Album>();
             LoadAlbumsCommand = new Command(async () => await ExecuteLoadAlbumsCommand().ConfigureAwait(false));
             SearchAlbumsComand = new Command<string>(async (searchTerm) => await ExecuteSearchAlbumsCommand(searchTerm).ConfigureAwait(false));
+            //AddAlbumCommand = new Command<Album>(async (album) => await ExecuteAddAlbumCommand(album).ConfigureAwait(false));
+
+            // Handle "SaveAlbum" message
+            MessagingCenter.Subscribe<AddAlbum, Album>(this, "SaveAlbum", async (sender, album) =>
+            {
+                //Add album to database
+                await ExecuteAddAlbumCommand(album).ConfigureAwait(false);
+            });
         }
 
 
@@ -174,6 +89,28 @@ namespace PickPixForEver.ViewModel
             }
         }
 
-
+        async Task<bool> ExecuteAddAlbumCommand(Album album)
+        {
+            if (IsBusy)
+                return false;
+            bool result = false;
+            IsBusy = true;
+            try
+            {
+                Albums.Add(album);
+                result = await DataStore.AddItemAsync(album).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                //If save to database failed remove album from collection
+                Albums.Remove(album);
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            return result;
+        }
     }
 }

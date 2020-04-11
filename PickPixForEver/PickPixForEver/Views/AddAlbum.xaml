@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+            xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+            mc:Ignorable="d"
+             x:Class="PickPixForEver.Views.AddAlbum">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinIn"
+            EasingOut="SinInOut"
+            HasBackgroundAnimation="True"
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut='0.8'
+            />
+    </pages:PopupPage.Animation>
+
+    <Frame Padding="20, 20, 20, 20" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Gray" CornerRadius="5">
+        <StackLayout BackgroundColor="White" WidthRequest="400">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Margin="30,25,30,15">
+                    <Label HorizontalOptions="StartAndExpand" Text="{Binding Title}" Style="{StaticResource HeaderLabel}" TextColor="Black"/>
+                </StackLayout>
+                <StackLayout Grid.Row="1" Margin="30,15,30,30" VerticalOptions="Center">
+                    <Label HorizontalOptions="StartAndExpand" Text="Name"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Album name" x:Name="albumName" HorizontalOptions="FillAndExpand" 
+                            Text="{Binding Name}"/>
+                        <Label Margin="2,5,0,0" Text="*" TextColor="Red"/>
+                    </StackLayout>
+                    
+                    <Label Margin="0,20,0,0" HorizontalOptions="StartAndExpand" Text="Description"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Editor Placeholder="Describe what this album is about" x:Name="albumDescription" 
+                             AutoSize="TextChanges" HorizontalOptions="FillAndExpand" Text="{Binding Description}"/>
+                        <Label Margin="2,5,0,0" Text="*" TextColor="Red"/>
+                    </StackLayout>
+                    <StackLayout Margin="0,20,0,0"  Orientation="Horizontal">
+                        <Picker Title="Album privacy" x:Name="albumPrivacy" HorizontalOptions="FillAndExpand" 
+                            ItemsSource="{Binding PrivacyList}" SelectedItem="{Binding Privacy}"/>
+                        <Label Margin="2,30,0,0" Text="*" TextColor="Red"/>
+                    </StackLayout>                   
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="30,10,30,30" HorizontalOptions="EndAndExpand">
+                    <Button x:Name="btnCancel" Text="Cancel" Clicked="btnCancel_Clicked" CornerRadius="3"/>
+                    <Button x:Name="btnSave" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
+                </StackLayout>
+            </Grid>           
+           
+        </StackLayout>
+    </Frame>
+    
+
+</pages:PopupPage>
