@@ -5,12 +5,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PickPixForEver.Views.GalleryPage"
-             xmlns:local ="clr-namespace: PickPixForEver"
-             Title="Gallery">
-    <ContentPage.Content>
+             BackgroundColor="{StaticResource DarkBackgroundColor}"
+             Title="{Binding Title}">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout Margin="20,5,20,5" Grid.Row="0" >
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="btnCreate" HorizontalOptions="EndAndExpand" 
+                        Clicked="SelectMultiImage_Tapped"
+                        Text="Upload Photo" Style="{StaticResource PrimaryButtonLarge}"/>
+            </StackLayout>
+            <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
+        </StackLayout>
+        <StackLayout Margin="20,20,20,5" Grid.Row="1">
+            <SearchBar Placeholder="Search Photo by Tag" />
+        </StackLayout>
+        <!--<StackLayout x:Name="albumsStackLayout" Margin="20,20,20,5" Grid.Row="2"></StackLayout>-->
+        <StackLayout Margin="20,20,20,5" Grid.Row="2">
+            <Grid  Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="350" />
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackLayout x:Name="ImagePreview"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand"
+                        Orientation="Horizontal" />
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <!--<Image x:Name="TestImg" BackgroundColor="Red"></Image>-->
+                    <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
+                </StackLayout>
+                
+            </Grid>
+        </StackLayout>
+    </Grid>
+
+    <!--<ContentPage.Content>
 
         <StackLayout VerticalOptions="FillAndExpand">
             <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
         </StackLayout>
-    </ContentPage.Content>
+    </ContentPage.Content>-->
 </ContentPage>
