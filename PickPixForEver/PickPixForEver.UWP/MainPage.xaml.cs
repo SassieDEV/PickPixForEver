@@ -24,6 +24,7 @@ namespace PickPixForEver.UWP
             var dbPath = Path.Combine(
                 ApplicationData.Current.LocalFolder.Path, "PickPixForEver.db");
             Rg.Plugins.Popup.Popup.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             LoadApplication(new PickPixForEver.App(dbPath));
         }
     }

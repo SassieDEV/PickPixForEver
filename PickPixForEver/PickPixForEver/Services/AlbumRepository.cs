@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PickPixForEver.Services
 {
-    public class AlbumRepository : IDataStore<Album>
+    public class AlbumRepository : IAlbumRepository
     {
         private readonly string filePath;
 
@@ -81,6 +81,23 @@ namespace PickPixForEver.Services
                 Debug.WriteLine(ex.Message);
             }
             return albums;
+        }
+
+        public async Task<IEnumerable<Picture>> GetAlbumPictures(int albumId)
+        {
+            IEnumerable<Picture> pictures = new List<Picture>();
+            try
+            {
+                using(var ctx = new PickPixDbContext(this.filePath))
+                {
+                    pictures = await Task.FromResult(ctx.Pictures.Where(P => P.AlbumId == albumId).ToList()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                //To-do: Implement logging
+            }
+            return pictures;
         }
 
         public async Task<bool> UpdateItemAsync(Album item)
