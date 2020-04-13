@@ -23,7 +23,7 @@ namespace PickPixForEver.UWP
             this.InitializeComponent();
             var dbPath = Path.Combine(
                 ApplicationData.Current.LocalFolder.Path, "PickPixForEver.db");
-
+            Rg.Plugins.Popup.Popup.Init();
             LoadApplication(new PickPixForEver.App(dbPath));
         }
     }

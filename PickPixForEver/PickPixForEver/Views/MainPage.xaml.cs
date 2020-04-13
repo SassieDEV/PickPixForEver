@@ -56,5 +56,11 @@ namespace PickPixForEver.Views
             Detail = new NavigationPage(new TagsPage());
             IsPresented = false;
         }
+
+        private void Album_Tapped(object sender, EventArgs e)
+        {
+            Detail = new NavigationPage(new AlbumPage());
+            IsPresented = false;
+        }
     }
 }

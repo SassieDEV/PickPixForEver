@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using MetadataExtractor;
+using System.IO;
 
 namespace PickPixForEver.Services
 {
@@ -27,24 +28,24 @@ namespace PickPixForEver.Services
                 {
                     var tracker = await dbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
                     await dbContext.SaveChangesAsync().ConfigureAwait(false);
-                    //TO-DO: Handle null ID
-                    //NOTE: should we put something like this in account repository as well?
-                    /*if (picture.Id == "NULL")
-                    {
-
-                    }*/
                 }
                 return picture.Id;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine("========ERROR========" + ex.Message);
                 return 0;
             }
         }
-        public Task<IEnumerable<Picture>> GetPictures()
+        public async Task<IEnumerable<Picture>> GetPictures()
         {
-            return null;
+            IEnumerable<Picture> pictures;
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                return await dbContext.Pictures.ToListAsync().ConfigureAwait(false);
+            }
+
+            //return pictures;
         }
         public async Task<Picture> GetPicture(int ID)
         {
@@ -81,6 +82,40 @@ namespace PickPixForEver.Services
             {
                 Console.WriteLine(ex.Message);
                 return 0;
+            }
+        }
+
+
+        public async Task<int> EnterImgDataSource(Stream imgStream)
+        {
+            try
+            {
+                byte[] imgByte = GetImageStreamAsBytes(imgStream);
+                //String b64Str = Convert.ToBase64String(imgByte);
+                //System.Diagnostics.Debug.WriteLine(b64Str);
+
+                var pic = new Picture(imgByte, "");
+                await EnterPicture(pic).ConfigureAwait(false);
+                return pic.Id;
+            } catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + ex);
+                return 0;
+            }
+
+        }
+
+        public byte[] GetImageStreamAsBytes(Stream input)
+        {
+            var buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
             }
         }
     }
