@@ -12,15 +12,16 @@ using System.IO;
 
 namespace PickPixForEver.Services
 {
-    public class PictureRepository : IPictureRepository
+    public class PictureRepository : IDataStore<Picture>
     {
-        String filePath;
+        string filePath;
 
-        public PictureRepository(string dbContextFilePath)
+        public PictureRepository(string dbContextFilepath)
         {
-            this.filePath = dbContextFilePath;
+            this.filePath = dbContextFilepath;
         }
-        public async Task<int> EnterPicture(Picture picture)
+
+        public async Task<bool> AddItemAsync(Picture picture)
         {
             try
             {
@@ -29,37 +30,52 @@ namespace PickPixForEver.Services
                     var tracker = await dbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
                     await dbContext.SaveChangesAsync().ConfigureAwait(false);
                 }
-                return picture.Id;
+                return true;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("========ERROR========" + ex.Message);
-                return 0;
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
-        public async Task<IEnumerable<Picture>> GetPictures()
+        public async Task<bool> UpdateItemAsync(Picture pic)
+        {
+            return true;
+        }
+        public async Task<bool> DeleteItemAsync(int id)
+        {
+            return true;
+        }
+        public async Task<Picture> FindItemAsync(int ID)
+        {
+            Picture pic;
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                pic = await dbContext.Pictures.
+                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+                return pic;
+            }
+        }
+        public async Task<IEnumerable<Picture>> GetItemsAsync()
         {
             IEnumerable<Picture> pictures;
             using (var dbContext = new PickPixDbContext(filePath))
             {
                 return await dbContext.Pictures.ToListAsync().ConfigureAwait(false);
             }
-
-            //return pictures;
         }
-        public async Task<Picture> GetPicture(int ID)
+
+        //TO-DO: Impement search-term returns
+        public async Task<IEnumerable<Picture>> GetItemsAsync(string searchTerm)
         {
-            Picture pic;
+            IEnumerable<Picture> pictures;
             using (var dbContext = new PickPixDbContext(filePath))
             {
-                var pic1 = dbContext.Pictures.Select(s => s).FirstOrDefault();
-                pic = await dbContext.Pictures.
-                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
-                return pic1;
+                return await dbContext.Pictures.ToListAsync().ConfigureAwait(false);
             }
         }
-        //TODO: Consider whether picture repository should be responsible for creating Picture from Image
-        public async Task<int> EnterPictureSource(Image image)
+
+        public async Task<bool> EnterPictureSource(Image image)
         {
             try
             {
@@ -75,16 +91,14 @@ namespace PickPixForEver.Services
                     var file = image.Source.GetValue(FileImageSource.FileProperty);
                     //IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata(file);
                 }
-                await EnterPicture(newPic);
-                return newPic.Id;
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return false;
             }
         }
-
 
         public async Task<int> EnterImgDataSource(Stream imgStream)
         {
@@ -95,9 +109,10 @@ namespace PickPixForEver.Services
                 //System.Diagnostics.Debug.WriteLine(b64Str);
 
                 var pic = new Picture(imgByte, "");
-                await EnterPicture(pic).ConfigureAwait(false);
+                await AddItemAsync(pic).ConfigureAwait(false);
                 return pic.Id;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + ex);
                 return 0;

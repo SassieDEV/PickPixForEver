@@ -49,7 +49,8 @@ namespace PickPixForEver.Views
         private async Task PickPic(string[] fileTypes) {
             try
             {
-                if(Device.RuntimePlatform == "UWP")
+                var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+                /*(if (Device.RuntimePlatform == "UWP")
                 {
                     var picker = new Windows.Storage.Pickers.FileOpenPicker();
                     picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
@@ -62,13 +63,12 @@ namespace PickPixForEver.Views
                 }
                 else if(Device.RuntimePlatform == "Android")
                 {
-                    var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
                 }
                 //TODO: Figure out iOS
                 else if (Device.RuntimePlatform == "iOS")
                 {
                     var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
-                }
+                }*/
                 if (pickedFile != null)
                 {
                     //string label = pickedFile.FileName;
