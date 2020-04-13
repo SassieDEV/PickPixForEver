@@ -16,12 +16,16 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Plugin.FilePicker;
+using PickPixForEver.Services;
 
 namespace PickPixForEver.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GalleryPage : ContentPage
     {
+        PictureRepository picRep = new PictureRepository(App.FilePath);
+        private static string[] fileTypes = new string[] { ".jpg", ".jpeg", ".png" };
         private Grid galleryView = new Grid();
         public GalleryPage()
         {
@@ -32,20 +36,37 @@ namespace PickPixForEver.Views
         {
             base.OnAppearing();
             //CreateGrid(null);
+            this.loadImages();
         }
 
 
-        //public async static Task<byte[]> LoadImage(StorageFile file)
-        //{
-        //    using (System.IO.Stream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-        //    {
-        //        long length = stream.Length;
-        //        byte[] streamBuffer = new byte[length];
-        //        stream.Read(streamBuffer, 0, (int)length);
-        //        return streamBuffer;
-        //    }
+        private async void loadImages()
+        {
+            var pics = await this.picRep.GetPictures().ConfigureAwait(false) ;
+            foreach (Picture pic in pics)
+            {
+                Image img = new Image();
+                img.Source = ImageSource.FromStream(() => new MemoryStream(pic.RawData));
+                ImagePreview.Children.Add(img);
+            }
+        }
 
-        //}
+
+        private async void new_imagePicker(object s, EventArgs e)
+        {
+            var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+
+            if (pickedFile != null)
+            {
+                Image img = new Image();
+                img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                ImagePreview.Children.Add(img);
+
+                int pictureId = await picRep.EnterImgDataSource(pickedFile.GetStream());
+                System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);
+            }
+        }
+
 
         private async void SelectMultiImage_Tapped(object sender, EventArgs e)
         {
@@ -73,30 +94,36 @@ namespace PickPixForEver.Views
                 Image img = new Image();
                 img.Source = ImageSource.FromStream(() => new MemoryStream(pixels));
                 String b64Str = Convert.ToBase64String(pixels);
-                //ImagePreview.Children.Add(img);
+                System.Diagnostics.Debug.WriteLine(b64Str);
+                ImagePreview.Children.Add(img);
+
 
                 //TestImg.Source = ImageSource.FromStream(() => new MemoryStream(pixels));
                 //ImagePreview.Children.Add(new Image() { Source = "logo.png" });
+
+                Image Nimg = new Image();
+                Nimg.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
+                ImagePreview.Children.Add(Nimg);
             }
 
             foreach (var file in files)
             {
                 //var stream = await file.OpenStreamForReadAsync(); //await file.OpenAsync(FileAccessMode.Read);
                 //BitmapImage image = new BitmapImage();
-                //image.SetSource(stream);
+                //image.SetSource(stream); 
 
-                StorageFile Fpath = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///logo.png"));
-                String b64Str = Convert.ToBase64String(System.IO.File.ReadAllBytes(Fpath.Path));
-                Image img = new Image();
-                img.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
-                ImagePreview.Children.Add(img);
+                //StorageFile Fpath = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///logo.png"));
+                //String b64Str = Convert.ToBase64String(System.IO.File.ReadAllBytes(Fpath.Path));
+                //Image img = new Image();
+                //img.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
+                //ImagePreview.Children.Add(img);
             }
         }
 
 
         private void CreateGrid(IEnumerable<Image> pictures)
         {
-            var colCount = Application.Current.MainPage.Width / 100;
+            var colCount = Application.Current.MainPage.Width / 180;
             for (int i=0; i<colCount; i++)
             {
                 galleryView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength((float)1/(float)colCount, GridUnitType.Star) });
@@ -104,7 +131,7 @@ namespace PickPixForEver.Views
 
             for (int row = 0; row < 12; row++) //pictures.ToList().Count
             {
-                galleryView.RowDefinitions.Add(new RowDefinition() { Height = 100 });
+                galleryView.RowDefinitions.Add(new RowDefinition() { Height = 180 });
                 for (int col = 0; col < colCount; col++)
                 {
                     var img = new Image()
@@ -123,7 +150,7 @@ namespace PickPixForEver.Views
                     galleryView.Children.Add(img, col, row);
                 }
             }
-            PhotoGallery.Content = galleryView;
+            //PhotoGallery.Content = galleryView;
         }
     }
 }

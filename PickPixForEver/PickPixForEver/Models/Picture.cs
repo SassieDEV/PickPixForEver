@@ -15,11 +15,11 @@ namespace PickPixForEver.Models
         public DateTime Updated { get; set; }
         public string PictureMetaData { get; set; }
 		
-        public int AlbumId { get; set; }
+        //public int AlbumId { get; set; }
         public string Notes { get; set; }
 
         //public Album Album { get; set; }
-        public List<PictureTag> PictureTags { get; set; }
+        //public List<PictureTag> PictureTags { get; set; }
 
         public Picture(Image image) {
             try
@@ -30,6 +30,21 @@ namespace PickPixForEver.Models
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public Picture()
+        {
+
+        }
+
+        public Picture(byte[] imgData, string metadata)
+        {
+            this.RawData = imgData;
+            this.PictureMetaData = metadata;
+            this.Notes = "";
+            this.Privacy = 0;
+            this.Created = DateTime.Now;
+            this.Updated = DateTime.Now;
         }
     }
 }
