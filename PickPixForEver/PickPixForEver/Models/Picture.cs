@@ -17,14 +17,8 @@ namespace PickPixForEver.Models
         public List<PictureTag> PictureTags { get; set; }
         public string Notes { get; set; }
         public Picture(Image image) {
-            try
-            {
-                this.image = image;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            this.image = image;
         }
+        public Picture() { }
     }
 }

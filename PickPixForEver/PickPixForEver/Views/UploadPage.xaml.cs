@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,8 +49,26 @@ namespace PickPixForEver.Views
         private async Task PickPic(string[] fileTypes) {
             try
             {
-                var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+                if(Device.RuntimePlatform == "UWP")
+                {
+                    var picker = new Windows.Storage.Pickers.FileOpenPicker();
+                    picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+                    picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+                    picker.FileTypeFilter.Add(".jpg");
+                    picker.FileTypeFilter.Add(".jpeg");
+                    picker.FileTypeFilter.Add(".png");
 
+                    Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+                }
+                else if(Device.RuntimePlatform == "Android")
+                {
+                    var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+                }
+                //TODO: Figure out iOS
+                else if (Device.RuntimePlatform == "iOS")
+                {
+                    var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+                }
                 if (pickedFile != null)
                 {
                     //string label = pickedFile.FileName;
@@ -60,14 +79,18 @@ namespace PickPixForEver.Views
                     if (Device.RuntimePlatform == "Android")
                     {
                         Uri uri = new Uri(pickedFile.FilePath);
-                        selectedImage.Source = ImageSource.FromUri(uri);
+                        pickedImage.Source = ImageSource.FromUri(uri);
                         await picRep.EnterPictureSource(pickedImage);
                     }
                     else if (Device.RuntimePlatform == "UWP")
                     {
                         string path = pickedFile.FilePath;
-                        selectedImage.Source = ImageSource.FromFile(path);
+                        pickedImage.Source = ImageSource.FromFile(path);
                         await picRep.EnterPictureSource(pickedImage);
+                    }
+                    //TODO: Figure out iOS
+                    else if (Device.RuntimePlatform == "iOS")
+                    {
                     }
                 }
             }
