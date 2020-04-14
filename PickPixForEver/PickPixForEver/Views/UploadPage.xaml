@@ -33,7 +33,8 @@
                     <Entry Placeholder="Places" PlaceholderColor="#707070" x:Name="entPlaces"/>
                     <Entry Placeholder="Events" PlaceholderColor="#707070" x:Name="entEvents"/>
                     <Entry Placeholder="Albums" PlaceholderColor="#707070" x:Name="entAlbums"/>
-                    <Entry Placeholder="Other" PlaceholderColor="#707070" x:Name="entOther"/>
+                    <Entry Placeholder="Custom" PlaceholderColor="#707070" x:Name="entCustom"/>
+                    <Entry Placeholder="Notes" PlaceholderColor="#707070" x:Name="entNotes"/>
                     <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Upload Picture(s)" Clicked="SelectUploadButton_Clicked"></Button>
                 </StackLayout>
             </StackLayout>
