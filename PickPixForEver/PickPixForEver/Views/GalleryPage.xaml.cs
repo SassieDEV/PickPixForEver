@@ -10,12 +10,12 @@ using System.Reflection;
 using PickPixForEver.ViewModel;
 using System.Diagnostics;
 using Rg.Plugins.Popup.Services;
-using Windows.Storage.Pickers;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.Storage;
-using Windows.Storage.Streams;
+//using Windows.Storage.Pickers;
+//using Windows.UI.Xaml.Media.Imaging;
+//using Windows.Storage;
+//using Windows.Storage.Streams;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using Plugin.FilePicker;
 using PickPixForEver.Services;
 
@@ -42,13 +42,13 @@ namespace PickPixForEver.Views
 
         private async void loadImages()
         {
-            /*var pics = await this.picRep.GetPictures().ConfigureAwait(false) ;
+            var pics = await this.picRep.GetPictures().ConfigureAwait(false) ;
             foreach (Picture pic in pics)
             {
                 Image img = new Image();
                 img.Source = ImageSource.FromStream(() => new MemoryStream(pic.RawData));
                 ImagePreview.Children.Add(img);
-            }*/
+            }
         }
 
 
@@ -68,7 +68,7 @@ namespace PickPixForEver.Views
         }
 
 
-        private async void SelectMultiImage_Tapped(object sender, EventArgs e)
+        /*private async void SelectMultiImage_Tapped(object sender, EventArgs e)
         {
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.ViewMode = PickerViewMode.Thumbnail;
@@ -118,7 +118,7 @@ namespace PickPixForEver.Views
                 //img.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
                 //ImagePreview.Children.Add(img);
             }
-        }
+        }*/
 
 
         private void CreateGrid(IEnumerable<Image> pictures)

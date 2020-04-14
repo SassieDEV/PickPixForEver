@@ -19,9 +19,9 @@
                         Clicked="new_imagePicker"
                         Text="Upload Photo" Style="{StaticResource PrimaryButtonLarge}"/>
                 
-                <Button x:Name="btnUp2" HorizontalOptions="EndAndExpand" 
+                <!--Button x:Name="btnUp2" HorizontalOptions="EndAndExpand" 
                         Clicked="SelectMultiImage_Tapped"
-                        Text="Upload Mulitple Photos" Style="{StaticResource PrimaryButtonLarge}"/>
+                        Text="Upload Mulitple Photos" Style="{StaticResource PrimaryButtonLarge}"/-->
             </StackLayout>
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
         </StackLayout>
