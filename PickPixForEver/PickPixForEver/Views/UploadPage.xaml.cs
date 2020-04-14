@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Plugin.FilePicker;
 using PickPixForEver.Models;
 using PickPixForEver.Services;
+using MetadataExtractor;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -86,7 +87,9 @@ namespace PickPixForEver.Views
                     {
                         string path = pickedFile.FilePath;
                         pickedImage.Source = ImageSource.FromFile(path);
-                        await picRep.EnterPictureSource(pickedImage);
+                        //await picRep.EnterPictureSource(pickedImage);
+                        //var file = image.Source.GetValue(FileImageSource.FileProperty);
+                        IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(path);
                     }
                     //TODO: Figure out iOS
                     else if (Device.RuntimePlatform == "iOS")
