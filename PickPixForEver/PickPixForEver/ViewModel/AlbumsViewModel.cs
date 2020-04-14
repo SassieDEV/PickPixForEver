@@ -15,19 +15,14 @@ namespace PickPixForEver.ViewModel
     {
         public ObservableCollection<Album> Albums { get; set; }
         public IDataStore<Album> DataStore { get; set; }
-        public Command LoadAlbumsCommand { get; set; }
-        public Command SearchAlbumsComand { get; set; }
-
-        public Command AddAlbumCommand { get; set; }
 
         public AlbumsViewModel(string filePath)
         {
             Title = "Albums";
             DataStore = new AlbumRepository(filePath);
             Albums = new ObservableCollection<Album>();
-            LoadAlbumsCommand = new Command(async () => await ExecuteLoadAlbumsCommand().ConfigureAwait(false));
-            SearchAlbumsComand = new Command<string>(async (searchTerm) => await ExecuteSearchAlbumsCommand(searchTerm).ConfigureAwait(false));
-            //AddAlbumCommand = new Command<Album>(async (album) => await ExecuteAddAlbumCommand(album).ConfigureAwait(false));
+            LoadItemCommand = new Command(async () => await ExecuteLoadAlbumsCommand().ConfigureAwait(false));
+            SearchItemComand = new Command<string>(async (searchTerm) => await ExecuteSearchAlbumsCommand(searchTerm).ConfigureAwait(false));
 
             // Handle "SaveAlbum" message
             MessagingCenter.Subscribe<AddAlbum, Album>(this, "SaveAlbum", async (sender, album) =>

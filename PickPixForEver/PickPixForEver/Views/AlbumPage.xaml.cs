@@ -32,7 +32,7 @@ namespace PickPixForEver.Views
         {
             base.OnAppearing();
 
-            albumsViewModel.LoadAlbumsCommand.Execute(null);
+            albumsViewModel.LoadItemCommand.Execute(null);
             populateGrid();
 
         }
@@ -62,11 +62,11 @@ namespace PickPixForEver.Views
             SearchBar searchBar = (SearchBar)sender;
             if (searchBar != null && !string.IsNullOrEmpty(searchBar.Text.Trim()))
             {
-                albumsViewModel.SearchAlbumsComand.Execute(searchBar.Text.ToLower().Trim());
+                albumsViewModel.SearchItemComand.Execute(searchBar.Text.ToLower().Trim());
             }
             else
             {
-                albumsViewModel.LoadAlbumsCommand.Execute(null);
+                albumsViewModel.LoadItemCommand.Execute(null);
             }
             populateGrid();
         }

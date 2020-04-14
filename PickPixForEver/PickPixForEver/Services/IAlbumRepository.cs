@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PickPixForEver.Services
 {
-    public interface IAlbumRepository
+    public interface IAlbumRepository: IDataStore<Album>
     {
-
+        Task<IEnumerable<Picture>> GetAlbumPictures(int albumId);
     }
 }
