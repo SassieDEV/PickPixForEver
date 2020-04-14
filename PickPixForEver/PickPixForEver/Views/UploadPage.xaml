@@ -6,14 +6,37 @@
              mc:Ignorable="d"
              x:Class="PickPixForEver.Views.UploadPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Upload pictures page placeholder!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
-            <Image x:Name="selectedImage"/>
-            <Button Text="Pick File" Clicked="SelectImagesButton_Clicked" HorizontalOptions="Center"  
-               VerticalOptions="Center"/>
-            <Label Text="File Is :" x:Name="lbl"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="0" Padding="0">
+                <BoxView HorizontalOptions="Center" HeightRequest="100"
+          VerticalOptions="Start" Color="White" />
+                <StackLayout Margin="20,20,20,5" Grid.Row="2">
+                    <Grid  Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="350" />
+                            <!--<RowDefinition Height="*"></RowDefinition>-->
+                        </Grid.RowDefinitions>
+                        <ScrollView Orientation="Horizontal">
+                            <StackLayout x:Name="ImagePreview"
+                            Orientation="Horizontal"/>
+                        </ScrollView>
+                        <!--<StackLayout VerticalOptions="FillAndExpand">
+                    <ScrollView x:Name="PhotoGallery" VerticalOptions="FillAndExpand"/>
+                </StackLayout>-->
+
+                    </Grid>
+                </StackLayout>
+                <StackLayout Grid.Row="1" Margin="40,0,40,0" VerticalOptions="Start">
+                    <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Select Image" Clicked="SelectImagesButton_Clicked"></Button>
+                    <Label Text="Enter your tags separated by semicolons" TextColor="Black" HorizontalOptions="Center"></Label>
+                    <Entry Placeholder="People" PlaceholderColor="#707070" x:Name="entPeople"/>
+                    <Entry Placeholder="Places" PlaceholderColor="#707070" x:Name="entPlaces"/>
+                    <Entry Placeholder="Events" PlaceholderColor="#707070" x:Name="entEvents"/>
+                    <Entry Placeholder="Albums" PlaceholderColor="#707070" x:Name="entAlbums"/>
+                    <Entry Placeholder="Other" PlaceholderColor="#707070" x:Name="entOther"/>
+                    <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Upload Picture(s)" Clicked="SelectUploadButton_Clicked"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

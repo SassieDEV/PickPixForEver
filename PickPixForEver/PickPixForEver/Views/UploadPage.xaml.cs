@@ -27,7 +27,7 @@ namespace PickPixForEver.Views
         private async void SelectImagesButton_Clicked(object sender, EventArgs e)
         {
             //set fileTypes for image picking
-            string[] fileTypes = null;
+            string[] fileTypes = null; 
 
             if (Device.RuntimePlatform == Device.Android)
             {
@@ -46,8 +46,12 @@ namespace PickPixForEver.Views
 
             await PickPic(fileTypes);
         }
+        private async void SelectUploadButton_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
-        private async Task PickPic(string[] fileTypes) {
+            private async Task PickPic(string[] fileTypes) {
             try
             {
                 var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
@@ -74,9 +78,16 @@ namespace PickPixForEver.Views
                 {
                     //string label = pickedFile.FileName;
                     //string path = pickedFile.FilePath;
-                    selectedImage.Source = ImageSource.FromStream(() => pickedFile.GetStream());
-                    Image pickedImage = new Image();
-                    //Image pickedImage = new Image;
+                    //selectedImage.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                    //selectedImageName.Text = pickedFile.FileName;
+                    Image img = new Image();
+                    img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                    ImagePreview.Children.Add(img);
+
+                    int pictureId = await picRep.EnterImgDataSource(pickedFile.GetStream());
+                    System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);
+
+                    /* TODO - Implement file metadata storage from xaml page here
                     if (Device.RuntimePlatform == "Android")
                     {
                         Uri uri = new Uri(pickedFile.FilePath);
@@ -85,7 +96,7 @@ namespace PickPixForEver.Views
                     }
                     else if (Device.RuntimePlatform == "UWP")
                     {
-                        string path = pickedFile.FilePath;
+                        string path reee= pickedFile.FilePath;
                         pickedImage.Source = ImageSource.FromFile(path);
                         //await picRep.EnterPictureSource(pickedImage);
                         //var file = image.Source.GetValue(FileImageSource.FileProperty);
@@ -94,7 +105,7 @@ namespace PickPixForEver.Views
                     //TODO: Figure out iOS
                     else if (Device.RuntimePlatform == "iOS")
                     {
-                    }
+                    }*/
                 }
             }
             catch (Exception ex)
