@@ -42,7 +42,7 @@ namespace PickPixForEver.Views
 
         private async void loadImages()
         {
-            var pics = await this.picRep.GetPictures().ConfigureAwait(false) ;
+            var pics = await this.picRep.GetItemsAsync().ConfigureAwait(false) ;
             foreach (Picture pic in pics)
             {
                 Image img = new Image();
