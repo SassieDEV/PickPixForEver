@@ -79,7 +79,7 @@ namespace PickPixForEver.Services
         {
             try
             {
-                Picture newPic = new Picture(image);
+                Picture newPic = new Picture();
                 DateTime createDate;
                 if (Device.RuntimePlatform == "Android")
                 {
@@ -102,7 +102,7 @@ namespace PickPixForEver.Services
 
         public async Task<int> EnterImgDataSource(Stream imgStream)
         {
-            try
+            /*try
             {
                 byte[] imgByte = GetImageStreamAsBytes(imgStream);
                 //String b64Str = Convert.ToBase64String(imgByte);
@@ -116,7 +116,8 @@ namespace PickPixForEver.Services
             {
                 System.Diagnostics.Debug.WriteLine("Error: " + ex);
                 return 0;
-            }
+            }*/
+            return 0;
 
         }
 

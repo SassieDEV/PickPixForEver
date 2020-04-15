@@ -76,13 +76,28 @@ namespace PickPixForEver.Views
                 }*/
                 if (pickedFile != null)
                 {
-                    //string label = pickedFile.FileName;
-                    //string path = pickedFile.FilePath;
-                    //selectedImage.Source = ImageSource.FromStream(() => pickedFile.GetStream());
-                    //selectedImageName.Text = pickedFile.FileName;
+                    string fName = pickedFile.FileName;
+                    string fPath = pickedFile.FilePath;
+                    //byte[] imageArray = System.IO.File.ReadAllBytes(fPath);
+                    string sourceDir = System.IO.Path.GetDirectoryName(fPath);
+                    string workingDir = System.IO.Directory.GetCurrentDirectory();
+                    //File.Copy(Path.Combine(sourceDir, fName), Path.Combine(workingDir, fName), true);
+                    string newfPath = Path.Combine(workingDir, fName);
                     Image img = new Image();
                     img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                    byte[] imgByte = null;
+                    using(MemoryStream mS = new MemoryStream())
+                    {
+                    }
                     ImagePreview.Children.Add(img);
+                    //string base64 = Convert.ToBase64String(imageArray);
+                    Picture p = new Picture();
+                    //p.RawData = base64;
+                    p.Privacy = "Public";
+                    p.Created = DateTime.Now;
+                    p.Updated = DateTime.Now;
+                    p.PictureMetaData = "";
+                    p.Notes = "Family vacation";
 
                     int pictureId = await picRep.EnterImgDataSource(pickedFile.GetStream());
                     System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);

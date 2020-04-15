@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace PickPixForEver.Services
 {
-    public interface IPictureRepository
+    public interface IPictureRepository : IDataStore<Picture>
     {
         Task<int> EnterPicture(Picture picture);
         Task<IEnumerable<Picture>> GetPictures();

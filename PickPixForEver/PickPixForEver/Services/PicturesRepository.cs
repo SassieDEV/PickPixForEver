@@ -1,8 +1,10 @@
 ﻿using PickPixForEver.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace PickPixForEver.Services
 {
@@ -43,6 +45,21 @@ namespace PickPixForEver.Services
             throw new NotImplementedException();
         }
 
+        public Task<int> EnterImgDataSource(Stream imgStrea)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> EnterPicture(Picture picture)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> EnterPictureSource(Image image)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Picture> FindItemAsync(int id)
         {
             throw new NotImplementedException();
@@ -54,6 +71,16 @@ namespace PickPixForEver.Services
         }
 
         public Task<IEnumerable<Picture>> GetItemsAsync(string searchTerm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Picture> GetPicture(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Picture>> GetPictures()
         {
             throw new NotImplementedException();
         }
