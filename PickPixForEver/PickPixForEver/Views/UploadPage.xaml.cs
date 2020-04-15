@@ -51,41 +51,31 @@ namespace PickPixForEver.Views
             //TODO: Will throw exception if no image was uploaded, need to add warning to UploadPage.xaml
             View [] allImages = ImagePreview.Children.ToArray<View>();
             string[][] megatags = new string[5][];
-
+      
             //TODO: See if there's a more elegant solution to checking if each entry is null before assinging string[]
             string[] text_entPeople = Array.Empty<string>();
             if (entPeople.Text != null) 
             {
-                text_entPeople = entPeople.Text.ToString().Split(';');
-                text_entPeople = text_entPeople.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                text_entPeople = text_entPeople.Distinct().ToArray();
+                text_entPeople = entPeople.Text.ToString().Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             }
             string[] text_entPlaces = Array.Empty<string>();
             if (entPlaces.Text != null)
             {
-                text_entPlaces = entPlaces.Text.ToString().Split(';');
-                text_entPlaces = text_entPlaces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                text_entPlaces = text_entPlaces.Distinct().ToArray();
+                text_entPlaces = entPlaces.Text.ToString().Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             }
             string[] text_entEvents = Array.Empty<string>();
             if (entEvents.Text != null)
             {
-                text_entEvents = entEvents.Text.ToString().Split(';');
-                text_entEvents = text_entEvents.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                text_entEvents = text_entEvents.Distinct().ToArray();
+                text_entEvents = entEvents.Text.ToString().Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             }
             string[] text_entCustom = Array.Empty<string>();
             if (entCustom.Text != null)
             {
-                text_entCustom = entCustom.Text.ToString().Split(';');
-                text_entCustom = text_entCustom.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                text_entCustom = text_entCustom.Distinct().ToArray();
+                text_entCustom = entCustom.Text.ToString().Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             }
             string[] text_entAlbums = Array.Empty<string>();
             if (entAlbums.Text != null) {
-                text_entAlbums = entAlbums.Text.ToString().Split(';');
-                text_entAlbums = text_entAlbums.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                text_entAlbums = text_entAlbums.Distinct().ToArray();
+                text_entAlbums = entAlbums.Text.ToString().Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             }
 
             //TODO: This throws null if no notes, fix and reimplement
