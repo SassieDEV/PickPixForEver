@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Forms;
 
 namespace PickPixForEver.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private static readonly List<string> privacyList= new List<string>{
-                "Public",
-                "Private"
-            };
+        public List<string> PrivacyList { get; private set; } = new List<string> { "Public", "Private" };
+        public Command LoadItemCommand { get; set; }
+        public Command SearchItemComand { get; set; }
+        public Command AddItemCommand { get; set; } 
 
-
-        public List<string> PrivacyList
-        {
-            get { return privacyList; }
-        }
+      
         bool isBusy;
         public bool IsBusy
         {

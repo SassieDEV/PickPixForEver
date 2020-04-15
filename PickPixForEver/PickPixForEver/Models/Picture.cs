@@ -1,50 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xamarin.Forms;
-using MetadataExtractor;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PickPixForEver.Models
 {
     public class Picture
     {
-        Image image;
-        public int Id { get; set; }
-        public byte [] RawData { get; set; }
-        public int Privacy { get; set; }
+        public int Id { get; set; }        
+        public string RawData { get; set; }
+        public string Privacy { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string PictureMetaData { get; set; }
-		
-        //public int AlbumId { get; set; }
+        public int AlbumId { get; set; }
         public string Notes { get; set; }
+        public Album Album { get; set; }
+        public List<PictureTag> PictureTags { get; set; }
 
-        //public Album Album { get; set; }
-        //public List<PictureTag> PictureTags { get; set; }
-
-        public Picture(Image image) {
-            try
+        [NotMapped]
+        public byte[] ImageArray { 
+            get
             {
-                this.image = image;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+               return Convert.FromBase64String(RawData);               
             }
         }
 
-        public Picture()
-        {
 
-        }
-
-        public Picture(byte[] imgData, string metadata)
-        {
-            this.RawData = imgData;
-            this.PictureMetaData = metadata;
-            this.Notes = "";
-            this.Privacy = 0;
-            this.Created = DateTime.Now;
-            this.Updated = DateTime.Now;
-        }
     }
 }
