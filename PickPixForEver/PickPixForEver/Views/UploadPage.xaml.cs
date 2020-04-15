@@ -48,7 +48,18 @@ namespace PickPixForEver.Views
         }
         private async void SelectUploadButton_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            View [] allImages = ImagePreview.Children.ToArray<View>();
+            string[] text_entPeople = entPeople.Text.ToString().Split(';');
+            string[] text_entPlaces = entPlaces.Text.ToString().Split(';');
+            string[] text_entEvents = entEvents.Text.ToString().Split(';');
+            string[] text_entCustom = entCustom.Text.ToString().Split(';');
+            string[] text_entAlbums = entAlbums.Text.ToString().Split(';');
+            text_entPeople = text_entPeople.Distinct().ToArray();
+            text_entPlaces = text_entPlaces.Distinct().ToArray();
+            text_entEvents = text_entEvents.Distinct().ToArray();
+            text_entCustom = text_entCustom.Distinct().ToArray();
+            text_entAlbums = text_entAlbums.Distinct().ToArray();
+            string text_entNotes = entNotes.Text.ToString();
         }
             
         private async Task PickPic(string[] fileTypes) {

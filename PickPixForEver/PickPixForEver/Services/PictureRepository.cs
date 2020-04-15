@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using MetadataExtractor;
+//using MetadataExtractor;
 using System.IO;
 
 namespace PickPixForEver.Services
@@ -75,31 +75,6 @@ namespace PickPixForEver.Services
             }
         }
 
-        public async Task<bool> EnterPictureSource(Image image)
-        {
-            try
-            {
-                Picture newPic = new Picture();
-                DateTime createDate;
-                if (Device.RuntimePlatform == "Android")
-                {
-                    var uri = image.Source.GetValue(UriImageSource.UriProperty);
-                    //IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata();
-                }
-                else if (Device.RuntimePlatform == "UWP")
-                {
-                    var file = image.Source.GetValue(FileImageSource.FileProperty);
-                    //IEnumerable<Directory> directories = MetadataExtractor.ImageMetadataReader.ReadMetadata(file);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
         public async Task<int> EnterImgDataSource(Stream imgStream)
         {
             /*try
@@ -118,7 +93,36 @@ namespace PickPixForEver.Services
                 return 0;
             }*/
             return 0;
+        }
+        public async Task<int> HandleImage(Image[] images, List<string[]> tags, string notes)
+        {
+            List<Tag> applyPeople = new List<Tag>();
+            List<Tag> applyPlaces = new List<Tag>();
+            List<Tag> applyEvents = new List<Tag>();
+            List<Tag> applyCustom = new List<Tag>();
+            List<Tag> applyAlbum = new List<Tag>();
 
+            foreach (string curPeople in tags.ElementAt(0).ToArray())
+            {
+                applyPeople.Add(new Tag{ Value = curPeople, TagType = "People"});
+            }
+            foreach (string curPlaces in tags.ElementAt(1).ToArray())
+            {
+                applyPlaces.Add(new Tag { Value = curPlaces, TagType = "Places" });
+            }
+            foreach (string curEvents in tags.ElementAt(2).ToArray())
+            {
+                applyEvents.Add(new Tag { Value = curEvents, TagType = "Events" });
+            }
+            foreach (string curCustom in tags.ElementAt(3).ToArray())
+            {
+                applyCustom.Add(new Tag { Value = curCustom, TagType = "Custom" });
+            }
+            foreach (string curAlbum in tags.ElementAt(4).ToArray())
+            {
+                //TODO: Implement
+            }
+            return 0;
         }
 
         public byte[] GetImageStreamAsBytes(Stream input)
