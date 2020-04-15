@@ -14,6 +14,7 @@ namespace PickPixForEver.Services
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Favorites> Favorites { get; set; }
         public DbSet <PictureTag> PictureTags { get; set; }
+        public DbSet <PictureAlbum> PictureAlbums { get; set; }
 
 
         private readonly string _dataBasePath;
@@ -24,6 +25,13 @@ namespace PickPixForEver.Services
 
             //Create database if not there. This will also ensure the data seeding will happen.
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tag>().HasKey(t => t.TagId);
+            modelBuilder.Entity<PictureTag>().HasKey(p => new { p.PictureId,p.TagId});
+            modelBuilder.Entity<PictureAlbum>().HasKey(p => new { p.PictureId, p.AlbumId });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
