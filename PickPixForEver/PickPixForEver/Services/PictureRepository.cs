@@ -94,35 +94,44 @@ namespace PickPixForEver.Services
             }*/
             return 0;
         }
-        public async Task<int> HandleImage(View[] views, string[][] tags, string notes)
+        public async Task<int> HandleImageCommit(View[] views, string[][] megaTags, string[] albums, string notes)
         {
-            List<Tag> applyPeople = new List<Tag>();
-            List<Tag> applyPlaces = new List<Tag>();
-            List<Tag> applyEvents = new List<Tag>();
-            List<Tag> applyCustom = new List<Tag>();
-            List<Tag> applyAlbum = new List<Tag>();
-
-            foreach (string curPeople in tags.ElementAt(0))
-            {
-                applyPeople.Add(new Tag{ Value = curPeople, TagType = "People"});
-            }
-            foreach (string curPlaces in tags.ElementAt(1))
-            {
-                applyPlaces.Add(new Tag { Value = curPlaces, TagType = "Places" });
-            }
-            foreach (string curEvents in tags.ElementAt(2))
-            {
-                applyEvents.Add(new Tag { Value = curEvents, TagType = "Events" });
-            }
-            foreach (string curCustom in tags.ElementAt(3))
-            {
-                applyCustom.Add(new Tag { Value = curCustom, TagType = "Custom" });
-            }
-            foreach (string curAlbum in tags.ElementAt(4))
-            {
-
-            }
+            List<Tag> applyTags = await HandleTags(megaTags);
+            List<Album> applyAlbums = await HandleAlbums(albums);
             return 0;
+        }
+        public async Task<List<Tag>> HandleTags(string[][] megaTags)
+        {
+            List<Tag> applyTags = new List<Tag>();
+
+            foreach (string curPeople in megaTags.ElementAt(0))
+            {
+                applyTags.Add(new Tag { Value = curPeople, TagType = "People" });
+            }
+            foreach (string curPlaces in megaTags.ElementAt(1))
+            {
+                applyTags.Add(new Tag { Value = curPlaces, TagType = "Places" });
+            }
+            foreach (string curEvents in megaTags.ElementAt(2))
+            {
+                applyTags.Add(new Tag { Value = curEvents, TagType = "Events" });
+            }
+            foreach (string curCustom in megaTags.ElementAt(3))
+            {
+                applyTags.Add(new Tag { Value = curCustom, TagType = "Custom" });
+            }
+
+            return applyTags;
+        }
+
+        public async Task<List<Album>> HandleAlbums(string[] albums)
+        {
+            List<Album> applyAlbums = new List<Album>();
+            foreach (string curAlbum in albums)
+            {
+                applyAlbums.Add(new Album { Name = curAlbum });
+            }
+            return applyAlbums;
         }
 
         public byte[] GetImageStreamAsBytes(Stream input)

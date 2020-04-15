@@ -51,6 +51,7 @@ namespace PickPixForEver.Views
             //TODO: Will throw exception if no image was uploaded, need to add warning to UploadPage.xaml
             View [] allImages = ImagePreview.Children.ToArray<View>();
             string[][] megatags = new string[5][];
+            string[] albums = Array.Empty<string>();
       
             //TODO: See if there's a more elegant solution to checking if each entry is null before assinging string[]
             string[] text_entPeople = Array.Empty<string>();
@@ -82,8 +83,10 @@ namespace PickPixForEver.Views
             //string text_entNotes = entNotes.Text.ToString();
             string text_entNotes = "";
 
-            megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entAlbums };
-            await picRep.HandleImage(allImages, megatags, text_entNotes);
+            megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
+            albums = text_entAlbums;
+
+            await picRep.HandleImageCommit(allImages, megatags, albums, text_entNotes);
         }
             
         private async Task PickPic(string[] fileTypes) {
