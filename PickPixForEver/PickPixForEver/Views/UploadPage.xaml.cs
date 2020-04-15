@@ -48,23 +48,46 @@ namespace PickPixForEver.Views
         }
         private async void SelectUploadButton_Clicked(object sender, EventArgs e)
         {
+            //TODO: Will throw exception if no image was uploaded, need to add warning to UploadPage.xaml
             View [] allImages = ImagePreview.Children.ToArray<View>();
-            string[] text_entPeople = entPeople.Text.ToString().Split(';');
-            string[] text_entPlaces = entPlaces.Text.ToString().Split(';');
-            string[] text_entEvents = entEvents.Text.ToString().Split(';');
-            string[] text_entCustom = entCustom.Text.ToString().Split(';');
-            string[] text_entAlbums = entAlbums.Text.ToString().Split(';');
-            text_entPeople = text_entPeople.Distinct().ToArray();
-            text_entPlaces = text_entPlaces.Distinct().ToArray();
-            text_entEvents = text_entEvents.Distinct().ToArray();
-            text_entCustom = text_entCustom.Distinct().ToArray();
-            text_entAlbums = text_entAlbums.Distinct().ToArray();
+            string[][] megatags = new string[5][];
+
+            //TODO: See if there's a more elegant solution to checking if each entry is null before assinging string[]
+            string[] text_entPeople = Array.Empty<string>();
+            if (entPeople.Text != null) 
+            {
+                text_entPeople = entPeople.Text.ToString().Split(';');
+                text_entPeople = text_entPeople.Distinct().ToArray();
+            }
+            string[] text_entPlaces = Array.Empty<string>();
+            if (entPlaces.Text != null)
+            {
+                text_entPlaces = entPlaces.Text.ToString().Split(';');
+                text_entPlaces = text_entPlaces.Distinct().ToArray();
+            }
+            string[] text_entEvents = Array.Empty<string>();
+            if (entEvents.Text != null)
+            {
+                text_entEvents = entEvents.Text.ToString().Split(';');
+                text_entEvents = text_entEvents.Distinct().ToArray();
+            }
+            string[] text_entCustom = Array.Empty<string>();
+            if (entCustom.Text != null)
+            {
+                text_entCustom = entCustom.Text.ToString().Split(';');
+                text_entCustom = text_entCustom.Distinct().ToArray();
+            }
+            string[] text_entAlbums = Array.Empty<string>();
+            if (entAlbums.Text != null) {
+                text_entAlbums = entAlbums.Text.ToString().Split(';');
+                text_entAlbums = text_entAlbums.Distinct().ToArray();
+            }
 
             //TODO: This throws null if no notes, fix and reimplement
             //string text_entNotes = entNotes.Text.ToString();
             string text_entNotes = "";
 
-            string[][] megatags = { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entAlbums };
+            megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entAlbums };
             await picRep.HandleImage(allImages, megatags, text_entNotes);
         }
             
