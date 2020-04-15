@@ -1,4 +1,5 @@
-﻿using PickPixForEver.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PickPixForEver.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,7 +91,14 @@ namespace PickPixForEver.Services
             {
                 using(var ctx = new PickPixDbContext(this.filePath))
                 {
-                    pictures = await Task.FromResult(ctx.Pictures.Where(P => P.AlbumId == albumId).ToList()).ConfigureAwait(false);
+                    var res = ctx.Albums.Where(a => a.Id == albumId).Select(s => new
+                    {
+                        Pictures = s.PictureAlbums.Select(p => p.Picture)
+                    }).ToList() ;
+                    if(res!=null && res.Count > 0)
+                    {
+                        pictures = res[0].Pictures;
+                    }
                 }
             }
             catch (Exception ex)

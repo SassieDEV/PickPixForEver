@@ -8,7 +8,7 @@ namespace PickPixForEver.Models
     {
         public Album()
         {
-            Pictures = new List<Picture>();
+            PictureAlbums = new List<PictureAlbum>();
         }
 
         public int Id { get; set; }
@@ -17,9 +17,7 @@ namespace PickPixForEver.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string Privacy { get; set; }
-
         public bool Active { get; set; }
-        public List<Picture> Pictures { get; set; }
-
+        public List<PictureAlbum> PictureAlbums { get; set; }
     }
 }
