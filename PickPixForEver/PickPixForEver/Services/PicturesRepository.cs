@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PickPixForEver.Services
 {
-    public class PicturesRepository : IDataStore<Picture>
+    public class PicturesRepository : IPictureRepository
     {
 
         private readonly string filePath;

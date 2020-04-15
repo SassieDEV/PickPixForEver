@@ -38,7 +38,6 @@ namespace PickPixForEver.ViewModel
                 Privacy = picture.Privacy;
                 Notes = picture.Notes;
                 PictureMetaData = picture.PictureMetaData;
-                AlbumId = picture.AlbumId;
                 result = await DataStore.AddItemAsync(picture).ConfigureAwait(false);
 
             }
@@ -80,16 +79,6 @@ namespace PickPixForEver.ViewModel
             set
             {
                 Picture.PictureMetaData = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int AlbumId
-        {
-            get { return Picture.AlbumId; }
-            set 
-            {
-                Picture.AlbumId = value;
                 OnPropertyChanged();
             }
         }
