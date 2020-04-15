@@ -59,7 +59,10 @@ namespace PickPixForEver.Views
             text_entEvents = text_entEvents.Distinct().ToArray();
             text_entCustom = text_entCustom.Distinct().ToArray();
             text_entAlbums = text_entAlbums.Distinct().ToArray();
-            string text_entNotes = entNotes.Text.ToString();
+
+            //TODO: This throws null if no notes, fix and reimplement
+            //string text_entNotes = entNotes.Text.ToString();
+            string text_entNotes = "";
 
             string[][] megatags = { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entAlbums };
             await picRep.HandleImage(allImages, megatags, text_entNotes);
