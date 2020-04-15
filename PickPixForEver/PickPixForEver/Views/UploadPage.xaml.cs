@@ -50,11 +50,11 @@ namespace PickPixForEver.Views
         {
             throw new NotImplementedException();
         }
-
-            private async Task PickPic(string[] fileTypes) {
+            
+        private async Task PickPic(string[] fileTypes) {
             try
             {
-                var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
+                //var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
                 /*(if (Device.RuntimePlatform == "UWP")
                 {
                     var picker = new Windows.Storage.Pickers.FileOpenPicker();
@@ -74,54 +74,39 @@ namespace PickPixForEver.Views
                 {
                     var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
                 }*/
-                if (pickedFile != null)
+                //if (pickedFile != null)
+                //{
+                //string fName = pickedFile.FileName;
+                //string fPath = pickedFile.FilePath;
+                //byte[] imageArray = System.IO.File.ReadAllBytes(fPath);
+
+                //TODO: Remove this hardcoded file and re-implement filepicker
+                string path = "cover1.png";
+                FileStream pickedFile = File.OpenRead(path);
+
+                Image img = new Image();
+                //img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                //TODO: Remove the below image source to hardfile and reimplement above to filepicker
+                img.Source = ImageSource.FromStream(() => pickedFile);
+                byte[] imgByte = null;
+                using(MemoryStream mS = new MemoryStream())
                 {
-                    string fName = pickedFile.FileName;
-                    string fPath = pickedFile.FilePath;
-                    //byte[] imageArray = System.IO.File.ReadAllBytes(fPath);
-                    string sourceDir = System.IO.Path.GetDirectoryName(fPath);
-                    string workingDir = System.IO.Directory.GetCurrentDirectory();
-                    //File.Copy(Path.Combine(sourceDir, fName), Path.Combine(workingDir, fName), true);
-                    string newfPath = Path.Combine(workingDir, fName);
-                    Image img = new Image();
-                    img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
-                    byte[] imgByte = null;
-                    using(MemoryStream mS = new MemoryStream())
-                    {
-                    }
-                    ImagePreview.Children.Add(img);
-                    //string base64 = Convert.ToBase64String(imageArray);
-                    Picture p = new Picture();
-                    //p.RawData = base64;
-                    p.Privacy = "Public";
-                    p.Created = DateTime.Now;
-                    p.Updated = DateTime.Now;
-                    p.PictureMetaData = "";
-                    p.Notes = "Family vacation";
-
-                    int pictureId = await picRep.EnterImgDataSource(pickedFile.GetStream());
-                    System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);
-
-                    /* TODO - Implement file metadata storage from xaml page here
-                    if (Device.RuntimePlatform == "Android")
-                    {
-                        Uri uri = new Uri(pickedFile.FilePath);
-                        pickedImage.Source = ImageSource.FromUri(uri);
-                        await picRep.EnterPictureSource(pickedImage);
-                    }
-                    else if (Device.RuntimePlatform == "UWP")
-                    {
-                        string path reee= pickedFile.FilePath;
-                        pickedImage.Source = ImageSource.FromFile(path);
-                        //await picRep.EnterPictureSource(pickedImage);
-                        //var file = image.Source.GetValue(FileImageSource.FileProperty);
-                        IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(path);
-                    }
-                    //TODO: Figure out iOS
-                    else if (Device.RuntimePlatform == "iOS")
-                    {
-                    }*/
                 }
+                ImagePreview.Children.Add(img);
+                //string base64 = Convert.ToBase64String(imageArray);
+                Picture p = new Picture();
+                //p.RawData = base64;
+                p.Privacy = "Public";
+                p.Created = DateTime.Now;
+                p.Updated = DateTime.Now;
+                p.PictureMetaData = "";
+                p.Notes = "Family vacation";
+                //img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
+                //TODO: Remove the below image source to hardfile and reimplement above to filepicker
+                int pictureId = await picRep.EnterImgDataSource(pickedFile);
+                System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);
+                    
+                //}
             }
             catch (Exception ex)
             {
