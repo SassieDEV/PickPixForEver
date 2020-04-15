@@ -94,7 +94,7 @@ namespace PickPixForEver.Services
             }*/
             return 0;
         }
-        public async Task<int> HandleImage(Image[] images, List<string[]> tags, string notes)
+        public async Task<int> HandleImage(View[] views, string[][] tags, string notes)
         {
             List<Tag> applyPeople = new List<Tag>();
             List<Tag> applyPlaces = new List<Tag>();
@@ -102,25 +102,25 @@ namespace PickPixForEver.Services
             List<Tag> applyCustom = new List<Tag>();
             List<Tag> applyAlbum = new List<Tag>();
 
-            foreach (string curPeople in tags.ElementAt(0).ToArray())
+            foreach (string curPeople in tags.ElementAt(0))
             {
                 applyPeople.Add(new Tag{ Value = curPeople, TagType = "People"});
             }
-            foreach (string curPlaces in tags.ElementAt(1).ToArray())
+            foreach (string curPlaces in tags.ElementAt(1))
             {
                 applyPlaces.Add(new Tag { Value = curPlaces, TagType = "Places" });
             }
-            foreach (string curEvents in tags.ElementAt(2).ToArray())
+            foreach (string curEvents in tags.ElementAt(2))
             {
                 applyEvents.Add(new Tag { Value = curEvents, TagType = "Events" });
             }
-            foreach (string curCustom in tags.ElementAt(3).ToArray())
+            foreach (string curCustom in tags.ElementAt(3))
             {
                 applyCustom.Add(new Tag { Value = curCustom, TagType = "Custom" });
             }
-            foreach (string curAlbum in tags.ElementAt(4).ToArray())
+            foreach (string curAlbum in tags.ElementAt(4))
             {
-                //TODO: Implement
+
             }
             return 0;
         }

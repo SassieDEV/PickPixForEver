@@ -19,7 +19,7 @@ namespace PickPixForEver.ViewModel
 
         public PicturesViewModel(string filePath, Picture picture = null)
         {
-            DataStore = new PicturesRepository(filePath);
+            DataStore = new PictureRepository(filePath);
             IsNewPicture = picture == null;
 
             Picture = picture ?? new Picture();
