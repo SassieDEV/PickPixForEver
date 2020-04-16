@@ -44,7 +44,7 @@ namespace PickPixForEver.Views
             {
                 fileTypes = new string[] { ".jpg", ".png" };
             }
-            await PickPic(sender, e);
+            await PickPic(sender, e).ConfigureAwait(false);
         }
         private async void SelectUploadButton_Clicked(object sender, EventArgs e)
         {
@@ -57,26 +57,26 @@ namespace PickPixForEver.Views
             string[] text_entPeople = Array.Empty<string>();
             if (entPeople.Text != null)
             {
-                text_entPeople = await FormatTagsAlbums(entPeople.Text);
+                text_entPeople = await FormatTagsAlbums(entPeople.Text).ConfigureAwait(false);
             }
             string[] text_entPlaces = Array.Empty<string>();
             if (entPlaces.Text != null)
             {
-                text_entPlaces = await FormatTagsAlbums(entPlaces.Text);
+                text_entPlaces = await FormatTagsAlbums(entPlaces.Text).ConfigureAwait(false);
             }
             string[] text_entEvents = Array.Empty<string>();
             if (entEvents.Text != null)
             {
-                text_entEvents = await FormatTagsAlbums(entEvents.Text);
+                text_entEvents = await FormatTagsAlbums(entEvents.Text).ConfigureAwait(false);
             }
             string[] text_entCustom = Array.Empty<string>();
             if (entCustom.Text != null)
             {
-                text_entCustom = await FormatTagsAlbums(entCustom.Text);
+                text_entCustom = await FormatTagsAlbums(entCustom.Text).ConfigureAwait(false);
             }
             string[] text_entAlbums = Array.Empty<string>();
             if (entAlbums.Text != null) {
-                text_entAlbums = await FormatTagsAlbums(entAlbums.Text);
+                text_entAlbums = await FormatTagsAlbums(entAlbums.Text).ConfigureAwait(false);
             }
 
             //TODO: This throws null if no notes, fix and reimplement
@@ -86,7 +86,7 @@ namespace PickPixForEver.Views
             megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
 
-            await picRep.HandleImageCommit( megatags, albums, text_entNotes);
+            await picRep.HandleImageCommit( megatags, albums, text_entNotes).ConfigureAwait(false);
             ImagePreview.Children.Clear();
         }
 
@@ -109,7 +109,7 @@ namespace PickPixForEver.Views
                 img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                 ImagePreview.Children.Add(img);
                 IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories = ImageMetadataReader.ReadMetadata(pickedFile.GetStream());
-                await picRep.InitPic(pickedFile.GetStream(), pickedFile.FilePath, metaDataDirectories);
+                await picRep.InitPic(pickedFile.GetStream(), pickedFile.FilePath, metaDataDirectories).ConfigureAwait(false);
             }
             return 0;
         }

@@ -188,24 +188,24 @@ namespace PickPixForEver.Services
                     int curPicId = curPic.Id;
                     foreach (Models.Tag curTag in applyTags)
                     {
-                        ctx.PictureTags.Add(new PictureTag
+                        await ctx.PictureTags.AddAsync(new PictureTag
                         {
                             Picture = curPic,
                             Tag = curTag,
                             PictureId = curPic.Id,
                             TagId = curTag.TagId
-                        });
+                        }).ConfigureAwait(false);
                     }
                     foreach (Album curAlbum in applyAlbums)
                     {
                         int curAlbumId = curAlbum.Id;
-                        ctx.PictureAlbums.Add(new PictureAlbum
+                        await ctx.PictureAlbums.AddAsync(new PictureAlbum
                         {
                             Picture = curPic,
                             Album = curAlbum,
                             PictureId = curPic.Id,
                             AlbumId = curAlbum.Id
-                        });
+                        }).ConfigureAwait(false);
                     }
                     curPic.Notes = notes;
                 }
