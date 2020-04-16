@@ -21,7 +21,7 @@ namespace PickPixForEver.Views
         PictureRepository picRep = new PictureRepository(App.FilePath);
         //set fileTypes for image picking
         string[] fileTypes = null;
-        int[] picIds = Array.Empty<int>();
+        List<int> picIds = new List<int>();
 
         public UploadPage()
         {
@@ -104,44 +104,14 @@ namespace PickPixForEver.Views
 
             if (pickedFile != null)
             {
+                int picIdNew = 0;
                 Image img = new Image();
                 img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                 ImagePreview.Children.Add(img);
-
-                Picture pic = getPictureModel(pickedFile.GetStream(), pickedFile.FilePath);
-                var directories = ImageMetadataReader.ReadMetadata(pickedFile.GetStream());
-                if (await picRep.AddItemAsync(pic) == 0)
-                {
-                    System.Diagnostics.Debug.WriteLine("========================================= Failed to save picture");
-                }
+                IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories = ImageMetadataReader.ReadMetadata(pickedFile.GetStream());
+                await picRep.InitPic(pickedFile.GetStream(), pickedFile.FilePath, metaDataDirectories);
             }
             return 0;
-        }
-
-        private Picture getPictureModel(Stream stream, string filePath)
-        {
-            Picture pic = new Picture();
-            pic.RawData = Convert.ToBase64String(GetImageStreamAsBytes(stream));
-            pic.Created = DateTime.Now;
-            pic.Updated = DateTime.Now;
-            pic.PictureMetaData = filePath;
-            pic.Notes = "";
-            pic.Privacy = "";
-            return pic;
-        }
-
-        public byte[] GetImageStreamAsBytes(Stream input)
-        {
-            var buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
         }
     }
 }
