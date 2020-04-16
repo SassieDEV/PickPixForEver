@@ -21,6 +21,7 @@ namespace PickPixForEver.Views
         PictureRepository picRep = new PictureRepository(App.FilePath);
         //set fileTypes for image picking
         string[] fileTypes = null;
+        int[] picIds = Array.Empty<int>();
 
         public UploadPage()
         {
@@ -109,7 +110,7 @@ namespace PickPixForEver.Views
 
                 Picture pic = getPictureModel(pickedFile.GetStream(), pickedFile.FilePath);
                 var directories = ImageMetadataReader.ReadMetadata(pickedFile.GetStream());
-                if (await picRep.AddItemAsync(pic).ConfigureAwait(false))
+                if (await picRep.AddItemAsync(pic) == 0)
                 {
                     System.Diagnostics.Debug.WriteLine("========================================= Failed to save picture");
                 }

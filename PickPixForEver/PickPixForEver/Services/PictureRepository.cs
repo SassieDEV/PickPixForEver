@@ -21,7 +21,7 @@ namespace PickPixForEver.Services
             this.filePath = dbContextFilepath;
         }
 
-        public async Task<bool> AddItemAsync(Picture picture)
+        public async Task<int> AddItemAsync(Picture picture)
         {
             try
             {
@@ -30,12 +30,12 @@ namespace PickPixForEver.Services
                     var tracker = await dbContext.Pictures.AddAsync(picture).ConfigureAwait(false);
                     await dbContext.SaveChangesAsync().ConfigureAwait(false);
                 }
-                return true;
+                return picture.Id;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return 0;
             }
         }
         public async Task<bool> UpdateItemAsync(Picture pic)

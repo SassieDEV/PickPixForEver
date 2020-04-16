@@ -18,9 +18,8 @@ namespace PickPixForEver.Services
             this.filePath = filePath;
 
         }
-        public async Task<bool> AddItemAsync(Album album)
+        public async Task<int> AddItemAsync(Album album)
         {
-            bool result = false;
             try
             {
                 using(var cxt = new PickPixDbContext(this.filePath))
@@ -30,14 +29,14 @@ namespace PickPixForEver.Services
                     album.Active = true;
                     cxt.Albums.Add(album);
                     await cxt.SaveChangesAsync().ConfigureAwait(false);
-                    result = true;
+                    return album.Id;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-            return result;
+            return 0;
         }
 
         public Task<bool> DeleteItemAsync(int id)
