@@ -75,6 +75,29 @@ namespace PickPixForEver.Services
                 return await dbContext.Pictures.ToListAsync().ConfigureAwait(false);
             }
         }
+        private async Task<Picture[]> GetActivePictures()
+        {
+            Picture[] returnActivePictures = Array.Empty<Picture>();
+            List<Picture> activePics = new List<Picture>();
+            Picture curActivePic;
+
+            foreach(int activePicId in picIdsToUpdate)
+            {
+                try
+                {
+                    curActivePic = await FindItemAsync(activePicId).ConfigureAwait(false);
+                    activePics.Add(curActivePic);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    picIdsToUpdate = new List<int>();
+                    return null;
+                }
+            }
+            picIdsToUpdate = new List<int>();
+            return returnActivePictures;
+        }
         public async Task<bool> InitPic(Stream fileStream, string filePath, IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories)
         {
             int picIdNew = 0;
@@ -117,23 +140,21 @@ namespace PickPixForEver.Services
                 return ms.ToArray();
             }
         }
-        public async Task<int> HandleImageIntro(Stream fileStream)
+        public async Task<int> HandleImageCommit(string[][] megaTags, string[] albums, string notes)
         {
-            return 0;
-        }
-        public async Task<int> HandleImageCommit(Picture[] pics, string[][] megaTags, string[] albums, string notes)
-        {
-            List<Models.Tag> applyTags = await HandleTags(megaTags);
-            List<Album> applyAlbums = await HandleAlbums(albums);
-            foreach (Picture curPic in pics)
+            List<Models.Tag> applyTags = await HandleTags(megaTags).ConfigureAwait(false);
+            List<Album> applyAlbums = await HandleAlbums(albums).ConfigureAwait(false);
+            Picture[] applyPics = await GetActivePictures().ConfigureAwait(false);
+            foreach (Picture curPic in applyPics)
             {
+                int curPicId = curPic.Id;
                 foreach (Models.Tag curTag in applyTags)
                 {
-
+                    int curTagId = curTag.TagId;
                 }
                 foreach (Album curAlbum in applyAlbums)
                 {
-
+                    int curAlbumId = curAlbum.Id;
                 }
             }
             return 0;

@@ -86,8 +86,7 @@ namespace PickPixForEver.Views
             megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
 
-            Picture[] pics = Array.Empty<Picture>();
-            await picRep.HandleImageCommit(pics, megatags, albums, text_entNotes);
+            await picRep.HandleImageCommit( megatags, albums, text_entNotes);
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)
