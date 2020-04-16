@@ -94,10 +94,25 @@ namespace PickPixForEver.Services
             }*/
             return 0;
         }
-        public async Task<int> HandleImageCommit(View[] views, string[][] megaTags, string[] albums, string notes)
+        public async Task<int> HandleImageIntro(Stream fileStream)
+        {
+            return 0;
+        }
+        public async Task<int> HandleImageCommit(Picture[] pics, string[][] megaTags, string[] albums, string notes)
         {
             List<Tag> applyTags = await HandleTags(megaTags);
             List<Album> applyAlbums = await HandleAlbums(albums);
+            foreach (Picture curPic in pics)
+            {
+                foreach (Tag curTag in applyTags)
+                {
+
+                }
+                foreach (Album curAlbum in applyAlbums)
+                {
+
+                }
+            }
             return 0;
         }
         public async Task<List<Tag>> HandleTags(string[][] megaTags)
