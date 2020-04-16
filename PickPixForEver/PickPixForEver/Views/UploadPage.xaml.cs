@@ -93,8 +93,8 @@ namespace PickPixForEver.Views
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)
         {
             string[] tagArray = tagAlbumLine.Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
-            foreach (string s in tagArray)
-                s.Trim();
+            for (int i = 0; i < tagArray.Length; i++)
+                tagArray[i] = tagArray[i].Trim();
             return tagArray;
         }
 
@@ -104,7 +104,6 @@ namespace PickPixForEver.Views
 
             if (pickedFile != null)
             {
-                int picIdNew = 0;
                 Image img = new Image();
                 img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                 ImagePreview.Children.Add(img);
