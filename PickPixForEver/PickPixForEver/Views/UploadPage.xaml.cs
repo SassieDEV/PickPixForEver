@@ -87,6 +87,7 @@ namespace PickPixForEver.Views
             albums = text_entAlbums;
 
             await picRep.HandleImageCommit( megatags, albums, text_entNotes);
+            ImagePreview.Children.Clear();
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)

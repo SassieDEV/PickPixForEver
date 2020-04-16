@@ -27,10 +27,10 @@ namespace PickPixForEver.Services
                     album.CreatedAt = DateTime.Now;
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
-                    cxt.Albums.Add(album);
+                    var tracker = await cxt.Albums.AddAsync(album).ConfigureAwait(false);
                     await cxt.SaveChangesAsync().ConfigureAwait(false);
-                    return album.Id;
                 }
+                return album.Id;
             }
             catch (Exception ex)
             {
@@ -39,14 +39,20 @@ namespace PickPixForEver.Services
             return 0;
         }
 
-        public Task<bool> DeleteItemAsync(int id)
+        public async Task<bool> DeleteItemAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Album> FindItemAsync(int id)
+        public async Task<Album> FindItemAsync(int ID)
         {
-            throw new NotImplementedException();
+            Album album;
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                album = await dbContext.Albums.
+                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+                return album;
+            }
         }
 
         public async Task<IEnumerable<Album>> GetItemsAsync()

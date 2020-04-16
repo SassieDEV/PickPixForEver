@@ -109,7 +109,6 @@ namespace PickPixForEver.Services
         }
         private async Task<Picture[]> GetActivePictures()
         {
-            Picture[] returnActivePictures = Array.Empty<Picture>();
             List<Picture> activePics = new List<Picture>();
             Picture curActivePic;
 
@@ -127,8 +126,7 @@ namespace PickPixForEver.Services
                     return null;
                 }
             }
-            picIdsToUpdate = new List<int>();
-            return returnActivePictures;
+            return activePics.ToArray();
         }
         public async Task<bool> InitPic(Stream fileStream, string filePath, IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories)
         {
@@ -213,6 +211,7 @@ namespace PickPixForEver.Services
                 }
                 ctx.SaveChanges();
             }
+            picIdsToUpdate = new List<int>();
             return 0;
         }
         public async Task<Models.Tag[]> HandleTags(string[][] megaTags)
