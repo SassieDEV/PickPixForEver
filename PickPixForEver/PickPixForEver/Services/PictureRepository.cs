@@ -15,11 +15,14 @@ namespace PickPixForEver.Services
     public class PictureRepository : IDataStore<Picture>
     {
         string filePath;
-        List<int> picIdsToUpdate = new List<int>();
+        List<int> picIdsToUpdate = null;
+        AlbumRepository albumRep = null;
 
         public PictureRepository(string dbContextFilepath)
         {
+            this.picIdsToUpdate = new List<int>();
             this.filePath = dbContextFilepath;
+            this.albumRep = new AlbumRepository(filePath);
         }
 
         public async Task<int> AddItemAsync(Picture picture)
@@ -39,6 +42,25 @@ namespace PickPixForEver.Services
                 return 0;
             }
         }
+
+        public async Task<int> AddTagAsync(Models.Tag tag)
+        {
+            try
+            {
+                using (var dbContext = new PickPixDbContext(filePath))
+                {
+                    var tracker = await dbContext.Tags.AddAsync(tag).ConfigureAwait(false);
+                    await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                }
+                return tag.TagId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+        }
+
         public async Task<bool> UpdateItemAsync(Picture pic)
         {
             return true;
@@ -55,6 +77,16 @@ namespace PickPixForEver.Services
                 pic = await dbContext.Pictures.
                 Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
                 return pic;
+            }
+        }
+        public async Task<Models.Tag> FindTagAsync(int ID)
+        {
+            Models.Tag tag;
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                tag = await dbContext.Tags.
+                Where(s => s.TagId == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+                return tag;
             }
         }
         public async Task<IEnumerable<Picture>> GetItemsAsync()
@@ -142,45 +174,92 @@ namespace PickPixForEver.Services
         }
         public async Task<int> HandleImageCommit(string[][] megaTags, string[] albums, string notes)
         {
-            List<Models.Tag> applyTags = await HandleTags(megaTags).ConfigureAwait(false);
-            List<Album> applyAlbums = await HandleAlbums(albums).ConfigureAwait(false);
+            Models.Tag[] applyTags = Array.Empty<Models.Tag>();
+            Album[] applyAlbums = Array.Empty<Album>();
+
+            if (megaTags.Length > 0)
+                applyTags = await HandleTags(megaTags).ConfigureAwait(false);
+            if(albums.Length > 0)
+                applyAlbums = await HandleAlbums(albums).ConfigureAwait(false);
+
             Picture[] applyPics = await GetActivePictures().ConfigureAwait(false);
-            foreach (Picture curPic in applyPics)
+            using (var ctx = new PickPixDbContext(filePath))
             {
-                int curPicId = curPic.Id;
-                foreach (Models.Tag curTag in applyTags)
+                foreach (Picture curPic in applyPics)
                 {
-                    int curTagId = curTag.TagId;
+                    int curPicId = curPic.Id;
+                    foreach (Models.Tag curTag in applyTags)
+                    {
+                        ctx.PictureTags.Add(new PictureTag
+                        {
+                            Picture = curPic,
+                            Tag = curTag,
+                            PictureId = curPic.Id,
+                            TagId = curTag.TagId
+                        });
+                    }
+                    foreach (Album curAlbum in applyAlbums)
+                    {
+                        int curAlbumId = curAlbum.Id;
+                        ctx.PictureAlbums.Add(new PictureAlbum
+                        {
+                            Picture = curPic,
+                            Album = curAlbum,
+                            PictureId = curPic.Id,
+                            AlbumId = curAlbum.Id
+                        });
+                    }
+                    curPic.Notes = notes;
                 }
-                foreach (Album curAlbum in applyAlbums)
-                {
-                    int curAlbumId = curAlbum.Id;
-                }
+                ctx.SaveChanges();
             }
             return 0;
         }
-        public async Task<List<Models.Tag>> HandleTags(string[][] megaTags)
+        public async Task<Models.Tag[]> HandleTags(string[][] megaTags)
         {
             List<Models.Tag> applyTags = new List<Models.Tag>();
+            Models.Tag newTag = new Models.Tag();
 
             foreach (string curPeople in megaTags.ElementAt(0))
             {
-                applyTags.Add(new Models.Tag { Value = curPeople, TagType = "People" });
+                newTag = new Models.Tag { Name = curPeople, TagType = "People" };
+                await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curPlaces in megaTags.ElementAt(1))
             {
-                applyTags.Add(new Models.Tag { Value = curPlaces, TagType = "Places" });
+                newTag = new Models.Tag { Name = curPlaces, TagType = "Places" };
+                await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curEvents in megaTags.ElementAt(2))
             {
-                applyTags.Add(new Models.Tag { Value = curEvents, TagType = "Events" });
+                newTag = new Models.Tag { Name = curEvents, TagType = "Events" };
+                await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curCustom in megaTags.ElementAt(3))
             {
-                applyTags.Add(new Models.Tag { Value = curCustom, TagType = "Custom" });
+                newTag = new Models.Tag { Name = curCustom, TagType = "Custom" };
+                await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
 
-            return applyTags;
+            return applyTags.ToArray();
+        }
+
+        private async Task<Album[]> HandleAlbums(string[] albums)
+        {
+            List<Album> applyAlbums = new List<Album>();
+            Album newAlbum = new Album();
+
+            foreach (string curAlbum in albums)
+            {
+                newAlbum = new Album { Name = curAlbum };
+                await albumRep.AddItemAsync(newAlbum).ConfigureAwait(false);
+                applyAlbums.Add(await albumRep.FindItemAsync(newAlbum.Id).ConfigureAwait(false));
+            }
+            return applyAlbums.ToArray();
         }
         public async Task<int> EnterImgDataSource(Stream imgStream)
         {
@@ -200,16 +279,6 @@ namespace PickPixForEver.Services
                 return 0;
             }*/
             return 0;
-        }
-
-        public async Task<List<Album>> HandleAlbums(string[] albums)
-        {
-            List<Album> applyAlbums = new List<Album>();
-            foreach (string curAlbum in albums)
-            {
-                applyAlbums.Add(new Album { Name = curAlbum });
-            }
-            return applyAlbums;
         }
     }
 }
