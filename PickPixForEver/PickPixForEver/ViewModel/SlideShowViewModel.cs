@@ -12,9 +12,10 @@ namespace PickPixForEver.ViewModel
     {
         private ObservableCollection<PictureSliderModel> _pictureNode;
         ObservableCollection<Picture> PicturesData { get; set; }
-        public SlideShowViewModel(ObservableCollection<Picture> PicturesData)
+        public List<byte[]> PicturesArray { get; set; }
+        public SlideShowViewModel(List<byte[]> picturesArray)
         {
-            this.PicturesData = PicturesData;
+            this.PicturesArray = picturesArray;
             PopulatePictureCollection();
             
         }
@@ -29,12 +30,12 @@ namespace PickPixForEver.ViewModel
         private void PopulatePictureCollection()
         {
             List<PictureSliderModel> list = new List<PictureSliderModel>();
-            foreach (var node in PicturesData)
+            foreach (var byteArray in this.PicturesArray)
             {
                 list.Add(new PictureSliderModel()
                 {
                     Color = "White",
-                    ImageData= ImageSource.FromStream(() => new MemoryStream(node.ImageArray))
+                    ImageData= ImageSource.FromStream(() => new MemoryStream(byteArray))
                 });
             }
             PictureNode = new ObservableCollection<PictureSliderModel>(list);

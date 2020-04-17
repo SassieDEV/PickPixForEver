@@ -1,156 +1,214 @@
-﻿using System;
+﻿using PickPixForEver.Models;
+using PickPixForEver.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PickPixForEver.Models;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Reflection;
-using PickPixForEver.ViewModel;
-using System.Diagnostics;
-using Rg.Plugins.Popup.Services;
-//using Windows.Storage.Pickers;
-//using Windows.UI.Xaml.Media.Imaging;
-//using Windows.Storage;
-//using Windows.Storage.Streams;
-using System.IO;
-//using System.Runtime.InteropServices.WindowsRuntime;
-using Plugin.FilePicker;
-using PickPixForEver.Services;
 
 namespace PickPixForEver.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GalleryPage : ContentPage
     {
-        PictureRepository picRep = new PictureRepository(App.FilePath);
-        private static string[] fileTypes = new string[] { ".jpg", ".jpeg", ".png" };
-        private Grid galleryView = new Grid();
+        GalleryViewModel galleryViewModel;
+
         public GalleryPage()
         {
             InitializeComponent();
+            BindingContext = galleryViewModel = new GalleryViewModel(App.FilePath);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            //CreateGrid(null);
-            this.loadImages();
+            galleryViewModel.LoadPicturesCommand.Execute(null);
+            galleryViewModel.LoadAlbumsCommand.Execute(null);
+            galleryViewModel.LoadTagsCommand.Execute(null);
+            BindListViews();
+            DisplayPictures();
         }
 
-
-        private async void loadImages()
+        private void BindListViews()
         {
-            /*var pics = await this.picRep.GetItemsAsync().ConfigureAwait(false) ;
-            foreach (Picture pic in pics)
-            {
-                Image img = new Image();
-                img.Source = ImageSource.FromStream(() => new MemoryStream(pic.RawData));
-                ImagePreview.Children.Add(img);
-            }*/
+            var albums = galleryViewModel.Albums;
+            var people = galleryViewModel.Tags.Where(s => s.TagType == "People").ToList();
+            var places = galleryViewModel.Tags.Where(s => s.TagType == "Places").ToList();
+            var events = galleryViewModel.Tags.Where(s => s.TagType == "Events").ToList();
+            var custom = galleryViewModel.Tags.Where(s => s.TagType == "Custom").ToList(); ;
+            lvAlbums.ItemsSource = albums;
+            lvPeople.ItemsSource = people;
+            lvPlace.ItemsSource = places;
+            lvEvent.ItemsSource = events;
+            lvAlbums.HeightRequest = 40 * (albums.Count<=3?albums.Count:3);
+            lvPlace.HeightRequest = 40 *  (places.Count<=3?places.Count:3);
+            lvPeople.HeightRequest = 40 * (people.Count<=3?people.Count:3);
+            lvEvent.HeightRequest = 40 *  (events.Count<=3?events.Count:3);
         }
-
-
-        private async void new_imagePicker(object s, EventArgs e)
+        private void DisplayPictures()
         {
-            var pickedFile = await CrossFilePicker.Current.PickFile(fileTypes).ConfigureAwait(true);
-
-            if (pickedFile != null)
+            stackAllImages.Children.Clear();
+            if (galleryViewModel.Pictures!=null && galleryViewModel.Pictures.Count > 0)
             {
-                Image img = new Image();
-                img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
-                ImagePreview.Children.Add(img);
-
-                int pictureId = await picRep.EnterImgDataSource(pickedFile.GetStream());
-                System.Diagnostics.Debug.WriteLine("========================================= " + pictureId);
-            }
-        }
-
-
-        /*private async void SelectMultiImage_Tapped(object sender, EventArgs e)
-        {
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
-            openPicker.FileTypeFilter.Add(".jpg");
-            openPicker.FileTypeFilter.Add(".png");
-            openPicker.FileTypeFilter.Add(".jpeg");
-
-            // For multiple image selection
-            var files = await openPicker.PickMultipleFilesAsync();
-            foreach (var singleImage in files)
-            {
-                var stream = await singleImage.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
-                var image = new WriteableBitmap(200, 200);// BitmapImage();
-                image.SetSource(stream);
-
-                //var path = singleImage.Path;
-                var str = image.PixelBuffer.AsStream();
-                byte[] pixels = new byte[str.Length];
-                str.Read(pixels, 0, pixels.Length);
-
-                
-                Image img = new Image();
-                img.Source = ImageSource.FromStream(() => new MemoryStream(pixels));
-                String b64Str = Convert.ToBase64String(pixels);
-                System.Diagnostics.Debug.WriteLine(b64Str);
-                ImagePreview.Children.Add(img);
-
-
-                //TestImg.Source = ImageSource.FromStream(() => new MemoryStream(pixels));
-                //ImagePreview.Children.Add(new Image() { Source = "logo.png" });
-
-                Image Nimg = new Image();
-                Nimg.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
-                ImagePreview.Children.Add(Nimg);
-            }
-
-            foreach (var file in files)
-            {
-                //var stream = await file.OpenStreamForReadAsync(); //await file.OpenAsync(FileAccessMode.Read);
-                //BitmapImage image = new BitmapImage();
-                //image.SetSource(stream); 
-
-                //StorageFile Fpath = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///logo.png"));
-                //String b64Str = Convert.ToBase64String(System.IO.File.ReadAllBytes(Fpath.Path));
-                //Image img = new Image();
-                //img.Source = ImageSource.FromStream(() => new MemoryStream(Convert.FromBase64String(b64Str)));
-                //ImagePreview.Children.Add(img);
-            }
-        }*/
-
-
-        private void CreateGrid(IEnumerable<Image> pictures)
-        {
-            var colCount = Application.Current.MainPage.Width / 180;
-            for (int i=0; i<colCount; i++)
-            {
-                galleryView.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength((float)1/(float)colCount, GridUnitType.Star) });
-            }
-
-            for (int row = 0; row < 12; row++) //pictures.ToList().Count
-            {
-                galleryView.RowDefinitions.Add(new RowDefinition() { Height = 180 });
-                for (int col = 0; col < colCount; col++)
+                var picturesGroup = galleryViewModel.Pictures.GroupBy(p => new { Month = p.Created.Month, Year = p.Created.Year }).
+                    ToDictionary(g => g.Key, g => g.Select(s => s.ImageArray)).OrderByDescending(y=>y.Key.Year).ThenByDescending(m=>m.Key.Month);
+                foreach (var item in picturesGroup)
                 {
-                    var img = new Image()
-                    {
-                        Source = "logo.png"//PickPixForEver.Resources.logo.png
-                    };
-                    var tapAction = new TapGestureRecognizer
-                    {
-                        TappedCallback = (v, o) => {
-                            Console.WriteLine("Image clicked");
-                            PopupNavigation.Instance.PushAsync(new AddAlbum()).ConfigureAwait(false);
-                        },
-                        NumberOfTapsRequired = 1
-                    };
-                    img.GestureRecognizers.Add(tapAction);
-                    galleryView.Children.Add(img, col, row);
+                   AddPictureGroup(item.Key.Month,item.Key.Year,item.Value);
                 }
             }
-            //PhotoGallery.Content = galleryView;
+            
+        }
+        void AddPictureGroup(int month, int year, IEnumerable<byte[]> pictureArray)
+        {
+            //Month and Year group
+            StackLayout monthYearStack = new StackLayout();
+            monthYearStack.Orientation = StackOrientation.Horizontal;
+            Label monthYearLabel = new Label();
+            monthYearLabel.Margin = new Thickness(5, 5, 0, 0);
+            monthYearLabel.TextColor = Color.LightGray;
+            monthYearLabel.Text = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}";
+              
+            monthYearStack.Children.Add(monthYearLabel);
+
+            //Pictures group stack
+            StackLayout picGroupStack = new StackLayout();
+            picGroupStack.Margin = new Thickness(0, 5, 0, 0);
+            picGroupStack.Orientation = StackOrientation.Horizontal;
+
+            //Horizontal scrollview for the pictures within a given month
+            ScrollView scrollView = new ScrollView();
+            scrollView.Orientation = ScrollOrientation.Horizontal;
+            scrollView.WidthRequest = 1500;
+
+            //All pictures added within a given month
+            StackLayout picStack = new StackLayout();
+            picStack.Margin = new Thickness(0, 0, 0, 25);
+            picStack.Orientation = StackOrientation.Horizontal;
+
+            scrollView.Content = picStack;
+            picGroupStack.Children.Add(scrollView);
+            foreach (var picture in pictureArray)
+            {
+                picStack.Children.Add(AddPictureFrame(picture));
+            }
+            stackAllImages.Children.Add(monthYearStack);
+            stackAllImages.Children.Add(picGroupStack);
+        }
+
+
+        /// <summary>
+        /// Converts a byte array into image and returns a picture within a frame
+        /// </summary>
+        /// <param name="imageArray"></param>
+        /// <returns>Frame</returns>
+        Frame AddPictureFrame(byte[] imageArray)
+        {
+            Frame frame = new Frame();
+            frame.BorderColor = Color.Gray;
+            frame.CornerRadius = 5;
+            frame.Padding = 8;
+            Image image = new Image();
+            image.Source = ImageSource.FromStream(() => new MemoryStream(imageArray));
+            image.HeightRequest = 120;
+            image.WidthRequest = 120;
+
+            frame.Content = image;
+            return frame;
+        }
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+            if (searchBar != null && !string.IsNullOrWhiteSpace(searchBar.Text.Trim()))
+            {
+                galleryViewModel.SearchItemComand.Execute(searchBar.Text.ToLower().Trim());
+            }
+            else
+            {
+                galleryViewModel.LoadPicturesCommand.Execute(null);
+            }
+            DisplayPictures();
+        }
+
+        private void lvAlbums_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Album album)
+            {
+                galleryViewModel.LoadAlbumPicturesCommand.Execute(album.Id);
+                DisplayPictures();
+                lvPlace.SelectedItem = null;
+                lvPeople.SelectedItem = null;
+                lvEvent.SelectedItem = null;
+            }
+        }
+
+        private void lvPlace_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Tag tag)
+            {
+                galleryViewModel.LoadTaggedPicturesCommand.Execute(tag.TagId);
+                DisplayPictures();
+                lvAlbums.SelectedItem = null;
+                lvPeople.SelectedItem = null;
+                lvEvent.SelectedItem = null;
+            }
+        }
+
+        private void lvEvent_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Tag tag)
+            {
+                galleryViewModel.LoadTaggedPicturesCommand.Execute(tag.TagId);
+                DisplayPictures();
+                lvAlbums.SelectedItem = null;
+                lvPeople.SelectedItem = null;
+                lvPlace.SelectedItem = null;
+            }
+        }
+
+        private void lvPeople_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Tag tag)
+            {
+                galleryViewModel.LoadTaggedPicturesCommand.Execute(tag.TagId);
+                DisplayPictures();
+                lvAlbums.SelectedItem = null;
+                lvPlace.SelectedItem = null;
+                lvEvent.SelectedItem = null;
+            }
+        }
+
+        private async void btnSlideShow_Clicked(object sender, EventArgs e)
+        {
+            if (this.galleryViewModel.Pictures != null && this.galleryViewModel.Pictures.Count > 0)
+            {
+                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.galleryViewModel.Pictures.Select(s => s.ImageArray).ToList()))).ConfigureAwait(false);
+            }
+            else
+            {
+                await DisplayAlert("Empty", "No pictures to show", "Ok").ConfigureAwait(false);
+            }
+        }
+
+        private void btnAdd_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnClear_Clicked(object sender, EventArgs e)
+        {
+            lvAlbums.SelectedItem = null;
+            lvPlace.SelectedItem = null;
+            lvEvent.SelectedItem = null;
+            lvPeople.SelectedItem = null;
+            txtSearch.Text = string.Empty;
+            galleryViewModel.LoadPicturesCommand.Execute(null);
+            DisplayPictures();
         }
     }
 }

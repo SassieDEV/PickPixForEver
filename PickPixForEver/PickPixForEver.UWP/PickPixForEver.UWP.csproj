@@ -104,6 +104,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin_view.png" />
+    <Content Include="album.png" />
+    <Content Include="albums.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
@@ -135,9 +137,15 @@
     <Content Include="cover1.png" />
     <Content Include="cover2.png" />
     <Content Include="cover3.png" />
+    <Content Include="event.png" />
+    <Content Include="events.png" />
     <Content Include="gallery.png" />
     <Content Include="logo.png" />
     <Content Include="logout.png" />
+    <Content Include="people.png" />
+    <Content Include="person.png" />
+    <Content Include="place.png" />
+    <Content Include="places.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="tags.png" />
     <Content Include="upload.png" />
