@@ -102,7 +102,15 @@ namespace PickPixForEver.Views
 
         private async void btnSlideShow_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures))).ConfigureAwait(false);
+            if(this.viewModel.Pictures!=null && this.viewModel.Pictures.Count > 0)
+            {
+                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => s.ImageArray).ToList()))).ConfigureAwait(false);
+            }
+            else
+            {
+                await DisplayAlert("Empty", "No pictures to show", "Ok").ConfigureAwait(false);
+            }
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PickPixForEver.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,14 +49,49 @@ namespace PickPixForEver.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Picture>> GetItemsAsync()
+        public async Task<IEnumerable<Picture>> GetItemsAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<Picture> pictures = new List<Picture>();
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    pictures = await Task.FromResult(ctx.Pictures.ToList()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+               //To Do: implement logging
+            }
+            return pictures;
         }
 
-        public Task<IEnumerable<Picture>> GetItemsAsync(string searchTerm)
+        public async Task<IEnumerable<Picture>> GetItemsAsync(string searchTerm)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return await GetItemsAsync().ConfigureAwait(false);
+            IEnumerable<Picture> pictures = new List<Picture>();
+           // IEnumerable<Picture> union = new List<Picture>();
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    var albumsResult = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
+                    {
+                        Pictures = s.PictureAlbums.Select(p => p.Picture)
+                    }).ToList();
+                    if (albumsResult != null && albumsResult.Count > 0)
+                    {
+                        pictures = albumsResult[0].Pictures;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //To-do: Implement logging
+            }
+            return pictures;
         }
 
         public Task<bool> UpdateItemAsync(Picture item)

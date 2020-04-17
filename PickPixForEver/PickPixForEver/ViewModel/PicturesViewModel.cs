@@ -12,7 +12,8 @@ namespace PickPixForEver.ViewModel
     public class PicturesViewModel: BaseViewModel
     {
         public Picture Picture { get; set; }
-        public IDataStore<Picture> DataStore { get; set; }
+        public ObservableCollection<Picture> Pictures { get; set; }
+        public IPictureRepository DataStore { get; set; }
 
         //True when adding a new picture, false when updating existing note
         public bool IsNewPicture{ get; set; }
@@ -23,8 +24,10 @@ namespace PickPixForEver.ViewModel
             IsNewPicture = picture == null;
 
             Picture = picture ?? new Picture();
+            Pictures = new ObservableCollection<Picture>();
 
             AddItemCommand = new Command<Picture>(async (pic) => await ExecuteAddPictureCommand(pic).ConfigureAwait(false));
+            LoadItemCommand = new Command(async () => await ExecuteLoadPicturesCommand().ConfigureAwait(false));
         }
 
         async Task<bool> ExecuteAddPictureCommand(Picture picture)
@@ -51,6 +54,32 @@ namespace PickPixForEver.ViewModel
             }
 
             return result;
+        }
+
+        async Task ExecuteLoadPicturesCommand()
+        {
+            if (IsBusy)
+                return;
+            IsBusy = true;
+
+            try
+            {
+                Pictures.Clear();
+                var pictures = await DataStore.GetItemsAsync().ConfigureAwait(false);
+                foreach (var picture in pictures)
+                {
+                    Pictures.Add(picture);
+                }
+            }
+            catch (Exception ex)
+            {
+                // To do: implement logging
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
         }
 
 

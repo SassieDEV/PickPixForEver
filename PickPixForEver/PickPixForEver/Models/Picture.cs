@@ -31,5 +31,18 @@ namespace PickPixForEver.Models
         }
 
 
+        public override bool Equals(object obj)
+        {
+            Picture picture = obj as Picture;
+            if (picture == null)
+                return false;
+            return picture.Id == Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
     }
 }
