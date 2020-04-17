@@ -92,27 +92,6 @@ namespace PickPixForEver.Services
             }
         }
 
-        private async Task<Picture[]> GetActivePictures()
-        {
-            List<Picture> activePics = new List<Picture>();
-            Picture curActivePic;
-
-            foreach(int activePicId in picIdsToUpdate)
-            {
-                try
-                {
-                    curActivePic = await FindItemAsync(activePicId).ConfigureAwait(false);
-                    activePics.Add(curActivePic);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    picIdsToUpdate = new List<int>();
-                    return null;
-                }
-            }
-            return activePics.ToArray();
-        }
         public async Task<bool> InitPic(Stream fileStream, string filePath,  IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories)
         {
             int picIdNew = 0;
@@ -214,25 +193,25 @@ namespace PickPixForEver.Services
 
             foreach (string curPeople in megaTags.ElementAt(0))
             {
-                newTag = new Models.Tag { Name = curPeople, TagType = "People", UserId = userId };
+                newTag = new Models.Tag { Name = curPeople, TagType = "People", Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curPlaces in megaTags.ElementAt(1))
             {
-                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", UserId = userId };
+                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curEvents in megaTags.ElementAt(2))
             {
-                newTag = new Models.Tag { Name = curEvents, TagType = "Events", UserId = userId };
+                newTag = new Models.Tag { Name = curEvents, TagType = "Events", Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curCustom in megaTags.ElementAt(3))
             {
-                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", UserId = userId };
+                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
