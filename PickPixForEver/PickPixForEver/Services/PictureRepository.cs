@@ -133,15 +133,15 @@ namespace PickPixForEver.Services
                 return ms.ToArray();
             }
         }
-        public async Task<int> HandleImageCommit(Dictionary<Stream,string>  streams, string[][] megaTags, string[] albums, string privacy, string notes)
+        public async Task<int> HandleImageCommit(int userId, Dictionary<Stream,string>  streams, string[][] megaTags, string[] albums, string privacy, string notes)
         {
             Models.Tag[] applyTags = Array.Empty<Models.Tag>();
             Album[] applyAlbums = Array.Empty<Album>();
 
             if (megaTags.Length > 0)
-                applyTags = await HandleTags(megaTags).ConfigureAwait(false);
+                applyTags = await HandleTags(userId, megaTags).ConfigureAwait(false);
             if(albums.Length > 0)
-                applyAlbums = await HandleAlbums(albums).ConfigureAwait(false);
+                applyAlbums = await HandleAlbums(userId, albums).ConfigureAwait(false);
 
             using (var ctx = new PickPixDbContext(filePath))
             {
@@ -183,35 +183,34 @@ namespace PickPixForEver.Services
             }
             return 0;
         }
-        public async Task<Models.Tag[]> HandleTags(string[][] megaTags)
+        public async Task<Models.Tag[]> HandleTags(int userId, string[][] megaTags)
         {
             List<Models.Tag> applyTags = new List<Models.Tag>();
             Models.Tag newTag = new Models.Tag();
 
             //TODO: Figure out how to derive the current user of app and pass their user id instead
-            int userId = 1;
 
             foreach (string curPeople in megaTags.ElementAt(0))
             {
-                newTag = new Models.Tag { Name = curPeople, TagType = "People", Updated = DateTime.Now, Created = DateTime.Now};
+                newTag = new Models.Tag { Name = curPeople, TagType = "People", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curPlaces in megaTags.ElementAt(1))
             {
-                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", Updated = DateTime.Now, Created = DateTime.Now};
+                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curEvents in megaTags.ElementAt(2))
             {
-                newTag = new Models.Tag { Name = curEvents, TagType = "Events", Updated = DateTime.Now, Created = DateTime.Now};
+                newTag = new Models.Tag { Name = curEvents, TagType = "Events", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
             foreach (string curCustom in megaTags.ElementAt(3))
             {
-                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", Updated = DateTime.Now, Created = DateTime.Now};
+                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now};
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
@@ -219,7 +218,7 @@ namespace PickPixForEver.Services
             return applyTags.ToArray();
         }
 
-        private async Task<Album[]> HandleAlbums(string[] albums)
+        private async Task<Album[]> HandleAlbums(int userId, string[] albums)
         {
             List<Album> applyAlbums = new List<Album>();
             Album newAlbum = new Album();

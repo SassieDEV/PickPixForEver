@@ -55,6 +55,7 @@ namespace PickPixForEver.AuthViews
 
             //Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
             //Preferences.Set("email", user.Email);
+            Preferences.Set("userId", user.Id);
             Application.Current.MainPage = new MainPage();
         }        
     }

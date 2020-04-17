@@ -8,6 +8,7 @@ using Plugin.FilePicker;
 using PickPixForEver.Models;
 using PickPixForEver.Services;
 using MetadataExtractor;
+using Xamarin.Essentials;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -21,7 +22,7 @@ namespace PickPixForEver.Views
         PictureRepository picRep = new PictureRepository(App.FilePath);
         //set fileTypes for image picking
         string[] fileTypes = null;
-        List<int> picIds = new List<int>();
+        int userId; 
         public Dictionary<Stream,string> Streams { get; set; }
 
         public UploadPage()
@@ -29,6 +30,7 @@ namespace PickPixForEver.Views
             InitializeComponent();
             Privacy.SelectedIndex = 1;
             Streams = new Dictionary<Stream,string>();
+            userId = Preferences.Get("userId", 1);
 
         }
         private async void SelectImagesButton_Clicked(object sender, EventArgs e)
@@ -91,7 +93,7 @@ namespace PickPixForEver.Views
 
             megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
-            await picRep.HandleImageCommit( Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
+            await picRep.HandleImageCommit(userId, Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
             ImagePreview.Children.Clear();
         }
 
