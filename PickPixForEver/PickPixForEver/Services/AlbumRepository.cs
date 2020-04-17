@@ -22,13 +22,13 @@ namespace PickPixForEver.Services
         {
             try
             {
-                using(var cxt = new PickPixDbContext(this.filePath))
+                using(var ctx = new PickPixDbContext(this.filePath))
                 {
                     album.CreatedAt = DateTime.Now;
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
-                    var tracker = await cxt.Albums.AddAsync(album).ConfigureAwait(false);
-                    await cxt.SaveChangesAsync().ConfigureAwait(false);
+                    var tracker = await ctx.Albums.AddAsync(album).ConfigureAwait(false);
+                    await ctx.SaveChangesAsync().ConfigureAwait(false);
                 }
                 return album.Id;
             }

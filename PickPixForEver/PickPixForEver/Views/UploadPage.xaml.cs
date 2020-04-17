@@ -26,6 +26,7 @@ namespace PickPixForEver.Views
         public UploadPage()
         {
             InitializeComponent();
+            Privacy.SelectedIndex = 1;
         }
         private async void SelectImagesButton_Clicked(object sender, EventArgs e)
         {
@@ -52,7 +53,8 @@ namespace PickPixForEver.Views
             View [] allImages = ImagePreview.Children.ToArray<View>();
             string[][] megatags = new string[5][];
             string[] albums = Array.Empty<string>();
-      
+            string text_entNotes = "";
+
             //TODO: See if there's a more elegant solution to checking if each entry is null before assinging string[]
             string[] text_entPeople = Array.Empty<string>();
             if (entPeople.Text != null)
@@ -75,18 +77,19 @@ namespace PickPixForEver.Views
                 text_entCustom = await FormatTagsAlbums(entCustom.Text).ConfigureAwait(false);
             }
             string[] text_entAlbums = Array.Empty<string>();
-            if (entAlbums.Text != null) {
+            if (entAlbums.Text != null) 
+            {
                 text_entAlbums = await FormatTagsAlbums(entAlbums.Text).ConfigureAwait(false);
             }
-
-            //TODO: This throws null if no notes, fix and reimplement
-            //string text_entNotes = entNotes.Text.ToString();
-            string text_entNotes = "";
+            if(entNotes.Text != null)
+            {
+                text_entNotes = entNotes.Text;
+            }
 
             megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
 
-            await picRep.HandleImageCommit( megatags, albums, text_entNotes).ConfigureAwait(false);
+            await picRep.HandleImageCommit( megatags, albums, text_entNotes, (string)Privacy.SelectedItem).ConfigureAwait(false);
             ImagePreview.Children.Clear();
         }
 

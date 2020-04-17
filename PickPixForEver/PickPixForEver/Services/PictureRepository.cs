@@ -128,7 +128,7 @@ namespace PickPixForEver.Services
             }
             return activePics.ToArray();
         }
-        public async Task<bool> InitPic(Stream fileStream, string filePath, IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories)
+        public async Task<bool> InitPic(Stream fileStream, string filePath,  IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories)
         {
             int picIdNew = 0;
             Picture pic = getPictureModel(fileStream, filePath);
@@ -170,7 +170,7 @@ namespace PickPixForEver.Services
                 return ms.ToArray();
             }
         }
-        public async Task<int> HandleImageCommit(string[][] megaTags, string[] albums, string notes)
+        public async Task<int> HandleImageCommit(string[][] megaTags, string[] albums, string privacy, string notes)
         {
             Models.Tag[] applyTags = Array.Empty<Models.Tag>();
             Album[] applyAlbums = Array.Empty<Album>();
@@ -185,31 +185,30 @@ namespace PickPixForEver.Services
             {
                 foreach (Picture curPic in applyPics)
                 {
+                    //var tracker = await ctx.Pictures.UpdateItemAsync(curPic){
+                    //}
                     int curPicId = curPic.Id;
                     foreach (Models.Tag curTag in applyTags)
                     {
-                        await ctx.PictureTags.AddAsync(new PictureTag
+                        var tracker = await ctx.PictureTags.AddAsync(new PictureTag
                         {
-                            Picture = curPic,
-                            Tag = curTag,
                             PictureId = curPic.Id,
                             TagId = curTag.TagId
                         }).ConfigureAwait(false);
+                    await ctx.SaveChangesAsync().ConfigureAwait(false);
                     }
                     foreach (Album curAlbum in applyAlbums)
                     {
                         int curAlbumId = curAlbum.Id;
                         await ctx.PictureAlbums.AddAsync(new PictureAlbum
                         {
-                            Picture = curPic,
-                            Album = curAlbum,
                             PictureId = curPic.Id,
                             AlbumId = curAlbum.Id
                         }).ConfigureAwait(false);
                     }
                     curPic.Notes = notes;
                 }
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync().ConfigureAwait(false);
             }
             picIdsToUpdate = new List<int>();
             return 0;

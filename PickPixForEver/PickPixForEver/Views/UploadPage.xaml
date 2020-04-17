@@ -35,6 +35,16 @@
                     <Entry Placeholder="Custom" PlaceholderColor="#707070" x:Name="entCustom"/>
                     <Entry Placeholder="Albums" PlaceholderColor="#707070" x:Name="entAlbums"/>
                     <Entry Placeholder="Notes" PlaceholderColor="#707070" x:Name="entNotes"/>
+                    <Picker x:Name="Privacy"
+                        Title="Privacy"    
+                        TitleColor="Black">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Public</x:String>
+                                <x:String>Private</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
                     <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Upload Picture(s)" Clicked="SelectUploadButton_Clicked"></Button>
                 </StackLayout>
             </StackLayout>
