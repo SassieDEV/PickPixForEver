@@ -170,7 +170,7 @@ namespace PickPixForEver.Services
                 return ms.ToArray();
             }
         }
-        public async Task<int> HandleImageCommit(string[][] megaTags, string[] albums, string privacy, string notes)
+        public async Task<int> HandleImageCommit(Dictionary<Stream,string>  streams, string[][] megaTags, string[] albums, string privacy, string notes)
         {
             Models.Tag[] applyTags = Array.Empty<Models.Tag>();
             Album[] applyAlbums = Array.Empty<Album>();
@@ -183,16 +183,26 @@ namespace PickPixForEver.Services
             Picture[] applyPics = await GetActivePictures().ConfigureAwait(false);
             using (var ctx = new PickPixDbContext(filePath))
             {
-                foreach (Picture curPic in applyPics)
+                foreach (KeyValuePair<Stream,string> curPic in streams)
                 {
+                    Picture pic = getPictureModel(curPic.Key, curPic.Value);
+                    pic.Notes = notes;
+                    pic.Privacy = privacy;
+                    int curPicId = await this.AddItemAsync(pic).ConfigureAwait(false);
+
+                    if(curPicId == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("========================================= Failed to save picture");
+                        return 0;
+                    }
+                        
                     //var tracker = await ctx.Pictures.UpdateItemAsync(curPic){
                     //}
-                    int curPicId = curPic.Id;
                     foreach (Models.Tag curTag in applyTags)
                     {
                         var tracker = await ctx.PictureTags.AddAsync(new PictureTag
                         {
-                            PictureId = curPic.Id,
+                            PictureId = curPicId,
                             TagId = curTag.TagId
                         }).ConfigureAwait(false);
                     await ctx.SaveChangesAsync().ConfigureAwait(false);
@@ -202,11 +212,10 @@ namespace PickPixForEver.Services
                         int curAlbumId = curAlbum.Id;
                         await ctx.PictureAlbums.AddAsync(new PictureAlbum
                         {
-                            PictureId = curPic.Id,
+                            PictureId = curPicId,
                             AlbumId = curAlbum.Id
                         }).ConfigureAwait(false);
                     }
-                    curPic.Notes = notes;
                 }
                 await ctx.SaveChangesAsync().ConfigureAwait(false);
             }

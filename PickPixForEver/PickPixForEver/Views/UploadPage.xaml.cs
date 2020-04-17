@@ -22,11 +22,14 @@ namespace PickPixForEver.Views
         //set fileTypes for image picking
         string[] fileTypes = null;
         List<int> picIds = new List<int>();
+        public Dictionary<Stream,string> Streams { get; set; }
 
         public UploadPage()
         {
             InitializeComponent();
             Privacy.SelectedIndex = 1;
+            Streams = new Dictionary<Stream,string>();
+
         }
         private async void SelectImagesButton_Clicked(object sender, EventArgs e)
         {
@@ -88,8 +91,7 @@ namespace PickPixForEver.Views
 
             megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
-
-            await picRep.HandleImageCommit( megatags, albums, text_entNotes, (string)Privacy.SelectedItem).ConfigureAwait(false);
+            await picRep.HandleImageCommit( Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
             ImagePreview.Children.Clear();
         }
 
@@ -111,9 +113,11 @@ namespace PickPixForEver.Views
                 img.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                 ImagePreview.Children.Add(img);
                 IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories = ImageMetadataReader.ReadMetadata(pickedFile.GetStream());
-                await picRep.InitPic(pickedFile.GetStream(), pickedFile.FilePath, metaDataDirectories).ConfigureAwait(false);
+                Streams.Add(pickedFile.GetStream(), pickedFile.FilePath);
             }
             return 0;
         }
     }
+
+
 }
