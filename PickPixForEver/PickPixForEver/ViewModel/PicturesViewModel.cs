@@ -13,7 +13,7 @@ namespace PickPixForEver.ViewModel
     {
         public Picture Picture { get; set; }
         public ObservableCollection<Picture> Pictures { get; set; }
-        public IPictureRepository DataStore { get; set; }
+        public PictureRepository DataStore { get; set; }
 
         //True when adding a new picture, false when updating existing note
         public bool IsNewPicture{ get; set; }

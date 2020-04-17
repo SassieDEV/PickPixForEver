@@ -10,11 +10,10 @@ namespace PickPixForEver.Services
 {
     public interface IPictureRepository: IDataStore<Picture>
     {
-        Task<int> EnterPicture(Picture picture);
-        Task<IEnumerable<Picture>> GetPictures();
-        Task<Picture> GetPicture(int id);
-        Task<int> EnterPictureSource(Image image);
-        Task<int> HandleImage(Image[] images, List<string[]> tags, string notes);
-        Task<int> EnterImgDataSource(Stream imgStrea);
+        Task<int> EnterImgDataSource(Stream imgStream);
+        Task<int> AddTagAsync(Models.Tag tag);
+        Task<Models.Tag> FindTagAsync(int ID);
+        Task<bool> InitPic(Stream fileStream, string filePath, IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories);
+        Task<int> HandleImageCommit(Dictionary<Stream, string> streams, string[][] megaTags, string[] albums, string privacy, string notes);
     }
 }

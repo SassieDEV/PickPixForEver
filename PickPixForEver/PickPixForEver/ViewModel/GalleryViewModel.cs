@@ -26,7 +26,7 @@ namespace PickPixForEver.ViewModel
         public Command LoadTaggedPicturesCommand { get; set; }
         public GalleryViewModel(string filePath)
         {
-            PicturesDataStore = new PicturesRepository(filePath);
+            PicturesDataStore = new PictureRepository(filePath);
             AlbumsDataStore = new AlbumRepository(filePath);
             TagsDataStore = new TagRepository(filePath);
 

@@ -18,7 +18,7 @@ namespace PickPixForEver.Services
 
         }
 
-        public Task<bool> AddItemAsync(Tag item)
+        public Task<int> AddItemAsync(Tag item)
         {
             throw new NotImplementedException();
         }
