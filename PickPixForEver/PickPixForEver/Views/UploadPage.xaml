@@ -27,14 +27,15 @@
                     </Grid>
                 </StackLayout>
                 <StackLayout Grid.Row="1" Margin="40,0,40,0" VerticalOptions="Start">
-                    <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Select Image" Clicked="SelectImagesButton_Clicked"></Button>
+                    <Button Style="{StaticResource PrimaryButtonLarge}" WidthRequest="40" Text="Select Image" 
+                            Clicked="SelectImagesButton_Clicked"></Button>
                     <Label Text="Enter your tags separated by semicolons" TextColor="Black" HorizontalOptions="Center"></Label>
                     <Entry Placeholder="People" PlaceholderColor="#707070" x:Name="entPeople"/>
                     <Entry Placeholder="Relationships" PlaceholderColor="#707070" x:Name="entRelationships"/>
                     <Entry Placeholder="Places" PlaceholderColor="#707070" x:Name="entPlaces"/>
                     <Entry Placeholder="Events" PlaceholderColor="#707070" x:Name="entEvents"/>
                     <Entry Placeholder="Custom" PlaceholderColor="#707070" x:Name="entCustom"/>
-                    <Entry Placeholder="Albums" PlaceholderColor="#707070" x:Name="entAlbums"/>
+                    <Picker Title="Album" x:Name="entAlbums"/>
                     <Entry Placeholder="Notes" PlaceholderColor="#707070" x:Name="entNotes"/>
                     <Picker x:Name="Privacy"
                         Title="Privacy"    

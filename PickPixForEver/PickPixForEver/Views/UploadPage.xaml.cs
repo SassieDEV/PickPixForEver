@@ -11,6 +11,7 @@ using MetadataExtractor;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PickPixForEver.ViewModel;
 
 namespace PickPixForEver.Views
 {
@@ -23,6 +24,7 @@ namespace PickPixForEver.Views
         string[] fileTypes = null;
         int userId;
         public Dictionary<Stream, string> Streams { get; set; }
+        AlbumsViewModel albumsViewModel;
 
         public UploadPage()
         {
@@ -30,7 +32,15 @@ namespace PickPixForEver.Views
             Privacy.SelectedIndex = 1;
             Streams = new Dictionary<Stream, string>();
             userId = Preferences.Get("userId", 1);
+            albumsViewModel = new AlbumsViewModel(App.FilePath);
 
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            albumsViewModel.LoadItemCommand.Execute(null);
+            entAlbums.ItemsSource = albumsViewModel.Albums.Select(s => s.Name).ToList();
         }
         private async void SelectImagesButton_Clicked(object sender, EventArgs e)
         {
@@ -86,9 +96,10 @@ namespace PickPixForEver.Views
                 text_entRelationships = await FormatTagsAlbums(entRelationships.Text).ConfigureAwait(false);
             }
             string[] text_entAlbums = Array.Empty<string>();
-            if (entAlbums.Text != null)
+            int albumId = 0;
+            if (albumsViewModel.Albums != null && albumsViewModel.Albums.Count > 0 && entAlbums.SelectedIndex > 0)
             {
-                text_entAlbums = await FormatTagsAlbums(entAlbums.Text).ConfigureAwait(false);
+                albumId = albumsViewModel.Albums.Where(s => s.Name == (string)entAlbums.SelectedItem).Select(s => s.Id).SingleOrDefault();
             }
             if (entNotes.Text != null)
             {
@@ -97,13 +108,13 @@ namespace PickPixForEver.Views
 
             megatags = new string[][] { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
             albums = text_entAlbums;
-            await picRep.HandleImageCommit(userId, Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
+            await picRep.HandleImageCommit(userId, Streams, megatags, albumId, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
             ImagePreview.Children.Clear();
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)
         {
-            string[] tagArray = tagAlbumLine.Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
+            string[] tagArray =  tagAlbumLine.Split(';').Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
             for (int i = 0; i < tagArray.Length; i++)
                 tagArray[i] = tagArray[i].Trim();
             return tagArray;

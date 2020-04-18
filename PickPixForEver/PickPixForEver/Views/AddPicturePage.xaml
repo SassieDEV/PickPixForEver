@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             mc:Ignorable="d"
+             x:Class="PickPixForEver.Views.AddPicturePage"
+            >
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinIn"
+            EasingOut="SinInOut"
+            HasBackgroundAnimation="True"
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut='0.8'
+            />
+    </pages:PopupPage.Animation>
+    <Frame Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Gray" CornerRadius="5">
+        <StackLayout BackgroundColor="#303030" WidthRequest="850">
+            <Grid>
+                <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+            </Grid>
+            <StackLayout BackgroundColor="Transparent" Grid.Row="0" Margin="30,15,30,15">
+                <StackLayout Orientation="Horizontal">
+                    <Label HorizontalOptions="StartAndExpand" 
+                       Text="Picture upload" Style="{StaticResource HeaderLabel}" TextColor="White"/>
+                    <Button x:Name="btnAdd" Text="Select Image" Clicked="btnAdd_Clicked" Style="{StaticResource PrimaryButtonMedium}"/>
+                </StackLayout>
+                
+                <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>                
+            </StackLayout>
+            <StackLayout BackgroundColor="Transparent" Grid.Row="1" Margin="30,10,30,15">
+                <ScrollView  WidthRequest="500" Orientation="Horizontal">
+                    <StackLayout Margin="0,0,0,20" Orientation="Horizontal" x:Name="ImagePreview">
+
+                    </StackLayout>
+                </ScrollView>                
+            </StackLayout>
+            <StackLayout BackgroundColor="Transparent" Grid.Row="2" Margin="30,10,30,15">
+                <Label Text="Enter your tags separated by semicolons" TextColor="White" HorizontalOptions="Center"></Label>
+                <Entry Placeholder="People" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entPeople"/>
+                <Entry Placeholder="Places" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entPlaces"/>
+                <Entry Placeholder="Events" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEvents"/>
+                <Entry Placeholder="Relationships" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entRelationships"/>
+                <Entry Placeholder="Custom" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entCustom"/>                
+                <Entry Placeholder="Notes" BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entNotes"/>
+                <Picker Margin="0,5,0,5" Title="Album" TitleColor="White" TextColor="Black" BackgroundColor="Gray" x:Name="entAlbums"/>
+                <Picker Margin="0,5,0,5" x:Name="Privacy" Title="Privacy" TitleColor="White" TextColor="Black" BackgroundColor="Gray">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Public</x:String>
+                            <x:String>Private</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="30,10,30,30" HorizontalOptions="EndAndExpand">
+                <Button x:Name="btnSave" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>
