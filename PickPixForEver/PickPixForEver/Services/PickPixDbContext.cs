@@ -32,6 +32,23 @@ namespace PickPixForEver.Services
             modelBuilder.Entity<Tag>().HasKey(t => t.TagId);
             modelBuilder.Entity<PictureTag>().HasKey(p => new { p.PictureId,p.TagId});
             modelBuilder.Entity<PictureAlbum>().HasKey(p => new { p.PictureId, p.AlbumId });
+            modelBuilder.Entity<PictureAlbum>()
+            .HasOne(bc => bc.Picture)
+            .WithMany(b => b.PictureAlbums)
+            .HasForeignKey(bc => bc.PictureId);
+            modelBuilder.Entity<PictureAlbum>()
+            .HasOne(bc => bc.Album)
+            .WithMany(c => c.PictureAlbums)
+            .HasForeignKey(bc => bc.AlbumId);
+
+            modelBuilder.Entity<PictureTag>()
+            .HasOne(bc => bc.Picture)
+            .WithMany(b => b.PictureTags)
+            .HasForeignKey(bc => bc.PictureId);
+            modelBuilder.Entity<PictureTag>()
+            .HasOne(bc => bc.Tag)
+            .WithMany(c => c.PictureTags)
+            .HasForeignKey(bc => bc.TagId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
