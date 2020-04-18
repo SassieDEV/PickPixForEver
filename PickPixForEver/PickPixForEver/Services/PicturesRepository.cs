@@ -294,29 +294,34 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    var albumsResult = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
-                    {
-                        Pictures = s.PictureAlbums.Select(p => p.Picture).Distinct()
-                    }).ToList();
-                    if (albumsResult != null && albumsResult.Count > 0)
-                    {
-                        pictures = albumsResult[0].Pictures;
-                    }
                    
-                    //TODO: Refactor the below ugly code (don't worry I'm not being mean, it's my code)
-                    Tag[] tagsResult = await ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToArrayAsync().ConfigureAwait(false);
-                    foreach (Tag t in tagsResult)
+                    var albumPics = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureAlbums).ToList();
+                    List<int> pictureIds = new List<int>();
+                    foreach (var albumPic in albumPics)
                     {
-                        PictureTag[] picTagsResult = await ctx.PictureTags.Where(a => a.TagId == t.TagId).ToArrayAsync().ConfigureAwait(false);
-                        foreach (PictureTag picTag in picTagsResult)
+                        var pics = albumPic.Select(p => p.PictureId).ToList();
+                        if(pics!=null && pics.Count > 0)
                         {
-                            Picture pic = await ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);
-                            if (!pictures.Contains(pic))
-                            {
-                                IEnumerable<Picture> pic1 = await ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArrayAsync().ConfigureAwait(false);
-                                pictures = pictures.Union(pic1);
-                            }
+                            pictureIds.AddRange(pics);
+                        }                       
+                    }
+                    var tagPics = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureTags).ToList();
+                    foreach (var tagPic in tagPics)
+                    {
+                        var pics = tagPic.Select(p => p.PictureId).ToList();
+                        if (pics != null && pics.Count > 0)
+                        {
+                            pictureIds.AddRange(pics);
                         }
+                    }
+
+                    if (pictureIds.Count > 0)
+                    {
+                        pictureIds = pictureIds.Distinct().ToList();
+                    }
+                    if(pictureIds!=null && pictureIds.Count > 0)
+                    {
+                        pictures = await ctx.Pictures.Where(p => pictureIds.Contains(p.Id)).ToListAsync().ConfigureAwait(false);
                     }
                 }
             }
