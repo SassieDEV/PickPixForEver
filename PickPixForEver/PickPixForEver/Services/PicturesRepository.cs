@@ -206,28 +206,28 @@ namespace PickPixForEver.Services
                 newTag = new Models.Tag { Name = curPeople, TagType = "People", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
-            }
-            foreach (string curRelationship in megaTags.ElementAt(1))
-            {
-                newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
-            }
-            foreach (string curPlaces in megaTags.ElementAt(2))
+            }            
+            foreach (string curPlaces in megaTags.ElementAt(1))
             {
                 newTag = new Models.Tag { Name = curPlaces, TagType = "Places", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
-            foreach (string curEvents in megaTags.ElementAt(3))
+            foreach (string curEvents in megaTags.ElementAt(2))
             {
                 newTag = new Models.Tag { Name = curEvents, TagType = "Events", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
-            foreach (string curCustom in megaTags.ElementAt(4))
+            foreach (string curCustom in megaTags.ElementAt(3))
             {
                 newTag = new Models.Tag { Name = curCustom, TagType = "Custom", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
+            }
+            foreach (string curRelationship in megaTags.ElementAt(4))
+            {
+                newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
@@ -302,6 +302,7 @@ namespace PickPixForEver.Services
                     {
                         pictures = albumsResult[0].Pictures;
                     }
+                   
                     //TODO: Refactor the below ugly code (don't worry I'm not being mean, it's my code)
                     Tag[] tagsResult = await ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToArrayAsync().ConfigureAwait(false);
                     foreach (Tag t in tagsResult)

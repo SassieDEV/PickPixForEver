@@ -23,7 +23,8 @@ namespace PickPixForEver.Views
         {
             InitializeComponent();
             BindingContext = galleryViewModel = new GalleryViewModel(App.FilePath);
-            MessagingCenter.Subscribe<AddAlbum, Album>(this, "OnPopupClosed", async (sender, album) =>
+
+           MessagingCenter.Subscribe<AddPicturePage>(this, "OnPopupClosed", async (sender) =>
             {
                 galleryViewModel.LoadPicturesCommand.Execute(null);
                 DisplayPictures();

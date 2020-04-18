@@ -97,7 +97,7 @@ namespace PickPixForEver.Views
             }
             string[] text_entAlbums = Array.Empty<string>();
             int albumId = 0;
-            if (albumsViewModel.Albums != null && albumsViewModel.Albums.Count > 0 && entAlbums.SelectedIndex > 0)
+            if (albumsViewModel.Albums != null && albumsViewModel.Albums.Count > 0 && entAlbums.SelectedIndex > -1)
             {
                 albumId = albumsViewModel.Albums.Where(s => s.Name == (string)entAlbums.SelectedItem).Select(s => s.Id).SingleOrDefault();
             }
