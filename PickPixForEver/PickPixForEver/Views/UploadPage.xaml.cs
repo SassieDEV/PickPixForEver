@@ -109,7 +109,13 @@ namespace PickPixForEver.Views
             megatags = new string[][] { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
             albums = text_entAlbums;
             await picRep.HandleImageCommit(userId, Streams, megatags, albumId, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
+            await ClearPagePics().ConfigureAwait(false);
+        }
+        private async Task<int> ClearPagePics()
+        {
             ImagePreview.Children.Clear();
+            Streams = new Dictionary<Stream, string>();
+            return 0;
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)
