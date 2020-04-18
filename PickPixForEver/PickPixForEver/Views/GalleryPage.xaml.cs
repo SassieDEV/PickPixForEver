@@ -1,6 +1,5 @@
 ﻿using PickPixForEver.Models;
 using PickPixForEver.ViewModel;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -120,19 +119,6 @@ namespace PickPixForEver.Views
             image.WidthRequest = 120;
 
             frame.Content = image;
-            var tapAction = new TapGestureRecognizer
-            {
-                TappedCallback = (v, o) => {
-                    Console.WriteLine("Image clicked");
-                    //PopupNavigation.Instance.PushAsync(new TagsPage()).ConfigureAwait(false);
-
-                    Tag picTags = new Tag();
-                    //picTags = (Pict;
-                    PopupNavigation.Instance.PushAsync(new TagsPage(new TagsViewModel(App.FilePath, picTags))).ConfigureAwait(false);
-                },
-                NumberOfTapsRequired = 1
-            };
-            image.GestureRecognizers.Add(tapAction);
             return frame;
         }
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
