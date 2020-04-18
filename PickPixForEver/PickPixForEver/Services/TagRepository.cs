@@ -60,7 +60,7 @@ namespace PickPixForEver.Services
             IEnumerable<Picture> pictures = new List<Picture>();
             try
             {
-                using (var ctx = new PickPixDbContext(this.filePath))
+                /*using (var ctx = new PickPixDbContext(this.filePath))
                 {
                     var res =  ctx.Tags.Where(a => a.TagId == tagId).Select(s => new
                     {
@@ -69,6 +69,18 @@ namespace PickPixForEver.Services
                     if (res != null && res.Count > 0)
                     {
                         pictures = res[0].Pictures;
+                    }
+                }*/
+                using (var ctx = new PickPixDbContext(this.filePath)) {
+                    PictureTag[] picTagsResult = ctx.PictureTags.Where(a => a.TagId == tagId).ToArray();
+                    foreach (PictureTag picTag in picTagsResult)
+                    {
+                        Picture pic = ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefault();
+                        if (!pictures.Contains(pic))
+                        {
+                            IEnumerable<Picture> pic1 = ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArray();
+                            pictures = pictures.Union(pic1);
+                        }
                     }
                 }
             }

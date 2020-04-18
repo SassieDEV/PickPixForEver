@@ -65,6 +65,11 @@ namespace PickPixForEver.Views
             {
                 text_entPeople = await FormatTagsAlbums(entPeople.Text).ConfigureAwait(false);
             }
+            string[] text_entRelationships = Array.Empty<string>();
+            if (entRelationships.Text != null)
+            {
+                text_entRelationships = await FormatTagsAlbums(entRelationships.Text).ConfigureAwait(false);
+            }
             string[] text_entPlaces = Array.Empty<string>();
             if (entPlaces.Text != null)
             {
@@ -80,11 +85,6 @@ namespace PickPixForEver.Views
             {
                 text_entCustom = await FormatTagsAlbums(entCustom.Text).ConfigureAwait(false);
             }
-            string[] text_entRelationships = Array.Empty<string>();
-            if (entRelationships.Text != null)
-            {
-                text_entRelationships = await FormatTagsAlbums(entRelationships.Text).ConfigureAwait(false);
-            }
             string[] text_entAlbums = Array.Empty<string>();
             if (entAlbums.Text != null)
             {
@@ -95,10 +95,17 @@ namespace PickPixForEver.Views
                 text_entNotes = entNotes.Text;
             }
 
-            megatags = new string[][] { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
+            megatags = new string[][] { text_entPeople, text_entRelationships, text_entPlaces, text_entEvents, text_entCustom };
             albums = text_entAlbums;
             await picRep.HandleImageCommit(userId, Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
+            await ClearPagePics().ConfigureAwait(false);
+        }
+
+        private async Task<int> ClearPagePics()
+        {
             ImagePreview.Children.Clear();
+            Streams = new Dictionary<Stream, string>();
+            return 0;
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)
