@@ -25,6 +25,7 @@ namespace PickPixForEver.Views
         {
             Preferences.Set("fullName", string.Empty);
             Preferences.Set("email", string.Empty);
+            Preferences.Set("userId", string.Empty);
             Application.Current.MainPage = new Login();
         }
 
