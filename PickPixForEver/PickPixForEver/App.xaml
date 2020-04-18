@@ -71,6 +71,14 @@
                 <Setter Property="FontSize" Value="{StaticResource ButtonSmallSize}"/>
                 <Setter Property="CornerRadius" Value="1"/>
             </Style>
+            <Style x:Key="ConditionalEntry" TargetType="Entry">
+                <Style.Triggers>
+                    <Trigger TargetType="Entry"
+                         Property="IsFocused" Value="True">
+                        <Setter Property="BackgroundColor" Value="Yellow" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

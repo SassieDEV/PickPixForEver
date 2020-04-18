@@ -34,7 +34,7 @@ namespace PickPixForEver.ViewModel
         {
             if (IsBusy)
                 return false;
-            bool result = false;
+            int result = 0;
             IsBusy = true;
             try
             {
@@ -53,7 +53,7 @@ namespace PickPixForEver.ViewModel
                 IsBusy = false;
             }
 
-            return result;
+            return (!(result==0));
         }
 
         async Task ExecuteLoadPicturesCommand()

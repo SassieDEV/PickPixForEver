@@ -1,5 +1,6 @@
 ﻿using PickPixForEver.Models;
 using PickPixForEver.ViewModel;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,6 +23,11 @@ namespace PickPixForEver.Views
         {
             InitializeComponent();
             BindingContext = galleryViewModel = new GalleryViewModel(App.FilePath);
+            MessagingCenter.Subscribe<AddAlbum, Album>(this, "OnPopupClosed", async (sender, album) =>
+            {
+                galleryViewModel.LoadPicturesCommand.Execute(null);
+                DisplayPictures();
+            });
         }
 
         protected override void OnAppearing()
@@ -195,9 +201,9 @@ namespace PickPixForEver.Views
             }
         }
 
-        private void btnAdd_Clicked(object sender, EventArgs e)
+        private async void btnAdd_Clicked(object sender, EventArgs e)
         {
-
+            await PopupNavigation.Instance.PushAsync(new AddPicturePage()).ConfigureAwait(false);
         }
 
         private void btnClear_Clicked(object sender, EventArgs e)
