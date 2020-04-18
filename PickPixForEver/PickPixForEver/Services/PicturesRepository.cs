@@ -254,8 +254,6 @@ namespace PickPixForEver.Services
             }*/
             return 0;
         }
-
-
         public async Task<IEnumerable<Picture>> GetItemsAsync()
         {
             IEnumerable<Picture> pictures = new List<Picture>();
@@ -268,7 +266,7 @@ namespace PickPixForEver.Services
             }
             catch (Exception ex)
             {
-               //To Do: implement logging
+                //To Do: implement logging
             }
             return pictures;
         }
@@ -291,7 +289,14 @@ namespace PickPixForEver.Services
                     {
                         pictures = albumsResult[0].Pictures;
                     }
-
+                    var tagsResult = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
+                    {
+                        Pictures = s.PictureTags.Select(p => p.Picture)
+                    }).ToList();
+                    if (tagsResult != null && tagsResult.Count > 0)
+                    {
+                        pictures = pictures.Union(tagsResult[0].Pictures);
+                    }
                 }
             }
             catch (Exception ex)
