@@ -29,7 +29,7 @@
                     <Image Source="admin_view.png"/>
                     <Label Text="Album" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer x:Name="AdminView" Tapped="AdminView_Tapped"/>
+                        <TapGestureRecognizer x:Name="Album" Tapped="Album_Tapped"/>
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">

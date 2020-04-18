@@ -33,6 +33,7 @@ namespace PickPixForEver.iOS
             }
             var dbPath = Path.Combine(libPath,"PickPixForever.db");
             global::Xamarin.Forms.Forms.Init();
+            Rg.Plugins.Popup.Popup.Init();
             LoadApplication(new App(dbPath));
 
             return base.FinishedLaunching(app, options);

@@ -25,6 +25,7 @@ namespace PickPixForEver.Views
         {
             Preferences.Set("fullName", string.Empty);
             Preferences.Set("email", string.Empty);
+            Preferences.Set("userId", string.Empty);
             Application.Current.MainPage = new Login();
         }
 
@@ -54,6 +55,12 @@ namespace PickPixForEver.Views
         private void Tags_Tapped(object sender, EventArgs e)
         {
             Detail = new NavigationPage(new TagsPage());
+            IsPresented = false;
+        }
+
+        private void Album_Tapped(object sender, EventArgs e)
+        {
+            Detail = new NavigationPage(new AlbumPage());
             IsPresented = false;
         }
     }
