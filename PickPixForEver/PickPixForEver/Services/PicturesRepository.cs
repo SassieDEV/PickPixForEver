@@ -134,15 +134,14 @@ namespace PickPixForEver.Services
             }
         }
 
-        public async Task<int> HandleImageCommit(int userId, Dictionary<Stream, string> streams, string[][] megaTags, int albumId, string privacy, string notes)
+        public async Task<int> HandleImageCommit(int userId, Dictionary<Stream, string> streams, string[][] megaTags, string[] albums, string privacy, string notes)
         {
             Models.Tag[] applyTags = Array.Empty<Models.Tag>();
-            // Album[] applyAlbums = Array.Empty<Album>();
+            Album[] applyAlbums = Array.Empty<Album>();
 
-            if (megaTags.Length > 0)
-                applyTags = await HandleTags(userId, megaTags).ConfigureAwait(false);
-            //if (albums.Length > 0)
-            //    applyAlbums = await HandleAlbums(userId, albums).ConfigureAwait(false);
+            applyTags = await HandleTags(userId, megaTags).ConfigureAwait(false);
+            if (albums.Length > 0)
+                applyAlbums = await HandleAlbums(userId, albums).ConfigureAwait(false);
 
             using (var ctx = new PickPixDbContext(filePath))
             {
@@ -170,30 +169,20 @@ namespace PickPixForEver.Services
                         }).ConfigureAwait(false);
                         await ctx.SaveChangesAsync().ConfigureAwait(false);
                     }
-                    if (albumId > 0)
+                    foreach (Album curAlbum in applyAlbums)
                     {
+                        int curAlbumId = curAlbum.Id;
                         await ctx.PictureAlbums.AddAsync(new PictureAlbum
                         {
                             PictureId = curPicId,
-                            AlbumId = albumId
+                            AlbumId = curAlbum.Id
                         }).ConfigureAwait(false);
                     }
-
-                    //foreach (Album curAlbum in applyAlbums)
-                    //{
-                    //    int curAlbumId = curAlbum.Id;
-                    //    await ctx.PictureAlbums.AddAsync(new PictureAlbum
-                    //    {
-                    //        PictureId = curPicId,
-                    //        AlbumId = curAlbum.Id
-                    //    }).ConfigureAwait(false);
-                    //}
                 }
                 await ctx.SaveChangesAsync().ConfigureAwait(false);
             }
             return 0;
         }
-
         public async Task<Models.Tag[]> HandleTags(int userId, string[][] megaTags)
         {
             List<Models.Tag> applyTags = new List<Models.Tag>();
