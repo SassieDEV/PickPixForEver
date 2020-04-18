@@ -51,6 +51,7 @@ namespace PickPixForEver.AuthViews
                 await DisplayAlert("Error", "Incorrect email or password", "Ok").ConfigureAwait(false);
                 return;
                }
+            Preferences.Set("userId", user.Id);
             Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
             Preferences.Set("email", user.Email);
             Application.Current.MainPage = new MainPage();

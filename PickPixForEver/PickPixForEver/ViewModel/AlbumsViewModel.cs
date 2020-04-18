@@ -59,7 +59,7 @@ namespace PickPixForEver.ViewModel
             }
         }
 
-        async Task ExecuteSearchAlbumsCommand( string searchTerm)
+        async Task ExecuteSearchAlbumsCommand(string searchTerm)
         {
             if (IsBusy)
                 return;
@@ -88,12 +88,12 @@ namespace PickPixForEver.ViewModel
         {
             if (IsBusy)
                 return false;
-            bool result = false;
+            int albumId = 0;
             IsBusy = true;
             try
             {
                 Albums.Add(album);
-                result = await DataStore.AddItemAsync(album).ConfigureAwait(false);
+                albumId = await DataStore.AddItemAsync(album).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace PickPixForEver.ViewModel
             {
                 IsBusy = false;
             }
-            return result;
+            return (!(albumId == 0));
         }
     }
 }

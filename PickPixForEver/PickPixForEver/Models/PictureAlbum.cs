@@ -10,7 +10,7 @@ namespace PickPixForEver.Models
     {
         public int PictureId { get; set; }
         public Picture Picture { get; set; }
-        public int AlbumId { get; set; }       
-        public Album Tag { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
     }
 }

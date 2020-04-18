@@ -18,36 +18,41 @@ namespace PickPixForEver.Services
             this.filePath = filePath;
 
         }
-        public async Task<bool> AddItemAsync(Album album)
+        public async Task<int> AddItemAsync(Album album)
         {
-            bool result = false;
             try
             {
-                using(var cxt = new PickPixDbContext(this.filePath))
+                using (var ctx = new PickPixDbContext(this.filePath))
                 {
                     album.CreatedAt = DateTime.Now;
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
-                    cxt.Albums.Add(album);
-                    await cxt.SaveChangesAsync().ConfigureAwait(false);
-                    result = true;
+                    var tracker = await ctx.Albums.AddAsync(album).ConfigureAwait(false);
+                    await ctx.SaveChangesAsync().ConfigureAwait(false);
                 }
+                return album.Id;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-            return result;
+            return 0;
         }
 
-        public Task<bool> DeleteItemAsync(int id)
+        public async Task<bool> DeleteItemAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Album> FindItemAsync(int id)
+        public async Task<Album> FindItemAsync(int ID)
         {
-            throw new NotImplementedException();
+            Album album;
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                album = await dbContext.Albums.
+                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+                return album;
+            }
         }
 
         public async Task<IEnumerable<Album>> GetItemsAsync()
@@ -55,7 +60,7 @@ namespace PickPixForEver.Services
             IEnumerable<Album> albums = new List<Album>();
             try
             {
-                using(var ctx = new PickPixDbContext(this.filePath))
+                using (var ctx = new PickPixDbContext(this.filePath))
                 {
                     albums = await Task.FromResult(ctx.Albums.ToList()).ConfigureAwait(false);
                 }
@@ -74,7 +79,7 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    albums = await Task.FromResult(ctx.Albums.Where(S=>S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                    albums = await Task.FromResult(ctx.Albums.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -89,13 +94,13 @@ namespace PickPixForEver.Services
             IEnumerable<Picture> pictures = new List<Picture>();
             try
             {
-                using(var ctx = new PickPixDbContext(this.filePath))
+                using (var ctx = new PickPixDbContext(this.filePath))
                 {
                     var res = ctx.Albums.Where(a => a.Id == albumId).Select(s => new
                     {
                         Pictures = s.PictureAlbums.Select(p => p.Picture)
-                    }).ToList() ;
-                    if(res!=null && res.Count > 0)
+                    }).ToList();
+                    if (res != null && res.Count > 0)
                     {
                         pictures = res[0].Pictures;
                     }
@@ -113,7 +118,7 @@ namespace PickPixForEver.Services
             bool result = false;
             try
             {
-                using(var ctx = new PickPixDbContext(this.filePath))
+                using (var ctx = new PickPixDbContext(this.filePath))
                 {
                     Album album = ctx.Albums.SingleOrDefault(A => A.Id == item.Id);
                     if (album != null)
