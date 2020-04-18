@@ -27,9 +27,6 @@ namespace PickPixForEver.Services
                     album.CreatedAt = DateTime.Now;
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
-                    var findExistingAlbum = await ctx.Albums.Where(s => s.Name == album.Name).SingleOrDefaultAsync().ConfigureAwait(false);
-                    if (findExistingAlbum != null)
-                        return findExistingAlbum.Id;
                     var tracker = await ctx.Albums.AddAsync(album).ConfigureAwait(false);
                     await ctx.SaveChangesAsync().ConfigureAwait(false);
                 }
@@ -99,23 +96,13 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    /*var res = ctx.Albums.Where(a => a.Id == albumId).Select(s => new
+                    var res = ctx.Albums.Where(a => a.Id == albumId).Select(s => new
                     {
                         Pictures = s.PictureAlbums.Select(p => p.Picture)
                     }).ToList();
                     if (res != null && res.Count > 0)
                     {
                         pictures = res[0].Pictures;
-                    }*/
-                    PictureAlbum[] picAlbumsResult = await ctx.PictureAlbums.Where(a => a.AlbumId == albumId).ToArrayAsync().ConfigureAwait(false);
-                    foreach (PictureAlbum picAlbum in picAlbumsResult)
-                    {
-                        Picture pic = await ctx.Pictures.Where(p => p.Id == picAlbum.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);
-                        if (!pictures.Contains(pic))
-                        {
-                            IEnumerable<Picture> pic1 = await ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArrayAsync().ConfigureAwait(false);
-                            pictures = pictures.Union(pic1);
-                        }
                     }
                 }
             }

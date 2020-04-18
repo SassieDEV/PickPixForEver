@@ -12,9 +12,7 @@ namespace PickPixForEver.Services
         Task<int> EnterImgDataSource(Stream imgStream);
         Task<int> AddTagAsync(Models.Tag tag);
         Task<Models.Tag> FindTagAsync(int ID);
-        Task<IEnumerable<Picture>> GetItemsAsync();
-        Task<IEnumerable<Picture>> GetItemsAsync(string searchTerm);
         Task<bool> InitPic(Stream fileStream, string filePath, IReadOnlyList<MetadataExtractor.Directory> metaDataDirectories);
-        Task<int> HandleImageCommit(int userId, Dictionary<Stream, string> streams, string[][] megaTags, string[] albums, string privacy, string notes);
+        Task<int> HandleImageCommit(int userId, Dictionary<Stream, string> streams, string[][] megaTags, int albumId, string privacy, string notes);
     }
 }
