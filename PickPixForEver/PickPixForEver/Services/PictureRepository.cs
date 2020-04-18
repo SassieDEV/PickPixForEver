@@ -214,6 +214,12 @@ namespace PickPixForEver.Services
                 await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
             }
+            foreach (string curRelationship in megaTags.ElementAt(4))
+            {
+                newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
+            }
 
             return applyTags.ToArray();
         }

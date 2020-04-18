@@ -81,6 +81,11 @@ namespace PickPixForEver.Views
             {
                 text_entCustom = await FormatTagsAlbums(entCustom.Text).ConfigureAwait(false);
             }
+            string[] text_entRelationships = Array.Empty<string>();
+            if (entRelationships.Text != null)
+            {
+                text_entRelationships = await FormatTagsAlbums(entRelationships.Text).ConfigureAwait(false);
+            }
             string[] text_entAlbums = Array.Empty<string>();
             if (entAlbums.Text != null) 
             {
@@ -91,7 +96,7 @@ namespace PickPixForEver.Views
                 text_entNotes = entNotes.Text;
             }
 
-            megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom };
+            megatags = new string[][]{ text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
             albums = text_entAlbums;
             await picRep.HandleImageCommit(userId, Streams, megatags, albums, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
             ImagePreview.Children.Clear();
