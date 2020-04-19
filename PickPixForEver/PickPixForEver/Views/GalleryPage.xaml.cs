@@ -27,6 +27,10 @@ namespace PickPixForEver.Views
            MessagingCenter.Subscribe<AddPicturePage>(this, "OnPopupClosed", async (sender) =>
             {
                 galleryViewModel.LoadPicturesCommand.Execute(null);
+                galleryViewModel.LoadPicturesCommand.Execute(null);
+                galleryViewModel.LoadAlbumsCommand.Execute(null);
+                galleryViewModel.LoadTagsCommand.Execute(null);
+                BindListViews();
                 DisplayPictures();
             });
         }
