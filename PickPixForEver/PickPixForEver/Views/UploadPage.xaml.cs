@@ -97,7 +97,7 @@ namespace PickPixForEver.Views
             }
             string[] text_entAlbums = Array.Empty<string>();
             int albumId = 0;
-            if (albumsViewModel.Albums != null && albumsViewModel.Albums.Count > 0 && entAlbums.SelectedIndex > 0)
+            if (albumsViewModel.Albums != null && albumsViewModel.Albums.Count > 0 && entAlbums.SelectedIndex > -1)
             {
                 albumId = albumsViewModel.Albums.Where(s => s.Name == (string)entAlbums.SelectedItem).Select(s => s.Id).SingleOrDefault();
             }
@@ -109,7 +109,13 @@ namespace PickPixForEver.Views
             megatags = new string[][] { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
             albums = text_entAlbums;
             await picRep.HandleImageCommit(userId, Streams, megatags, albumId, (string)Privacy.SelectedItem, text_entNotes).ConfigureAwait(false);
+            await ClearPagePics().ConfigureAwait(false);
+        }
+        private async Task<int> ClearPagePics()
+        {
             ImagePreview.Children.Clear();
+            Streams = new Dictionary<Stream, string>();
+            return 0;
         }
 
         private async Task<String[]> FormatTagsAlbums(string tagAlbumLine)

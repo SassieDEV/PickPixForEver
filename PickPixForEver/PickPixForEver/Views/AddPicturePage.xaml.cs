@@ -116,7 +116,7 @@ namespace PickPixForEver.Views
             string text_entNotes = !string.IsNullOrWhiteSpace(entNotes.Text)? entNotes.Text.Trim():string.Empty;
             megatags = new string[][] { text_entPeople, text_entPlaces, text_entEvents, text_entCustom, text_entRelationships };
             int albumId = 0;
-            if(albumsViewModel.Albums!=null && albumsViewModel.Albums.Count>0 && entAlbums.SelectedIndex > 0)
+            if(albumsViewModel.Albums!=null && albumsViewModel.Albums.Count>0 && entAlbums.SelectedIndex > -1)
             {
                 albumId = albumsViewModel.Albums.Where(s => s.Name == (string)entAlbums.SelectedItem).Select(s => s.Id).SingleOrDefault();
             }
@@ -141,6 +141,7 @@ namespace PickPixForEver.Views
         void ResetControls()
         {
             ImagePreview.Children.Clear();
+            Streams = new Dictionary<Stream, string>();
             entPeople.Text = string.Empty;
             entPlaces.Text = string.Empty;
             entEvents.Text = string.Empty;

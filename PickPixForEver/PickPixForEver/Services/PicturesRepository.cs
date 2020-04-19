@@ -50,6 +50,9 @@ namespace PickPixForEver.Services
             {
                 using (var dbContext = new PickPixDbContext(filePath))
                 {
+                    Tag findExistingTag = await dbContext.Tags.Where(s => (s.Name == tag.Name) && (s.TagType == tag.TagType)).FirstOrDefaultAsync().ConfigureAwait(false);
+                    if (findExistingTag != null)
+                        return findExistingTag.TagId;
                     var tracker = await dbContext.Tags.AddAsync(tag).ConfigureAwait(false);
                     await dbContext.SaveChangesAsync().ConfigureAwait(false);
                 }
@@ -198,37 +201,36 @@ namespace PickPixForEver.Services
 
             //TODO: Figure out how to derive the current user of app and pass their user id instead
 
-            foreach (string curPeople in megaTags.ElementAt(0))
+           foreach (string curPeople in megaTags.ElementAt(0))
             {
                 newTag = new Models.Tag { Name = curPeople, TagType = "People", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
-            }
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
+            }            
             foreach (string curPlaces in megaTags.ElementAt(1))
             {
                 newTag = new Models.Tag { Name = curPlaces, TagType = "Places", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curEvents in megaTags.ElementAt(2))
             {
                 newTag = new Models.Tag { Name = curEvents, TagType = "Events", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curCustom in megaTags.ElementAt(3))
             {
                 newTag = new Models.Tag { Name = curCustom, TagType = "Custom", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curRelationship in megaTags.ElementAt(4))
             {
                 newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
-                await this.AddTagAsync(newTag).ConfigureAwait(false);
-                applyTags.Add(await FindTagAsync(newTag.TagId).ConfigureAwait(false));
+                int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
+                applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
-
             return applyTags.ToArray();
         }
 
@@ -287,46 +289,40 @@ namespace PickPixForEver.Services
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return await GetItemsAsync().ConfigureAwait(false);
             IEnumerable<Picture> pictures = new List<Picture>();
+            // IEnumerable<Picture> union = new List<Picture>();
             try
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    var albumsResult = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
+                   
+                    var albumPics = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureAlbums).ToList();
+                    List<int> pictureIds = new List<int>();
+                    foreach (var albumPic in albumPics)
                     {
-                        Pictures = s.PictureAlbums.Select(p => p.Picture)
-                    }).ToList();
-                    //var tagsResult = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
-                    //{
-                    //    Pictures = s.PictureTags.Select(p => p.Picture)
-                    //}).ToList();
-                    //if (tagsResult != null && tagsResult.Count > 0)
-                    //{
-                    //    pictures = pictures.Union(tagsResult[0].Pictures);
-                    //}
+                        var pics = albumPic.Select(p => p.PictureId).ToList();
+                        if(pics!=null && pics.Count > 0)
+                        {
+                            pictureIds.AddRange(pics);
+                        }                       
+                    }
+                    var tagPics = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureTags).ToList();
+                    foreach (var tagPic in tagPics)
+                    {
+                        var pics = tagPic.Select(p => p.PictureId).ToList();
+                        if (pics != null && pics.Count > 0)
+                        {
+                            pictureIds.AddRange(pics);
+                        }
+                    }
 
-                    //var tagsResult = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(s => new
-                    //{
-                    //    Pictures = s.PictureTags.Select(p => p.Picture)
-                    //}).ToList();
-
-                    //if((albumsResult!=null && albumsResult.Count > 0) && (tagsResult!=null && tagsResult.Count >0))
-                    //{
-                    //    pictures = albumsResult[0].Pictures.Union(tagsResult[0].Pictures);
-                    //}
-                    //else if (albumsResult != null && albumsResult.Count > 0)
-                    //{
-                    //    pictures = albumsResult[0].Pictures;
-                    //}
-                    //else if (tagsResult != null && tagsResult.Count > 0)
-                    //{
-                    //    pictures = tagsResult[0].Pictures;
-                    //}
-
-                    //if (albumsResult != null && albumsResult.Count > 0)
-                    //{
-                    //    pictures = albumsResult[0].Pictures;
-                    //}
-
+                    if (pictureIds.Count > 0)
+                    {
+                        pictureIds = pictureIds.Distinct().ToList();
+                    }
+                    if(pictureIds!=null && pictureIds.Count > 0)
+                    {
+                        pictures = await ctx.Pictures.Where(p => pictureIds.Contains(p.Id)).ToListAsync().ConfigureAwait(false);
+                    }
                 }
             }
             catch (Exception ex)
