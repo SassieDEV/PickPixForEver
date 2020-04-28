@@ -1,5 +1,6 @@
 ﻿using PickPixForEver.Helpers;
 using PickPixForEver.Services;
+using PickPixForEver.ViewModel;
 using PickPixForEver.Views;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,12 @@ namespace PickPixForEver.AuthViews
     public partial class Login : ContentPage
     {
         IAccountRepository accountRepository;
+        BaseViewModel viewModel;
         public Login()
         {
             InitializeComponent();
             accountRepository = new AccountRepository(App.FilePath);
+            BindingContext = viewModel = new BaseViewModel();
         }
 
         private void TapSignup_Tapped(object sender, EventArgs e)
@@ -54,6 +57,8 @@ namespace PickPixForEver.AuthViews
             Preferences.Set("userId", user.Id);
             Preferences.Set("fullName",$"{user.FirstName} {user.LastName}");
             Preferences.Set("email", user.Email);
+            this.viewModel.IsLoggedIn = true;
+            this.viewModel.DisplayName = $"{user.FirstName} {user.LastName}";
             Application.Current.MainPage = new MainPage();
         }        
     }

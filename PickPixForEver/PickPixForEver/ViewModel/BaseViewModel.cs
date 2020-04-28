@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace PickPixForEver.ViewModel
@@ -13,9 +14,25 @@ namespace PickPixForEver.ViewModel
         public List<string> PrivacyList { get; private set; } = new List<string> { "Public", "Private" };
         public Command LoadItemCommand { get; set; }
         public Command SearchItemComand { get; set; }
-        public Command AddItemCommand { get; set; } 
+        public Command AddItemCommand { get; set; }
+        public bool IsLoggedIn { get; set; }
+        public string DisplayName { get; set; }
+        public BaseViewModel()
+        {
+            if (!string.IsNullOrEmpty(Preferences.Get("email", "")))
+            {
+                IsLoggedIn = true;
+                DisplayName = Preferences.Get("fullName", "");
+            }
+            else
+            {
+                IsLoggedIn = false;
+                DisplayName = "Guest";
+            }
+        }
 
-      
+       
+
         bool isBusy;
         public bool IsBusy
         {

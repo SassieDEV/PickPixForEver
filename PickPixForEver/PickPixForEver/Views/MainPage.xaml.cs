@@ -1,4 +1,5 @@
 ﻿using PickPixForEver.AuthViews;
+using PickPixForEver.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace PickPixForEver.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : MasterDetailPage
     {
+        BaseViewModel viewModel;
         public MainPage()
         {
             InitializeComponent();
             MasterBehavior = MasterBehavior.Popover;
+            BindingContext = viewModel = new BaseViewModel();
 
             //MenuPage.add
         }
@@ -26,6 +29,8 @@ namespace PickPixForEver.Views
             Preferences.Set("fullName", string.Empty);
             Preferences.Set("email", string.Empty);
             Preferences.Set("userId", string.Empty);
+            this.viewModel.IsLoggedIn = false;
+            this.viewModel.DisplayName = "Guest";
             Application.Current.MainPage = new Login();
         }
 
@@ -62,6 +67,11 @@ namespace PickPixForEver.Views
         {
             Detail = new NavigationPage(new AlbumPage());
             IsPresented = false;
+        }
+
+        private void Login_Tapped(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new Login();
         }
     }
 }
