@@ -78,7 +78,7 @@ namespace PickPixForEver.Views
             var albumsGrid = new Grid();
             albumsGrid.RowSpacing = 5;
             albumsGrid.ColumnSpacing = 5;
-            albumsGrid.WidthRequest = 1200;
+            albumsGrid.WidthRequest = Application.Current.MainPage.Width;
 
             albumsScrollView.Content = albumsGrid;
             albumsStackLayout.Children.Add(albumsScrollView);

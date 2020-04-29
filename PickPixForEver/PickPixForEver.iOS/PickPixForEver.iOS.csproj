@@ -146,12 +146,14 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\PickPixForEver\PickPixForEver.csproj">
-      <Project>{DDB77537-572A-46F1-BAF5-8CD207624BC6}</Project>
+      <Project>{5B376D6C-F1F2-4320-B7B5-D6184A39CFB4}</Project>
       <Name>PickPixForEver</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\tab_feed.png" />
+    <BundleResource Include="Resources\cover1.png" />
+    <BundleResource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\tab_feed%402x.png" />

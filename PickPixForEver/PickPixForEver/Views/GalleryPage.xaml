@@ -105,14 +105,34 @@
                     </Grid.RowDefinitions>
                     <StackLayout Margin="10,10,20,5" Grid.Row="0" >
                            <StackLayout Orientation="Horizontal">
-                            <Button HorizontalOptions="StartAndExpand" Text="View pictures in slide viewer" BackgroundColor="Transparent" TextColor="#2196F3" 
-                              BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked"/>
-                            <Button x:Name="btnAdd" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonLarge}"/>
+                                <Button HorizontalOptions="StartAndExpand" Text="View pictures in slide viewer" BackgroundColor="Transparent" TextColor="#2196F3" 
+                                  BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked"/>
+                                <OnPlatform x:TypeArguments="Button">
+                                    <On Platform="iOS">
+                                        <Button x:Name="btnAdd_iOS" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonMedium}" Padding="5,0,5,0"/>
+                                    </On>
+                                    <On Platform="Android">
+                                        <Button x:Name="btnAdd_Android" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonMedium}" Padding="5,0,5,0"/>
+                                    </On>
+                                    <On Platform="UWP">
+                                        <Button x:Name="btnAdd" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonLarge}"/>
+                                    </On>
+                                </OnPlatform>
                         </StackLayout>
                         <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
                     </StackLayout>
                     <StackLayout Margin="10,5,20,5" Grid.Row="1">
-                        <SearchBar x:Name="txtSearch" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged"/>
+                        <OnPlatform x:TypeArguments="SearchBar">
+                            <On Platform="iOS">
+                                <SearchBar x:Name="txtSearch_iOS" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged" BackgroundColor="LightGray"/>
+                            </On>
+                            <On Platform="Android">
+                                <SearchBar x:Name="txtSearch_Anroid" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged" BackgroundColor="LightGray"/>
+                            </On>
+                            <On Platform="UWP">
+                                <SearchBar x:Name="txtSearch" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged"/>
+                            </On>
+                        </OnPlatform>
                     </StackLayout>
                     <ScrollView Orientation="Vertical" Margin="10,5,20,5" Grid.Row="2" HeightRequest="800">
                         <StackLayout x:Name="stackAllImages" >
@@ -122,5 +142,4 @@
             </StackLayout>
         </Grid>
     </ContentPage.Content>
-
 </ContentPage>
