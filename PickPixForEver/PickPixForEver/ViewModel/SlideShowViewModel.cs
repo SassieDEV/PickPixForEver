@@ -53,7 +53,7 @@ namespace PickPixForEver.ViewModel
                     list.Add(new PictureSliderModel()
                     {
                         Title =  pic.Notes,
-                        Tags = string.Join(", ", tags.Select(c => c.Name)),
+                        Tags = string.Join(" - ", tags.Select(c => c.Name)),
                         Color = "White",
                         ImageData = ImageSource.FromStream(() => new MemoryStream(byteArray.Value))
                     });
