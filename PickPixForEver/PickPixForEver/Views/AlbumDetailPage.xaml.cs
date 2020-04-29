@@ -104,7 +104,8 @@ namespace PickPixForEver.Views
         {
             if(this.viewModel.Pictures!=null && this.viewModel.Pictures.Count > 0)
             {
-                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => s.ImageArray).ToList()))).ConfigureAwait(false);
+                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => new KeyValuePair<int, byte[]>(s.Id, s.ImageArray)).ToList()))).ConfigureAwait(false);
+
             }
             else
             {

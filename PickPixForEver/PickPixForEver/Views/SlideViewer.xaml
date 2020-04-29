@@ -13,7 +13,7 @@
              mc:Ignorable="d"
              BackgroundColor="Black"
              x:Class="PickPixForEver.Views.SlideViewer"           
-    >  
+    >
     <cards1:CarouselView
         ItemsSource="{Binding PictureNode}"
         SlideShowDuration="3500"
@@ -21,19 +21,26 @@
         <cards1:CarouselView.ItemTemplate>
             <DataTemplate>
                 <ContentView>
-                    <Frame
-                       VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        HeightRequest="700"
-                        WidthRequest="800"
-                        Padding="0"
-                        HasShadow="false"
-                        IsClippedToBounds="true"
-                        CornerRadius="10"
-                        BackgroundColor="White"
+                    <StackLayout>
+                        <Label Text="{Binding Tags}" TextColor="White"  FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                        <Label Text="{Binding Title}" TextColor="LightBlue" FontSize="Caption" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                      
+                        <Frame
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             HeightRequest="700"
+                             WidthRequest="800"
+                             Padding="0"
+                             HasShadow="false"
+                             IsClippedToBounds="true"
+                             CornerRadius="10"
+                             BackgroundColor="White"
                         >
-                        <ffimage:CachedImage Source="{Binding ImageData}"/>
-                    </Frame>
+                            <ffimage:CachedImage Source="{Binding ImageData}"/>
+                        </Frame>
+                    </StackLayout>
+
                 </ContentView>
             </DataTemplate>
         </cards1:CarouselView.ItemTemplate>

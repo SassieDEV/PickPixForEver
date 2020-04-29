@@ -93,6 +93,43 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </StackLayout>
+                        <StackLayout  Margin="0,15,0,0">
+                            <StackLayout Orientation="Horizontal">
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="RelationIcon1.png"/>
+                                <Label Margin="5,5,0,0" Text="RelationShip" Style="{StaticResource HeaderLabel}" FontAttributes="Bold"/>
+                            </StackLayout>
+                            <ListView x:Name="lvRelation" ItemSelected="lvRelation_ItemSelected">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="RelationIcon2.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="White" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                        <StackLayout  Margin="0,15,0,0">
+                            <StackLayout Orientation="Horizontal">
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="CustomIcon1.png"/>
+                                <Label Margin="5,5,0,0" Text="Custom" Style="{StaticResource HeaderLabel}" FontAttributes="Bold"/>
+                            </StackLayout>
+                            <ListView x:Name="lvCustom" ItemSelected="lvCustom_ItemSelected">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="CustomIcon2.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="White" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+
                     </StackLayout>
                 </ScrollView>
             </StackLayout>
