@@ -152,8 +152,25 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\tab_feed.png" />
-    <BundleResource Include="Resources\cover1.png" />
     <BundleResource Include="Resources\logo.png" />
+    <BundleResource Include="Resources\admin_view.png" />
+    <BundleResource Include="Resources\album_view.png" />
+    <BundleResource Include="Resources\album.png" />
+    <BundleResource Include="Resources\albums.png" />
+    <BundleResource Include="Resources\cover1.png" />
+    <BundleResource Include="Resources\event.png" />
+    <BundleResource Include="Resources\events.png" />
+    <BundleResource Include="Resources\gallery.png" />
+    <BundleResource Include="Resources\icon.png" />
+    <BundleResource Include="Resources\logout.png" />
+    <BundleResource Include="Resources\people.png" />
+    <BundleResource Include="Resources\person.png" />
+    <BundleResource Include="Resources\place.png" />
+    <BundleResource Include="Resources\places.png" />
+    <BundleResource Include="Resources\screen.png" />
+    <BundleResource Include="Resources\tags.png" />
+    <BundleResource Include="Resources\upload.png" />
+    <BundleResource Include="Resources\user.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\tab_feed%402x.png" />

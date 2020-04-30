@@ -34,17 +34,7 @@
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>            
         </StackLayout>
         <StackLayout Margin="20,20,20,5" Grid.Row="1">
-            <OnPlatform x:TypeArguments="SearchBar">
-                <On Platform="iOS">
-                    <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" BackgroundColor="LightGray"/>
-                </On>
-                <On Platform="Android">
-                    <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" BackgroundColor="LightGray"/>
-                </On>
-                <On Platform="UWP">
-                    <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums"/>
-                </On>
-            </OnPlatform>
+            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" Style="{StaticResource SearchBarStyle}"/>
         </StackLayout>
         <StackLayout x:Name="albumsStackLayout" Margin="20,20,20,5" Grid.Row="2">
             
