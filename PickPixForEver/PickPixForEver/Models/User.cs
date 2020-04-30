@@ -8,7 +8,8 @@ namespace PickPixForEver.Models
     {
         public User()
         {
-            Tags = new List<Tag>();
+            Pictures = new List<Picture>();
+            Albums = new List<Album>();
         }
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -17,6 +18,7 @@ namespace PickPixForEver.Models
         public string Password { get; set; }
         public string PasswordHash { get; set; }
 
-        public List<Tag> Tags { get; set; }
+        public List<Picture> Pictures { get; set; }
+        public List<Album> Albums { get; set; }
     }
 }

@@ -14,8 +14,7 @@ namespace PickPixForEver.Models
         public string Name { get; set; }
         public string TagType { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public int UserId { get; set; }
+        public DateTime Updated { get; set; }        
         public List<PictureTag> PictureTags { get; set; }
        
 

@@ -18,7 +18,7 @@
                 <Image  Source="logo.png" />                
             </StackLayout>
             <StackLayout Grid.Row="1" Margin="40,0,40,0" VerticalOptions="CenterAndExpand">
-                <Entry Placeholder="Email"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEmail"/>
+                <Entry Placeholder="Username"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEmail"/>
                 <Entry Placeholder="Password"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entPassword" IsPassword="True"/>
                 <Label Text="Forgot Password?" TextColor="#28C8B8" HorizontalOptions="End">
                     <Label.GestureRecognizers>

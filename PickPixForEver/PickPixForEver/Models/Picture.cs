@@ -20,7 +20,7 @@ namespace PickPixForEver.Models
         public string Notes { get; set; }
         public List<PictureAlbum> PictureAlbums { get; set; }
         public List<PictureTag> PictureTags { get; set; }
-
+        public int UserId { get; set; }
         [NotMapped]
         public byte[] ImageArray
         {
