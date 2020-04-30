@@ -66,5 +66,10 @@ namespace PickPixForEver.AuthViews
                Application.Current.MainPage = new Login();
             }
         }
+
+        private void TapSignIn_Tapped(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new Login();
+        }
     }
 }

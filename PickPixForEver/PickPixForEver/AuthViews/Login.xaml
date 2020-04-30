@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PickPixForEver.AuthViews.Login"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="{StaticResource DarkBackgroundColor}">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -17,8 +18,8 @@
                 <Image  Source="logo.png" />                
             </StackLayout>
             <StackLayout Grid.Row="1" Margin="40,0,40,0" VerticalOptions="CenterAndExpand">
-                <Entry Placeholder="Email" PlaceholderColor="#707070" x:Name="entEmail"/>
-                <Entry Placeholder="Password" PlaceholderColor="#707070" x:Name="entPassword" IsPassword="True"/>
+                <Entry Placeholder="Username"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEmail"/>
+                <Entry Placeholder="Password"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entPassword" IsPassword="True"/>
                 <Label Text="Forgot Password?" TextColor="#28C8B8" HorizontalOptions="End">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer x:Name="TapForgotPassword" Tapped="TapForgotPassword_Tapped"/>

@@ -16,7 +16,8 @@
         </Grid.RowDefinitions>
         <StackLayout Margin="20,5,20,5" Grid.Row="0" >
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="btnCreate" Clicked="btnCreate_Clicked" HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonLarge}"/>
+                <Button x:Name="btnCreate" Clicked="btnCreate_Clicked"  IsVisible="{Binding IsLoggedIn}"
+                        HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonLarge}"/>
             </StackLayout>
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>            
         </StackLayout>

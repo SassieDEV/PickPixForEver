@@ -6,18 +6,28 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace PickPixForEver.Services
 {
     public class AlbumRepository : IAlbumRepository
     {
         private readonly string filePath;
+        public int UserId { get; set; }
 
         public AlbumRepository(string filePath)
         {
             this.filePath = filePath;
-
+            try
+            {
+                this.UserId = Preferences.Get("userId", -1);
+            }
+            catch (InvalidCastException ex)
+            {
+                this.UserId = -1;
+            }
         }
+
         public async Task<int> AddItemAsync(Album album)
         {
             try
@@ -27,6 +37,7 @@ namespace PickPixForEver.Services
                     album.CreatedAt = DateTime.Now;
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
+                    album.UserId = this.UserId;
                     var findExistingAlbum = await ctx.Albums.Where(s => s.Name == album.Name).SingleOrDefaultAsync().ConfigureAwait(false);
                     if (findExistingAlbum != null)
                         return findExistingAlbum.Id;
@@ -65,7 +76,7 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    albums = await Task.FromResult(ctx.Albums.ToList()).ConfigureAwait(false);
+                    albums = await Task.FromResult(ctx.Albums.Where(s=>(s.UserId==this.UserId || s.Privacy.ToLower()=="public")).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -107,7 +118,9 @@ namespace PickPixForEver.Services
                     {
                         pictures = res[0].Pictures;
                     }*/
-                    PictureAlbum[] picAlbumsResult = await ctx.PictureAlbums.Where(a => a.AlbumId == albumId).ToArrayAsync().ConfigureAwait(false);
+                    PictureAlbum[] picAlbumsResult = await ctx.PictureAlbums.
+                        Where(a => (a.AlbumId == albumId && 
+                        (a.Picture.UserId==this.UserId || a.Picture.Privacy.ToLower() == "public"))).ToArrayAsync().ConfigureAwait(false);
                     foreach (PictureAlbum picAlbum in picAlbumsResult)
                     {
                         Picture pic = await ctx.Pictures.Where(p => p.Id == picAlbum.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);

@@ -106,6 +106,7 @@
     <Content Include="admin_view.png" />
     <Content Include="album.png" />
     <Content Include="albums.png" />
+    <Content Include="album_view.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
@@ -149,6 +150,7 @@
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="tags.png" />
     <Content Include="upload.png" />
+    <Content Include="user.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

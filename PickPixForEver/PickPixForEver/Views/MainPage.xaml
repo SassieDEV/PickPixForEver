@@ -5,45 +5,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:views="clr-namespace:PickPixForEver.Views"
-             x:Class="PickPixForEver.Views.MainPage"
-             Visual="Material">
+            xmlns:converter="clr-namespace:PickPixForEver.Helpers"
+            x:Class="PickPixForEver.Views.MainPage"
+            Visual="Material">
 
     <MasterDetailPage.Master>
-        <ContentPage Title="Menu">
+        <ContentPage Title="Menu"  BackgroundColor="{StaticResource DarkBackgroundColor}">
             <StackLayout>
-                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
-                    <Image Source="upload.png"/>
-                    <Label Text="Upload Photos" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer x:Name="Upload" Tapped="Upload_Tapped"/>
-                    </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HeightRequest="150">
+                    <Grid BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Image Source="user.png" Grid.Row="0" HorizontalOptions="Center" HeightRequest="70" WidthRequest="70"/>
+                        <Label Grid.Row="1" Text="{Binding DisplayName}" TextColor="White" FontSize="Medium" HorizontalOptions="Center" VerticalTextAlignment="Start" Margin="5,-20,5,5" />
+                    </Grid>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
                     <Image Source="gallery.png"/>
-                    <Label Text="Gallery" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <Label Text="Gallery" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer x:Name="Gallery" Tapped="Gallery_Tapped"/>
                     </StackLayout.GestureRecognizers>
-                </StackLayout>                
+                </StackLayout>
                 <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
-                    <Image Source="admin_view.png"/>
-                    <Label Text="Album" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <Image Source="album_view.png"/>
+                    <Label Text="Album" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer x:Name="Album" Tapped="Album_Tapped"/>
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
-                    <Image Source="tags.png"/>
-                    <Label Text="Manage Tags" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer x:Name="Tags" Tapped="Tags_Tapped"/>
-                    </StackLayout.GestureRecognizers>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20"  >
+                <StackLayout IsVisible="{Binding IsLoggedIn}" Orientation="Horizontal" Margin="20,20,0,0" Spacing="20"  >
                     <Image Source="logout.png"/>
-                    <Label Text="Logout" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                    <Label Text="Logout" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer x:Name="Logout" Tapped="Logout_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsLoggedIn,Converter={converter:NegateBool}}" Orientation="Horizontal" Margin="20,20,0,0" Spacing="20"  >
+                    <Image Source="logout.png"/>
+                    <Label Text="Login" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Login" Tapped="Login_Tapped"/>
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
             </StackLayout>
