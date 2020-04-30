@@ -73,5 +73,12 @@ namespace PickPixForEver.Views
         {
             Application.Current.MainPage = new Login();
         }
+
+        private void Manage_Tags_Tapped(object sender, EventArgs e)
+        {
+            Detail = new NavigationPage(new TagsPage());
+            IsPresented = false;
+
+        }
     }
 }

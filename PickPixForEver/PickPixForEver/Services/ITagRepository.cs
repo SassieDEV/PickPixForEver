@@ -8,6 +8,6 @@ namespace PickPixForEver.Services
 {
     public interface ITagRepository: IDataStore<Tag>
     {
-        IEnumerable<Picture> GetTaggedPictures(int tagId);
+        Task<IEnumerable<Picture>> GetTaggedPictures(int tagId);
     }
 }
