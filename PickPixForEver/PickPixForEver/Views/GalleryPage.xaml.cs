@@ -76,7 +76,7 @@ namespace PickPixForEver.Views
                                    .GroupBy(p => new { Month = p.Created.Month, Year = p.Created.Year })
                                    .ToDictionary(
                                    g => g.Key,
-                                   g => g.Select(s => Tuple.Create(s.Id, s.ImageArray)))
+                                   g => g.Select(s => Tuple.Create(s.Id, s.RawData)))
                                    .OrderByDescending(y => y.Key.Year)
                                    .ThenByDescending(m => m.Key.Month);
 
@@ -289,7 +289,7 @@ namespace PickPixForEver.Views
                 await Navigation.PushAsync(new SlideViewer(
                     new SlideShowViewModel(
                       this.galleryViewModel.Pictures
-                      .Select(s => new KeyValuePair<int, byte[]>(s.Id, s.ImageArray)).ToList()))).ConfigureAwait(false);
+                      .Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
 
             }
             else

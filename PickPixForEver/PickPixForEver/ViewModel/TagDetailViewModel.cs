@@ -135,15 +135,6 @@ namespace PickPixForEver.ViewModel
                 OnPropertyChanged();
             }
         }
-        public int UserId
-        {
-            get { return Tag.UserId; }
-            set
-            {
-                Tag.UserId = value;
-                OnPropertyChanged();
-            }
-        }
 
         public ObservableCollection<Picture> Pictures { get; set; }
         #endregion

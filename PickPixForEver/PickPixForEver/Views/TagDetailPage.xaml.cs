@@ -54,7 +54,7 @@ namespace PickPixForEver.Views
             
             foreach (var picture in this.viewModel.Pictures)
             {
-                Image image = new Image() { Source = ImageSource.FromStream(() => new MemoryStream(picture.ImageArray)) };
+                Image image = new Image() { Source = ImageSource.FromStream(() => new MemoryStream(picture.RawData)) };
 
                 Label notes = new Label();
                 notes.Text = picture.Notes;

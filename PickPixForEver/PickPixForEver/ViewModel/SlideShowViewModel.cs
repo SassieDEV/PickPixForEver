@@ -41,6 +41,7 @@ namespace PickPixForEver.ViewModel
                 OnPropertyChanged();
             }
         }
+
         private async void PopulatePictureCollection()
         {
             List<PictureSliderModel> list = new List<PictureSliderModel>();
@@ -52,7 +53,7 @@ namespace PickPixForEver.ViewModel
                     var tags = await picRep.FindTagByPictureIdAsync(PictureId).ConfigureAwait(false);
                     list.Add(new PictureSliderModel()
                     {
-                        Title =  pic.Notes,
+                        Title = pic.Notes,
                         Tags = string.Join(" - ", tags.Select(c => c.Name)),
                         Color = "White",
                         ImageData = ImageSource.FromStream(() => new MemoryStream(byteArray.Value))
@@ -65,7 +66,7 @@ namespace PickPixForEver.ViewModel
                 list.Add(new PictureSliderModel()
                 {
                     Title = pic.Notes,
-                    Tags = string.Join(" -  ", tags.Select(c=>c.Name)),
+                    Tags = string.Join(" -  ", tags.Select(c => c.Name)),
                     Color = "White",
                     ImageData = PictureSource.Source
                 });

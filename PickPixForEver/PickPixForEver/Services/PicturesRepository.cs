@@ -138,7 +138,7 @@ namespace PickPixForEver.Services
         private Picture getPictureModel(Stream stream, string filePath)
         {
             Picture pic = new Picture();
-            pic.RawData = Convert.ToBase64String(GetImageStreamAsBytes(stream));
+            pic.RawData = GetImageStreamAsBytes(stream);
             pic.Created = DateTime.Now;
             pic.Updated = DateTime.Now;
             pic.PictureMetaData = filePath;
