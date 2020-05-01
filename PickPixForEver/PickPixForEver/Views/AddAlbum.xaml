@@ -43,19 +43,31 @@
                     
                     <Label Margin="0,20,0,0" HorizontalOptions="StartAndExpand" Text="Description"/>
                     <StackLayout Orientation="Horizontal">
-                        <Editor Placeholder="Describe what this album is about" x:Name="albumDescription" 
-                             AutoSize="TextChanges" HorizontalOptions="FillAndExpand" Text="{Binding Description}"/>
+                        <Editor Placeholder="Describe what this album is about" x:Name="albumDescription"
+                             HorizontalOptions="FillAndExpand" Text="{Binding Description}"/>
                         <Label Margin="2,5,0,0" Text="*" TextColor="Red"/>
                     </StackLayout>
                     <StackLayout Margin="0,20,0,0"  Orientation="Horizontal">
                         <Picker Title="Album privacy" x:Name="albumPrivacy" HorizontalOptions="FillAndExpand" 
                             ItemsSource="{Binding PrivacyList}" SelectedItem="{Binding Privacy}"/>
-                        <Label Margin="2,30,0,0" Text="*" TextColor="Red"/>
+                        <Label Margin="2,5,0,0" Text="*" TextColor="Red"/>
                     </StackLayout>                   
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="30,10,30,30" HorizontalOptions="EndAndExpand">
-                    <Button x:Name="btnCancel" Text="Cancel" Clicked="btnCancel_Clicked" CornerRadius="3"/>
-                    <Button x:Name="btnSave" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
+                    <Button x:Name="btnCancel" Text="Cancel" Clicked="btnCancel_Clicked" CornerRadius="3"
+                            BackgroundColor="LightGray" Padding="15,0,15,0" TextColor="Black"/>
+                    <OnPlatform x:TypeArguments="Button">
+                        <On Platform="iOS">
+                            <Button x:Name="btnSave_iOS" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3"
+                                    Style="{StaticResource PrimaryButtonMedium}" Padding="15,0,15,0" Margin="0,0,10,0"/>
+                        </On>
+                        <On Platform="Android">
+                            <Button x:Name="btnSave_Android" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
+                        </On>
+                        <On Platform="UWP">
+                            <Button x:Name="btnSave" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
+                        </On>
+                    </OnPlatform>
                 </StackLayout>
             </Grid>           
            

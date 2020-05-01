@@ -78,15 +78,17 @@ namespace PickPixForEver.Views
             var albumsGrid = new Grid();
             albumsGrid.RowSpacing = 5;
             albumsGrid.ColumnSpacing = 5;
-            albumsGrid.WidthRequest = 1200;
+            albumsGrid.WidthRequest = Application.Current.MainPage.Width;
 
             albumsScrollView.Content = albumsGrid;
             albumsStackLayout.Children.Add(albumsScrollView);
             if (albumsViewModel.Albums.Count == 0)
                 return;
 
+            int width = Device.RuntimePlatform == Device.UWP ? 240 : 120;
             int cnt = albumsViewModel.Albums.Count;
             int rowLength = cnt % 5 == 0 ? cnt / 5 : (cnt / 5) + 1;
+            
             for (int r = 0; r < rowLength; r++)
             {
                 albumsGrid.RowDefinitions.Add(new RowDefinition());
@@ -95,7 +97,7 @@ namespace PickPixForEver.Views
             {
                 albumsGrid.ColumnDefinitions.Add(new ColumnDefinition()
                 {
-                    Width = 240
+                    Width = width
                 });
             }
 
@@ -133,7 +135,14 @@ namespace PickPixForEver.Views
                     //Label properties
                     lblAlbumName.Text = album.Name;
                     lblAlbumName.HorizontalOptions = LayoutOptions.StartAndExpand;
-                    lblAlbumName.Style = (Style)Application.Current.Resources["SubHeaderLabel"];
+                    if (Device.RuntimePlatform == Device.UWP)
+                    {
+                        lblAlbumName.Style = (Style)Application.Current.Resources["SubHeaderLabel"];
+                    }
+                    else
+                    {
+                        lblAlbumName.Style = (Style)Application.Current.Resources["SubHeaderLabel_Mobile"];
+                    }
 
                     lblPrivacy.Text = $"Privacy: {album.Privacy}";
                     lblPrivacy.HorizontalOptions = LayoutOptions.StartAndExpand;
