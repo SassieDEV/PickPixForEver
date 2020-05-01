@@ -22,7 +22,6 @@
             />
     </pages:PopupPage.Animation>
     <Frame Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BorderColor="Gray" CornerRadius="5">
-        <ScrollView>
         <StackLayout BackgroundColor="#303030" WidthRequest="850">
             <Grid>
                 <Grid.RowDefinitions>
@@ -70,7 +69,5 @@
                 <Button x:Name="btnSave" Text="Save" Clicked="btnSave_Clicked" CornerRadius="3" Style="{StaticResource PrimaryButtonMedium}"/>
             </StackLayout>
         </StackLayout>
-            </ScrollView>
     </Frame>
-
 </pages:PopupPage>

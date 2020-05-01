@@ -15,13 +15,10 @@
             <Color x:Key="Secondary">#018786</Color>
             <Color x:Key="Warning">#CF6679</Color>
             <Color x:Key="HeaderText">White</Color>
-            <Color x:Key="HeaderText_Mobile">Black</Color>
             
             
             <!--font sizes-->
             <x:Double x:Key="TitleFontSize">24</x:Double>
-            <x:Double x:Key="TitleFontSize_Mobile">17</x:Double>
-            <x:Double x:Key="SubTitleFontSize_Mobile">14</x:Double>
             <x:Double x:Key="SubTitleFontSize">20</x:Double>
             <x:Double x:Key="BodyFontSize">18</x:Double>
             <x:Double x:Key="ButtonLargeSize">22</x:Double>
@@ -41,21 +38,8 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
             </Style>
 
-            <Style x:Key="HeaderLabel_Mobile" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource HeaderText}"/>
-                <Setter Property="FontSize" Value="{StaticResource TitleFontSize_Mobile}"/>
-                <Setter Property="FontFamily" Value="sans-serif-medium"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            </Style>
-
             <Style x:Key="SubHeaderLabel" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource HeaderText}"/>
-                <Setter Property="FontSize" Value="{StaticResource SubTitleFontSize}"/>
-                <Setter Property="FontFamily" Value="sans-serif-medium"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            </Style>
-            <Style x:Key="SubHeaderLabel_Mobile" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource HeaderText_Mobile}"/>
                 <Setter Property="FontSize" Value="{StaticResource SubTitleFontSize}"/>
                 <Setter Property="FontFamily" Value="sans-serif-medium"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -87,32 +71,6 @@
                 <Setter Property="FontSize" Value="{StaticResource ButtonSmallSize}"/>
                 <Setter Property="CornerRadius" Value="1"/>
             </Style>
-
-            <Style x:Key="GalleryAddBtn" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="FontFamily" Value="sans-serif"/>
-                <Setter Property="FontSize">
-                    <OnPlatform x:TypeArguments="x:Double" Android="16"
-                                iOS="{StaticResource ButtonMediumSize}" WinPhone="{StaticResource ButtonLargeSize}" />
-                </Setter>
-                <Setter Property="Padding">
-                    <OnPlatform x:TypeArguments="Thickness" Android="1,0,1,0" iOS="1,0,5,0" />
-                </Setter>
-                <Setter Property="WidthRequest">
-                    <OnPlatform x:TypeArguments="x:Double" Android="105" iOS="125" WinPhone="160"/>
-                </Setter>
-                <Setter Property="CornerRadius" Value="3"/>
-            </Style>
-            <Style x:Key="SearchBarStyle" TargetType="SearchBar">
-                <Setter Property="BackgroundColor">
-                    <OnPlatform Android="LightGray" iOS="LightGray" />
-                </Setter>
-                <Setter Property="FontSize">
-                    <OnPlatform x:TypeArguments="x:Double" Android="14"
-                                iOS="14" />
-                </Setter>
-            </Style>
             <Style x:Key="ConditionalEntry" TargetType="Entry">
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
@@ -121,66 +79,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-
-            <Style x:Key="GalleryMenuTitle" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource HeaderText}"/>
-                <Setter Property="FontSize">
-                    <OnPlatform x:TypeArguments="x:Double" Android="{StaticResource TitleFontSize_Mobile}"
-                                iOS="{StaticResource TitleFontSize_Mobile}" WinPhone="{StaticResource TitleFontSize}" />
-                </Setter>
-                <Setter Property="FontFamily" Value="sans-serif-medium"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="Margin">
-                    <OnPlatform x:TypeArguments="Thickness" Android="0,0,0,0" iOS="0,0,0,0" WinPhone="5,5,0,0" />
-                </Setter>
-            </Style>
-
-            <Style x:Key="GalleryMenuSubTitle" TargetType="Label">
-                <Setter Property="TextColor" Value="LightGray"/>
-                <Setter Property="FontSize">
-                    <OnPlatform x:TypeArguments="x:Double" Android="{StaticResource SubTitleFontSize_Mobile}"
-                                iOS="{StaticResource SubTitleFontSize_Mobile}" WinPhone="{StaticResource SubTitleFontSize}" />
-                </Setter>
-                <Setter Property="FontFamily" Value="sans-serif-medium"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="Margin">
-                    <OnPlatform x:TypeArguments="Thickness" Android="0,13,0,0" iOS="0,13,0,0" WinPhone="5,9,0,0" />
-                </Setter>
-            </Style>
-
-            <Style x:Key="GalleryTitleImg" TargetType="Image">
-                <Setter Property="WidthRequest">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="24" Android="24" WinPhone="30"/>
-                </Setter>
-            </Style>
-            <Style x:Key="GallerySubTitleImg" TargetType="Image">
-                <Setter Property="WidthRequest">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="16" Android="16" WinPhone="20"/>
-                </Setter>
-            </Style>
-
-            <Style x:Key="ClearBtnStyle" TargetType="Button">
-                <Setter Property="Padding">
-                    <OnPlatform x:TypeArguments="Thickness" Android="6,5,6,5" iOS="4,0,4,0" />
-                </Setter>
-                <Setter Property="Margin">
-                    <OnPlatform x:TypeArguments="Thickness" iOS="0,5,6,5" Android="10,10,20,5" WinPhone="10,10,20,5" />
-                </Setter> 
-                <Setter Property="FontSize">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="14" />
-                </Setter>
-            </Style>
-
-            <Style x:Key="ViewPicBtnStyle" TargetType="Button">
-                <Setter Property="Padding">
-                    <OnPlatform x:TypeArguments="Thickness" Android="2,0,2,0" iOS="4,0,4,0" />
-                </Setter>
-                <Setter Property="WidthRequest">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="105" Android="105" WinPhone="240" />
-                </Setter>
-            </Style>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

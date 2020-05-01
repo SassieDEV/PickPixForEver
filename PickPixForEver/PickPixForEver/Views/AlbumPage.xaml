@@ -16,25 +16,13 @@
         </Grid.RowDefinitions>
         <StackLayout Margin="20,5,20,5" Grid.Row="0" >
             <StackLayout Orientation="Horizontal">
-                <OnPlatform x:TypeArguments="Button">
-                    <On Platform="iOS">
-                        <Button x:Name="btnCreate_iOS" Clicked="btnCreate_Clicked"  IsVisible="{Binding IsLoggedIn}"
-                        HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonMedium}"  Padding="5,0,5,0"/>
-                    </On>
-                    <On Platform="Android">
-                        <Button x:Name="btnCreate_Android" Clicked="btnCreate_Clicked"  IsVisible="{Binding IsLoggedIn}"
-                        HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonMedium}" Padding="5,0,5,0"/>
-                    </On>
-                    <On Platform="UWP">
-                        <Button x:Name="btnCreate" Clicked="btnCreate_Clicked"  IsVisible="{Binding IsLoggedIn}"
+                <Button x:Name="btnCreate" Clicked="btnCreate_Clicked"  IsVisible="{Binding IsLoggedIn}"
                         HorizontalOptions="EndAndExpand" Text="Create Album" Style="{StaticResource PrimaryButtonLarge}"/>
-                    </On>
-                </OnPlatform>
             </StackLayout>
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>            
         </StackLayout>
         <StackLayout Margin="20,20,20,5" Grid.Row="1">
-            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" Style="{StaticResource SearchBarStyle}"/>
+            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" />
         </StackLayout>
         <StackLayout x:Name="albumsStackLayout" Margin="20,20,20,5" Grid.Row="2">
             

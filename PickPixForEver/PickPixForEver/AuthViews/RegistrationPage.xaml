@@ -7,7 +7,6 @@
              x:Class="PickPixForEver.AuthViews.RegistrationPage"
              BackgroundColor="{StaticResource DarkBackgroundColor}">
     <ContentPage.Content>
-        <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -34,6 +33,5 @@
                 </Label>
             </StackLayout>
         </Grid>
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
