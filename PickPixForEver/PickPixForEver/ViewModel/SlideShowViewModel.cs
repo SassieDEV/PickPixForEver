@@ -25,6 +25,7 @@ namespace PickPixForEver.ViewModel
             set {
                 _pictureNode = value;
                 OnPropertyChanged();
+
             }
         }
         private void PopulatePictureCollection()
