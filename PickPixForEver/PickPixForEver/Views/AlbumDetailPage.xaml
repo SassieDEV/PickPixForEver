@@ -22,16 +22,16 @@
                       BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked"/>
             </StackLayout>
                 
-            <StackLayout Margin="0,25,0,15" Orientation="Horizontal">
+            <StackLayout Margin="0,15,0,15" Orientation="Horizontal">
                 <Label Margin="5,5,5,3" Text="{Binding Privacy}"  Style="{StaticResource DescriptionLabel}"/>
                 <Button Margin="5,0,5,3" IsVisible="{Binding IsLoggedIn}" Text="Edit Album" BackgroundColor="Transparent" TextColor="#2196F3" 
                       BorderWidth="1"   BorderColor="#22A558" x:Name="btnEditAlbum" Clicked="btnEditAlbum_Clicked"/>
-                <Button Margin="5,0,5,3" IsVisible="{Binding IsLoggedIn}" x:Name="btnAdd" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Image(s)" Style="{StaticResource PrimaryButtonLarge}"/>
+                <!--<Button Margin="5,0,5,3" IsVisible="{Binding IsLoggedIn}" x:Name="btnAdd" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Image(s)" Style="{StaticResource PrimaryButtonLarge}"/>-->
             </StackLayout>
             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
         </StackLayout>
         <StackLayout Margin="20,20,20,5" Grid.Row="1">
-            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Albums" />
+            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Picture"  Style="{StaticResource SearchBarStyle}"/>
         </StackLayout>
         <StackLayout  x:Name="stackImages" Margin="20,20,20,5" Grid.Row="2">
         </StackLayout>
