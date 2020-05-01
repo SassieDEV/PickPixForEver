@@ -171,6 +171,12 @@
     <BundleResource Include="Resources\tags.png" />
     <BundleResource Include="Resources\upload.png" />
     <BundleResource Include="Resources\user.png" />
+    <BundleResource Include="Resources\RelationIcon1.png" />
+    <BundleResource Include="Resources\RelationIcon2.png" />
+    <BundleResource Include="Resources\CustomIcon1.png" />
+    <BundleResource Include="Resources\CustomIcon2.png" />
+    <BundleResource Include="Resources\tag_view.png" />
+    <BundleResource Include="Resources\tagCover.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\tab_feed%402x.png" />
