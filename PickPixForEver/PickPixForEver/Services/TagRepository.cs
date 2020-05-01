@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace PickPixForEver.Services
 {
@@ -13,11 +14,18 @@ namespace PickPixForEver.Services
     {
 
         private readonly string filePath;
-
+        public int UserId { get; set; }
         public TagRepository(string filePath)
         {
             this.filePath = filePath;
-
+            try
+            {
+                this.UserId = Preferences.Get("userId", -1);
+            }
+            catch (InvalidCastException ex)
+            {
+                this.UserId = -1;
+            }
         }
 
         public Task<int> AddItemAsync(Tag item)
@@ -78,19 +86,8 @@ namespace PickPixForEver.Services
             IEnumerable<Picture> pictures = new List<Picture>();
             try
             {
-                /*using (var ctx = new PickPixDbContext(this.filePath))
-                {
-                    var res =  ctx.Tags.Where(a => a.TagId == tagId).Select(s => new
-                    {
-                        Pictures = s.PictureTags.Select(p => p.Picture)
-                    }).ToList();
-                    if (res != null && res.Count > 0)
-                    {
-                        pictures = res[0].Pictures;
-                    }
-                }*/
                 using (var ctx = new PickPixDbContext(this.filePath)) {
-                    PictureTag[] picTagsResult = await ctx.PictureTags.Where(a => a.TagId == tagId).ToArrayAsync().ConfigureAwait(false);
+                    PictureTag[] picTagsResult = ctx.PictureTags.Where(a => (a.TagId == tagId && (a.Picture.UserId==this.UserId || a.Picture.Privacy.ToLower()=="public"))).ToArray();
                     foreach (PictureTag picTag in picTagsResult)
                     {
                         Picture pic = await ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);

@@ -19,5 +19,6 @@ namespace PickPixForEver.Models
         public string Privacy { get; set; }
         public bool Active { get; set; }
         public List<PictureAlbum> PictureAlbums { get; set; }
+        public int UserId { get; set; }
     }
 }
