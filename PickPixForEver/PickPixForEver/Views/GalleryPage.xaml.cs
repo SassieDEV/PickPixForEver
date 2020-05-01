@@ -43,11 +43,6 @@ namespace PickPixForEver.Views
             galleryViewModel.LoadTagsCommand.Execute(null);
             BindListViews();
             DisplayPictures();
-
-            if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
-            {
-                btnSlideShow.Text = "View Pictures";
-            }
         }
 
         private void BindListViews()

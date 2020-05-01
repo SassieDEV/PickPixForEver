@@ -10,30 +10,29 @@
     <ContentPage.Content>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftPanel" Width=".25*"/>
-                <ColumnDefinition x:Name="RightPanel" Width=".75*"/>
+                <ColumnDefinition Width=".20*"/>
+                <ColumnDefinition Width=".80*"/>
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Column="0" BackgroundColor="#303030">
                 <StackLayout>
-                    <Button Style="{StaticResource ClearBtnStyle}" Text="Clear filters" x:Name="btnClear" Clicked="btnClear_Clicked" 
+                    <Button Margin="10,10,20,5" Text="Clear filters" x:Name="btnClear" Clicked="btnClear_Clicked" 
                             HorizontalOptions="EndAndExpand"  BackgroundColor="Transparent" TextColor="#E91E63" 
                               BorderWidth="1"   BorderColor="#22A558"/>
                 </StackLayout>
                 <ScrollView Margin="0,0,0,0" Orientation="Vertical">
                     <StackLayout >
-                        <StackLayout x:Name="albumsStack" Margin="0,14,0,0">
+                        <StackLayout x:Name="albumsStack" Margin="0,4,0,0">
                             <StackLayout Orientation="Horizontal">
-                                <Image HorizontalOptions="Start" Source="albums.png" Style="{StaticResource GalleryTitleImg}"/>
-                                <Label Text="Albums" Style="{StaticResource GalleryMenuTitle}" TextColor="LightGray" FontAttributes="Bold"/>
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="albums.png"/>
+                                <Label Margin="5,5,0,0" Text="Albums" Style="{StaticResource HeaderLabel}" TextColor="LightGray" FontAttributes="Bold"/>
                             </StackLayout>
                             <ListView x:Name="lvAlbums" ItemSelected="lvAlbums_ItemSelected">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
                                             <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
-                                                <Image HorizontalOptions="Start" Source="album.png" Style="{StaticResource GallerySubTitleImg}"/>
-                                                <Label Text="{Binding Name}" LineBreakMode="MiddleTruncation"
-                                                       Style="{StaticResource GalleryMenuSubTitle}"/>
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="album.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="LightGray" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
                                             </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
@@ -42,16 +41,16 @@
                         </StackLayout>
                         <StackLayout Margin="0,15,0,0">
                             <StackLayout Orientation="Horizontal">
-                                <Image HorizontalOptions="Start" Source="people.png" Style="{StaticResource GalleryTitleImg}"/>
-                                <Label Text="People" Style="{StaticResource GalleryMenuTitle}" TextColor="LightGray" FontAttributes="Bold"/>
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="people.png"/>
+                                <Label Margin="5,5,0,0" Text="People" Style="{StaticResource HeaderLabel}" TextColor="LightGray" FontAttributes="Bold"/>
                             </StackLayout>
                             <ListView x:Name="lvPeople" ItemSelected="lvPeople_ItemSelected">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
                                             <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
-                                                <Image HorizontalOptions="Start" Source="person.png" Style="{StaticResource GallerySubTitleImg}"/>
-                                                <Label Style="{StaticResource GalleryMenuSubTitle}" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="person.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="LightGray" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
                                             </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
@@ -60,16 +59,16 @@
                         </StackLayout>
                         <StackLayout   Margin="0,15,0,0">
                             <StackLayout Orientation="Horizontal">
-                                <Image HorizontalOptions="Start" Source="places.png" Style="{StaticResource GalleryTitleImg}"/>
-                                <Label Text="Places" Style="{StaticResource GalleryMenuTitle}"  TextColor="LightGray" FontAttributes="Bold"/>
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="Places.png"/>
+                                <Label Margin="5,5,0,0" Text="Places" Style="{StaticResource HeaderLabel}"  TextColor="LightGray" FontAttributes="Bold"/>
                             </StackLayout>
                             <ListView x:Name="lvPlace" ItemSelected="lvPlace_ItemSelected">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
                                             <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
-                                                <Image HorizontalOptions="Start" Source="place.png" Style="{StaticResource GallerySubTitleImg}"/>
-                                                <Label Style="{StaticResource GalleryMenuSubTitle}" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="place.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="LightGray" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
                                             </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
@@ -78,16 +77,16 @@
                         </StackLayout>
                         <StackLayout  Margin="0,15,0,0">
                             <StackLayout Orientation="Horizontal">
-                                <Image HorizontalOptions="Start" Source="events.png" Style="{StaticResource GalleryTitleImg}"/>
-                                <Label Text="Events" Style="{StaticResource GalleryMenuTitle}" TextColor="LightGray" FontAttributes="Bold"/>
+                                <Image WidthRequest="30" HeightRequest="30" HorizontalOptions="Start" Source="events.png"/>
+                                <Label Margin="5,5,0,0" Text="Events" Style="{StaticResource HeaderLabel}" TextColor="LightGray" FontAttributes="Bold"/>
                             </StackLayout>
                             <ListView x:Name="lvEvent" ItemSelected="lvEvent_ItemSelected">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ViewCell>
                                             <StackLayout Margin="20,2,0,0" Orientation="Horizontal" HeightRequest="40">
-                                                <Image HorizontalOptions="Start" Source="event.png" Style="{StaticResource GallerySubTitleImg}"/>
-                                                <Label Style="{StaticResource GalleryMenuSubTitle}" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
+                                                <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" Source="event.png"/>
+                                                <Label Margin="5,9,0,0" TextColor="LightGray" Text="{Binding Name}" LineBreakMode="MiddleTruncation"/>
                                             </StackLayout>
                                         </ViewCell>
                                     </DataTemplate>
@@ -143,14 +142,14 @@
                     </Grid.RowDefinitions>
                     <StackLayout Margin="10,10,20,5" Grid.Row="0" >
                            <StackLayout Orientation="Horizontal">
-                                <Button HorizontalOptions="StartAndExpand" Text="View pictures in slide viewer" BackgroundColor="Transparent" TextColor="#2196F3" 
-                                  BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked" Style="{StaticResource ViewPicBtnStyle}"/>
-                               <Button x:Name="btnAdd" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource GalleryAddBtn}"/>
+                            <Button HorizontalOptions="StartAndExpand" Text="View pictures in slide viewer" BackgroundColor="Transparent" TextColor="#2196F3" 
+                              BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked"/>
+                            <Button x:Name="btnAdd" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonLarge}"/>
                         </StackLayout>
                         <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
                     </StackLayout>
                     <StackLayout Margin="10,5,20,5" Grid.Row="1">
-                        <SearchBar x:Name="txtSearch" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged" Style="{StaticResource SearchBarStyle}"/>
+                        <SearchBar x:Name="txtSearch" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged"/>
                     </StackLayout>
                     <ScrollView Orientation="Vertical" Margin="10,5,20,5" Grid.Row="2" HeightRequest="800">
                         <StackLayout x:Name="stackAllImages" >
@@ -160,4 +159,5 @@
             </StackLayout>
         </Grid>
     </ContentPage.Content>
+
 </ContentPage>
