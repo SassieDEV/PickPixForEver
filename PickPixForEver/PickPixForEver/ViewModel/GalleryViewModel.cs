@@ -52,7 +52,7 @@ namespace PickPixForEver.ViewModel
         private async Task ExecuteLoadTaggedPicturesCommand(int tagId)
         {
             Pictures.Clear();
-            var pictures = await Task.FromResult(TagsDataStore.GetTaggedPictures(tagId)).ConfigureAwait(false);
+            var pictures = await TagsDataStore.GetTaggedPictures(tagId).ConfigureAwait(false);
             Pictures = new ObservableCollection<Picture>(pictures);
         }
 

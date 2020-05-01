@@ -12,6 +12,8 @@ namespace PickPixForEver.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public List<string> PrivacyList { get; private set; } = new List<string> { "Public", "Private" };
+        public List<string> TagTypeList { get; private set; } = new List<string> { "People", "Places", "Events", "Custom", "Relationship" };
+
         public Command LoadItemCommand { get; set; }
         public Command SearchItemComand { get; set; }
         public Command AddItemCommand { get; set; }
