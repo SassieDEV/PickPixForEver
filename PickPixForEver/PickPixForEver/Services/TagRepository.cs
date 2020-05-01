@@ -1,6 +1,8 @@
-﻿using PickPixForEver.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PickPixForEver.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +33,7 @@ namespace PickPixForEver.Services
             throw new NotImplementedException();
         }
 
+
         public Task<bool> DeleteItemAsync(int id)
         {
             throw new NotImplementedException();
@@ -58,12 +61,27 @@ namespace PickPixForEver.Services
             return tags;
         }
 
-        public Task<IEnumerable<Tag>> GetItemsAsync(string searchTerm)
+ 
+        public async Task<IEnumerable<Tag>> GetItemsAsync(string searchTerm)
         {
-            throw new NotImplementedException();
+            IEnumerable<Tag> tags = new List<Tag>();
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return tags;
         }
 
-        public IEnumerable<Picture> GetTaggedPictures(int tagId)
+
+
+        public async Task<IEnumerable<Picture>> GetTaggedPictures(int tagId)
         {
             IEnumerable<Picture> pictures = new List<Picture>();
             try
@@ -72,10 +90,10 @@ namespace PickPixForEver.Services
                     PictureTag[] picTagsResult = ctx.PictureTags.Where(a => (a.TagId == tagId && (a.Picture.UserId==this.UserId || a.Picture.Privacy.ToLower()=="public"))).ToArray();
                     foreach (PictureTag picTag in picTagsResult)
                     {
-                        Picture pic = ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefault();
+                        Picture pic = await ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);
                         if (!pictures.Contains(pic))
                         {
-                            IEnumerable<Picture> pic1 = ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArray();
+                            IEnumerable<Picture> pic1 = await ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArrayAsync().ConfigureAwait(false);
                             pictures = pictures.Union(pic1);
                         }
                     }
