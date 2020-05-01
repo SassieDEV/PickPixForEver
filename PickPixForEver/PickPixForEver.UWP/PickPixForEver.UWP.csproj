@@ -139,6 +139,8 @@
     <Content Include="cover1.png" />
     <Content Include="cover2.png" />
     <Content Include="cover3.png" />
+    <Content Include="CustomIcon1.png" />
+    <Content Include="CustomIcon2.png" />
     <Content Include="event.png" />
     <Content Include="events.png" />
     <Content Include="gallery.png" />
@@ -149,7 +151,11 @@
     <Content Include="place.png" />
     <Content Include="places.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="RelationIcon1.png" />
+    <Content Include="RelationIcon2.png" />
+    <Content Include="tagCover.png" />
     <Content Include="tags.png" />
+    <Content Include="tag_view.png" />
     <Content Include="upload.png" />
     <Content Include="user.png" />
   </ItemGroup>

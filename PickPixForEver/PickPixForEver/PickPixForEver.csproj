@@ -29,6 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\TagDetailPage.xaml.cs">
+      <DependentUpon>TagDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\EditTag.xaml.cs">
+      <DependentUpon>EditTag.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="AuthViews\ForgotPassword.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

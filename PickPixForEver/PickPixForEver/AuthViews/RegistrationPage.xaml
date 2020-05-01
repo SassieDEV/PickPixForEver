@@ -19,7 +19,7 @@
             <StackLayout Grid.Row="1" Margin="40,0,40,0" VerticalOptions="CenterAndExpand">
                 <Entry Placeholder="First Name"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entFirstName"/>
                 <Entry Placeholder="Last Name" Margin="0,20,0,0"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entLastName"/>
-                <Entry Placeholder="Email" Margin="0,20,0,0"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEmail"/>
+                <Entry Placeholder="Username" Margin="0,20,0,0"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entEmail"/>
                 <Entry Placeholder="Password" Margin="0,20,0,0"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entPassword" IsPassword="True"/>
                 <Entry Placeholder="Confirm Password" Margin="0,20,0,0"  BackgroundColor="Gray" PlaceholderColor="Black" x:Name="entConfirmPassword" IsPassword="True"/>
                 <Button Text="Sign Up" Margin="0,40,0,0" BackgroundColor="#2196f3" TextColor="White" CornerRadius="10"

@@ -14,18 +14,18 @@ using Xamarin.Forms.Xaml;
 namespace PickPixForEver.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AlbumDetailPage : ContentPage
+    public partial class TagDetailPage : ContentPage
     {
         List<Picture> pictures = new List<Picture>();
-        AlbumDetailViewModel viewModel;
-        public AlbumDetailPage(AlbumDetailViewModel viewModel)
+        TagDetailViewModel viewModel;
+        public TagDetailPage(TagDetailViewModel viewModel)
         {
             InitializeComponent();
 
             this.viewModel = viewModel;
-            if (viewModel!=null && viewModel.Album!=null)
+            if (viewModel!=null && viewModel.Tag !=null)
             {
-                this.viewModel.LoadAlbumPicturesCommand.Execute(viewModel.Album.Id);
+                this.viewModel.LoadTagPicturesCommand.Execute(viewModel.Tag.TagId);
             }           
             BindingContext = this.viewModel;
         }
@@ -33,27 +33,18 @@ namespace PickPixForEver.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            PopulateAlbumImages();
+            PopulateTagImages();
 
         }
-        private void btnAdd_Clicked(object sender, EventArgs e)
+
+        private async void btnEditTag_Clicked(object sender, EventArgs e)
         {
-
+            Tag tag = new Tag();
+            tag = this.viewModel.Tag;
+            await PopupNavigation.Instance.PushAsync(new EditTag(new TagDetailViewModel(App.FilePath, tag))).ConfigureAwait(false);
         }
 
-        private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private async void btnEditAlbum_Clicked(object sender, EventArgs e)
-        {
-            Album album = new Album();
-            album = this.viewModel.Album;
-            await PopupNavigation.Instance.PushAsync(new AddAlbum(new AlbumDetailViewModel(App.FilePath, album))).ConfigureAwait(false);
-        }
-
-       void PopulateAlbumImages()
+       void PopulateTagImages()
         {
             stackImages.Children.Clear();
             var imageScrollView = new ScrollView();
@@ -63,7 +54,6 @@ namespace PickPixForEver.Views
             
             foreach (var picture in this.viewModel.Pictures)
             {
-                // stackTags.Children.Add(new Button() { Text = picture.Privacy });
                 Image image = new Image() { Source = ImageSource.FromStream(() => new MemoryStream(picture.RawData)) };
 
                 Label notes = new Label();
@@ -100,18 +90,5 @@ namespace PickPixForEver.Views
             }
         }
 
-        private async void btnSlideShow_Clicked(object sender, EventArgs e)
-        {
-            if(this.viewModel.Pictures!=null && this.viewModel.Pictures.Count > 0)
-            {
-                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
-
-            }
-            else
-            {
-                await DisplayAlert("Empty", "No pictures to show", "Ok").ConfigureAwait(false);
-            }
-            
-        }
     }
 }

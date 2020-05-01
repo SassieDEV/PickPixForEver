@@ -1,9 +1,12 @@
-﻿using PickPixForEver.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PickPixForEver.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace PickPixForEver.Services
 {
@@ -11,17 +14,25 @@ namespace PickPixForEver.Services
     {
 
         private readonly string filePath;
-
+        public int UserId { get; set; }
         public TagRepository(string filePath)
         {
             this.filePath = filePath;
-
+            try
+            {
+                this.UserId = Preferences.Get("userId", -1);
+            }
+            catch (InvalidCastException ex)
+            {
+                this.UserId = -1;
+            }
         }
 
         public Task<int> AddItemAsync(Tag item)
         {
             throw new NotImplementedException();
         }
+
 
         public Task<bool> DeleteItemAsync(int id)
         {
@@ -50,35 +61,39 @@ namespace PickPixForEver.Services
             return tags;
         }
 
-        public Task<IEnumerable<Tag>> GetItemsAsync(string searchTerm)
+ 
+        public async Task<IEnumerable<Tag>> GetItemsAsync(string searchTerm)
         {
-            throw new NotImplementedException();
+            IEnumerable<Tag> tags = new List<Tag>();
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return tags;
         }
 
-        public IEnumerable<Picture> GetTaggedPictures(int tagId)
+
+
+        public async Task<IEnumerable<Picture>> GetTaggedPictures(int tagId)
         {
             IEnumerable<Picture> pictures = new List<Picture>();
             try
             {
-                /*using (var ctx = new PickPixDbContext(this.filePath))
-                {
-                    var res =  ctx.Tags.Where(a => a.TagId == tagId).Select(s => new
-                    {
-                        Pictures = s.PictureTags.Select(p => p.Picture)
-                    }).ToList();
-                    if (res != null && res.Count > 0)
-                    {
-                        pictures = res[0].Pictures;
-                    }
-                }*/
                 using (var ctx = new PickPixDbContext(this.filePath)) {
-                    PictureTag[] picTagsResult = ctx.PictureTags.Where(a => a.TagId == tagId).ToArray();
+                    PictureTag[] picTagsResult = ctx.PictureTags.Where(a => (a.TagId == tagId && (a.Picture.UserId==this.UserId || a.Picture.Privacy.ToLower()=="public"))).ToArray();
                     foreach (PictureTag picTag in picTagsResult)
                     {
-                        Picture pic = ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefault();
+                        Picture pic = await ctx.Pictures.Where(p => p.Id == picTag.PictureId).FirstOrDefaultAsync().ConfigureAwait(false);
                         if (!pictures.Contains(pic))
                         {
-                            IEnumerable<Picture> pic1 = ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArray();
+                            IEnumerable<Picture> pic1 = await ctx.Pictures.Where(p => p.Id == pic.Id).Distinct().ToArrayAsync().ConfigureAwait(false);
                             pictures = pictures.Union(pic1);
                         }
                     }
@@ -91,9 +106,31 @@ namespace PickPixForEver.Services
             return pictures;
         }
 
-        public Task<bool> UpdateItemAsync(Tag item)
+        public  async Task<bool> UpdateItemAsync(Tag item)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    Tag tag = ctx.Tags.SingleOrDefault(A => A.TagId == item.TagId);
+                    if (tag != null)
+                    {
+                        tag.Name = item.Name;
+                        tag.TagType = item.TagType;
+                        tag.Updated = DateTime.Now;
+                        await ctx.SaveChangesAsync().ConfigureAwait(false);
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
         }
     }
 }

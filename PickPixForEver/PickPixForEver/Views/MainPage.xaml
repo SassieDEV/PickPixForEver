@@ -36,6 +36,13 @@
                         <TapGestureRecognizer x:Name="Album" Tapped="Album_Tapped"/>
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="20,20,0,0" Spacing="20">
+                    <Image Source="tag_view.png"/>
+                    <Label Text="Manage Tags" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer x:Name="Manage_Tags" Tapped="Manage_Tags_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
                 <StackLayout IsVisible="{Binding IsLoggedIn}" Orientation="Horizontal" Margin="20,20,0,0" Spacing="20"  >
                     <Image Source="logout.png"/>
                     <Label Text="Logout" FontSize="Medium" VerticalOptions="Center" TextColor="LightGray"/>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace PickPixForEver.Services
 {
@@ -15,11 +16,20 @@ namespace PickPixForEver.Services
         private readonly string filePath;
         List<int> picIdsToUpdate = null;
         AlbumRepository albumRep = null;
+        public int UserId { get; set; }
         public PicturesRepository(string filePath)
         {
             this.picIdsToUpdate = new List<int>();
             this.filePath = filePath;
             this.albumRep = new AlbumRepository(filePath);
+            try
+            {
+                this.UserId = Preferences.Get("userId", -1);
+            }
+            catch (InvalidCastException ex)
+            {
+                this.UserId = -1;
+            }
 
         }
 
@@ -60,7 +70,7 @@ namespace PickPixForEver.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);                
+                Console.WriteLine(ex.Message);
             }
             return 0;
         }
@@ -75,8 +85,9 @@ namespace PickPixForEver.Services
             Picture pic;
             using (var dbContext = new PickPixDbContext(filePath))
             {
-                pic = await dbContext.Pictures.
-                Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
+                pic = await dbContext.Pictures
+
+                    .Where(s => s.Id == ID).SingleOrDefaultAsync().ConfigureAwait(false);
                 return pic;
             }
         }
@@ -89,6 +100,20 @@ namespace PickPixForEver.Services
                 tag = await dbContext.Tags.
                 Where(s => s.TagId == ID).SingleOrDefaultAsync().ConfigureAwait(false);
                 return tag;
+            }
+        }
+
+
+        public async Task<IEnumerable<Models.Tag>> FindTagByPictureIdAsync(int PictureId)
+        {
+
+            using (var dbContext = new PickPixDbContext(filePath))
+            {
+                return await dbContext.PictureTags
+                     .Where(s => s.PictureId == PictureId)
+                     .Select(c => c.Tag)
+                     .ToListAsync().ConfigureAwait(false);
+
             }
         }
 
@@ -113,7 +138,7 @@ namespace PickPixForEver.Services
         private Picture getPictureModel(Stream stream, string filePath)
         {
             Picture pic = new Picture();
-            pic.RawData = Convert.ToBase64String(GetImageStreamAsBytes(stream));
+            pic.RawData = GetImageStreamAsBytes(stream);
             pic.Created = DateTime.Now;
             pic.Updated = DateTime.Now;
             pic.PictureMetaData = filePath;
@@ -138,7 +163,7 @@ namespace PickPixForEver.Services
         public async Task<int> HandleImageCommit(int userId, Dictionary<Stream, string> streams, string[][] megaTags, int albumId, string privacy, string notes)
         {
             Models.Tag[] applyTags = Array.Empty<Models.Tag>();
-           // Album[] applyAlbums = Array.Empty<Album>();
+            // Album[] applyAlbums = Array.Empty<Album>();
 
             if (megaTags.Length > 0)
                 applyTags = await HandleTags(userId, megaTags).ConfigureAwait(false);
@@ -152,6 +177,7 @@ namespace PickPixForEver.Services
                     Picture pic = getPictureModel(curPic.Key, curPic.Value);
                     pic.Notes = notes;
                     pic.Privacy = privacy;
+                    pic.UserId = userId;
                     int curPicId = await this.AddItemAsync(pic).ConfigureAwait(false);
 
                     if (curPicId == 0)
@@ -179,16 +205,6 @@ namespace PickPixForEver.Services
                             AlbumId = albumId
                         }).ConfigureAwait(false);
                     }
-                    
-                    //foreach (Album curAlbum in applyAlbums)
-                    //{
-                    //    int curAlbumId = curAlbum.Id;
-                    //    await ctx.PictureAlbums.AddAsync(new PictureAlbum
-                    //    {
-                    //        PictureId = curPicId,
-                    //        AlbumId = curAlbum.Id
-                    //    }).ConfigureAwait(false);
-                    //}
                 }
                 await ctx.SaveChangesAsync().ConfigureAwait(false);
             }
@@ -201,68 +217,41 @@ namespace PickPixForEver.Services
 
             //TODO: Figure out how to derive the current user of app and pass their user id instead
 
-           foreach (string curPeople in megaTags.ElementAt(0))
+            foreach (string curPeople in megaTags.ElementAt(0))
             {
-                newTag = new Models.Tag { Name = curPeople, TagType = "People", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                newTag = new Models.Tag { Name = curPeople, TagType = "People", Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
-            }            
+            }
             foreach (string curPlaces in megaTags.ElementAt(1))
             {
-                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                newTag = new Models.Tag { Name = curPlaces, TagType = "Places", Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curEvents in megaTags.ElementAt(2))
             {
-                newTag = new Models.Tag { Name = curEvents, TagType = "Events", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                newTag = new Models.Tag { Name = curEvents, TagType = "Events",Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curCustom in megaTags.ElementAt(3))
             {
-                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                newTag = new Models.Tag { Name = curCustom, TagType = "Custom", Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             foreach (string curRelationship in megaTags.ElementAt(4))
             {
-                newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", UserId = userId, Updated = DateTime.Now, Created = DateTime.Now };
+                newTag = new Models.Tag { Name = curRelationship, TagType = "Relationship", Updated = DateTime.Now, Created = DateTime.Now };
                 int newTagId = await this.AddTagAsync(newTag).ConfigureAwait(false);
                 applyTags.Add(await FindTagAsync(newTagId).ConfigureAwait(false));
             }
             return applyTags.ToArray();
         }
 
-        private async Task<Album[]> HandleAlbums(int userId, string[] albums)
-        {
-            List<Album> applyAlbums = new List<Album>();
-            Album newAlbum = new Album();
-
-            foreach (string curAlbum in albums)
-            {
-                newAlbum = new Album { Name = curAlbum };
-                await albumRep.AddItemAsync(newAlbum).ConfigureAwait(false);
-                applyAlbums.Add(await albumRep.FindItemAsync(newAlbum.Id).ConfigureAwait(false));
-            }
-            return applyAlbums.ToArray();
-        }
         public async Task<int> EnterImgDataSource(Stream imgStream)
         {
-            /*try
-            {
-                byte[] imgByte = GetImageStreamAsBytes(imgStream);
-                //String b64Str = Convert.ToBase64String(imgByte);
-                //System.Diagnostics.Debug.WriteLine(b64Str);
-                var pic = new Picture(imgByte, "");
-                await AddItemAsync(pic).ConfigureAwait(false);
-                return pic.Id;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Error: " + ex);
-                return 0;
-            }*/
             return 0;
         }
 
@@ -274,12 +263,12 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    pictures = await Task.FromResult(ctx.Pictures.ToList()).ConfigureAwait(false);
+                    pictures = await Task.FromResult(ctx.Pictures.Where(s=>(s.UserId==this.UserId || s.Privacy.ToLower()=="public")).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-               //To Do: implement logging
+                //To Do: implement logging
             }
             return pictures;
         }
@@ -294,16 +283,15 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                   
-                    var albumPics = ctx.Albums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureAlbums).ToList();
+                    var albumPics = ctx.Albums.Where(a => (a.Name.ToLower().Contains(searchTerm.ToLower()) && (a.UserId == this.UserId || a.Privacy.ToLower() == "public"))).Select(p => p.PictureAlbums).ToList();
                     List<int> pictureIds = new List<int>();
                     foreach (var albumPic in albumPics)
                     {
                         var pics = albumPic.Select(p => p.PictureId).ToList();
-                        if(pics!=null && pics.Count > 0)
+                        if (pics != null && pics.Count > 0)
                         {
                             pictureIds.AddRange(pics);
-                        }                       
+                        }
                     }
                     var tagPics = ctx.Tags.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).Select(p => p.PictureTags).ToList();
                     foreach (var tagPic in tagPics)
@@ -319,9 +307,11 @@ namespace PickPixForEver.Services
                     {
                         pictureIds = pictureIds.Distinct().ToList();
                     }
-                    if(pictureIds!=null && pictureIds.Count > 0)
+                    if (pictureIds != null && pictureIds.Count > 0)
                     {
-                        pictures = await ctx.Pictures.Where(p => pictureIds.Contains(p.Id)).ToListAsync().ConfigureAwait(false);
+                        pictures = await ctx.Pictures.
+                            Where(p => (pictureIds.Contains(p.Id) && (p.UserId == this.UserId || p.Privacy.ToLower()=="public"))).
+                            ToListAsync().ConfigureAwait(false);
                     }
                 }
             }
@@ -336,5 +326,6 @@ namespace PickPixForEver.Services
         {
             throw new NotImplementedException();
         }
+
     }
 }

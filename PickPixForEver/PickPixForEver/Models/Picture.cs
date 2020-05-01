@@ -12,7 +12,7 @@ namespace PickPixForEver.Models
             PictureTags = new List<PictureTag>();
         }
         public int Id { get; set; }        
-        public string RawData { get; set; }
+        public byte[] RawData { get; set; }
         public string Privacy { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -20,15 +20,8 @@ namespace PickPixForEver.Models
         public string Notes { get; set; }
         public List<PictureAlbum> PictureAlbums { get; set; }
         public List<PictureTag> PictureTags { get; set; }
+        public int UserId { get; set; }
 
-        [NotMapped]
-        public byte[] ImageArray
-        {
-            get
-            {
-                return Convert.FromBase64String(RawData);
-            }
-        }
 
 
         public override bool Equals(object obj)
