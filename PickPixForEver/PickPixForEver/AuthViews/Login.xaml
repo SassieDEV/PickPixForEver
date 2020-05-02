@@ -27,7 +27,7 @@
                 </Label>
                 <Button Text="Login" BackgroundColor="#2196f3" TextColor="White" CornerRadius="10"
                         HeightRequest="40" x:Name="btnLogin" Clicked="btnLogin_Clicked" />
-                <Button Text="Login as Viewer" Margin="0,40,0,0" BackgroundColor="#E91E63" TextColor="White" CornerRadius="10"
+                <Button Text="Login as Viewer" Margin="0,40,0,0" BackgroundColor="#D76735" TextColor="White" CornerRadius="10"
                         HeightRequest="40" x:Name="bntLoginView" Clicked="bntLoginView_Clicked"/>
             </StackLayout>
             <StackLayout Grid.Row="2" Padding="20" Orientation="Horizontal" HorizontalOptions="Center">
