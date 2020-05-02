@@ -167,6 +167,7 @@ namespace PickPixForEver.Views
                 DelImageTapped_Tapped(imageArray.Item1);
             };
             delImage.GestureRecognizers.Add(delImageTapped);
+            delImage.IsVisible = galleryViewModel.IsLoggedIn;
             stack.Children.Add(image);
             stack.Children.Add(delImage);
             frame.Content = stack;
