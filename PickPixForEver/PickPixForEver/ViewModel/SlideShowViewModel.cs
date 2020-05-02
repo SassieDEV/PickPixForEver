@@ -39,6 +39,7 @@ namespace PickPixForEver.ViewModel
             {
                 _pictureNode = value;
                 OnPropertyChanged();
+
             }
         }
 
@@ -50,7 +51,7 @@ namespace PickPixForEver.ViewModel
                 foreach (var byteArray in this.PicturesArray)
                 {
                     var pic = await picRep.FindItemAsync(byteArray.Key).ConfigureAwait(false);
-                    var tags = await picRep.FindTagByPictureIdAsync(PictureId).ConfigureAwait(false);
+                    var tags = await picRep.FindTagByPictureIdAsync(byteArray.Key).ConfigureAwait(false);
                     list.Add(new PictureSliderModel()
                     {
                         Title = pic.Notes,

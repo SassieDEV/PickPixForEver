@@ -111,6 +111,7 @@
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\logo.png" />
+    <Content Include="Assets\SlideshowMusic.mp3" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
     <Content Include="Assets\SmallTile.scale-400.png" />
@@ -140,6 +141,7 @@
     <Content Include="cover3.png" />
     <Content Include="CustomIcon1.png" />
     <Content Include="CustomIcon2.png" />
+    <Content Include="delete.png" />
     <Content Include="event.png" />
     <Content Include="events.png" />
     <Content Include="gallery.png" />

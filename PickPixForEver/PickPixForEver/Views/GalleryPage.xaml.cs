@@ -27,7 +27,6 @@ namespace PickPixForEver.Views
             MessagingCenter.Subscribe<AddPicturePage>(this, "OnPopupClosed", async (sender) =>
              {
                  galleryViewModel.LoadPicturesCommand.Execute(null);
-                 galleryViewModel.LoadPicturesCommand.Execute(null);
                  galleryViewModel.LoadAlbumsCommand.Execute(null);
                  galleryViewModel.LoadTagsCommand.Execute(null);
                  BindListViews();
@@ -43,11 +42,6 @@ namespace PickPixForEver.Views
             galleryViewModel.LoadTagsCommand.Execute(null);
             BindListViews();
             DisplayPictures();
-
-            if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
-            {
-                btnSlideShow.Text = "View Pictures";
-            }
         }
 
         private void BindListViews()
@@ -68,8 +62,8 @@ namespace PickPixForEver.Views
             lvPlace.HeightRequest = 40 * (places.Count <= 3 ? places.Count : 3);
             lvPeople.HeightRequest = 40 * (people.Count <= 3 ? people.Count : 3);
             lvEvent.HeightRequest = 40 * (events.Count <= 3 ? events.Count : 3);
-            lvRelation.HeightRequest = 40 * (relationship.Count <= 3 ? events.Count : 3);
-            lvCustom.HeightRequest = 40 * (custom.Count <= 3 ? events.Count : 3);
+            lvRelation.HeightRequest = 40 * (relationship.Count <= 3 ? relationship.Count : 3);
+            lvCustom.HeightRequest = 40 * (custom.Count <= 3 ? custom.Count : 3);
 
         }
         private void DisplayPictures()
@@ -140,14 +134,17 @@ namespace PickPixForEver.Views
             Frame frame = new Frame();
             frame.BorderColor = Color.Gray;
             frame.CornerRadius = 5;
-            frame.Padding = 8;
+            frame.Padding = new Thickness(4,2,4,2);
+            StackLayout stack = new StackLayout();
+            stack.Orientation = StackOrientation.Vertical;
 
             Image image = new Image();
-            
+            image.HorizontalOptions = LayoutOptions.StartAndExpand;
+            image.VerticalOptions = LayoutOptions.StartAndExpand;
             image.Source = ImageSource.FromStream(() => new MemoryStream(imageArray.Item2));
             
-            image.HeightRequest = 120;
-            image.WidthRequest = 120;
+            image.HeightRequest = 170;
+            image.WidthRequest = 170;
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
@@ -155,12 +152,36 @@ namespace PickPixForEver.Views
             };
 
             image.GestureRecognizers.Add(tapGestureRecognizer);
-            
 
-            frame.Content = image;
+            Image delImage = new Image();
+            delImage.HeightRequest = 25;
+            delImage.WidthRequest = 25;
+            delImage.Source = "delete.png";
+            delImage.HorizontalOptions = LayoutOptions.End;
+            delImage.VerticalOptions = LayoutOptions.End;
+            var delImageTapped = new TapGestureRecognizer();
+            delImageTapped.Tapped += (s,e)=> {
+                DelImageTapped_Tapped(imageArray.Item1);
+            };
+            delImage.GestureRecognizers.Add(delImageTapped);
+            stack.Children.Add(image);
+            stack.Children.Add(delImage);
+            frame.Content = stack;
 
             return frame;
         }
+
+        private async void DelImageTapped_Tapped(int pictureId)
+        {
+            var answer = await DisplayAlert("Delete", "Are you sure you want to delete the selected image?", "Yes", "No").ConfigureAwait(true);
+            if (answer)
+            {
+                galleryViewModel.DeletePictureCommand.Execute(pictureId);
+                galleryViewModel.LoadPicturesCommand.Execute(null);
+                DisplayPictures();
+            }
+        }
+
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
@@ -296,6 +317,9 @@ namespace PickPixForEver.Views
                       this.galleryViewModel.Pictures
                       .Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
 
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load("SlideshowMusic.mp3");
+                player.Play();
             }
             else
             {
@@ -317,6 +341,18 @@ namespace PickPixForEver.Views
             txtSearch.Text = string.Empty;
             galleryViewModel.LoadPicturesCommand.Execute(null);
             DisplayPictures();
+        }
+        private void btnMusicOn_Clicked(object sender, EventArgs e)
+        {
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            player.Load("SlideshowMusic.mp3");
+            player.Play();
+        }
+
+        private void btnMusicOff_Clicked(object sender, EventArgs e)
+        {
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            player.Stop();
         }
     }
 }

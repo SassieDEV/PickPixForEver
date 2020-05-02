@@ -19,6 +19,7 @@ namespace PickPixForEver.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddPicturePage : PopupPage
     {
+        private const long MAX_IMAGE_SIZE_SUPPORTED = 2500000;
         PicturesRepository picRep = new PicturesRepository(App.FilePath);
         public string[] fileTypes { get; set; }
         public int UserId { get; set; }
@@ -71,6 +72,12 @@ namespace PickPixForEver.Views
 
             if (pickedFile != null)
             {
+                if(pickedFile.GetStream().Length>MAX_IMAGE_SIZE_SUPPORTED)
+                {
+                    await DisplayAlert("Info", "Uploaded photo is bigger than the maximum 2.5 MB image size" +
+                        " supported by this app. Please upload a smaller size image ", "Ok").ConfigureAwait(false);
+                    return;
+                }
                 Frame frame = new Frame();
                 frame.BorderColor = Color.Gray;
                 frame.CornerRadius = 5;
@@ -78,9 +85,7 @@ namespace PickPixForEver.Views
                 Image image = new Image();
                 image.Source = ImageSource.FromStream(() => pickedFile.GetStream());
                 image.HeightRequest = 150;
-                image.WidthRequest = 150;
- 
-                
+                image.WidthRequest = 150;              
 
                 frame.Content = image;
                 ImagePreview.Children.Add(frame);

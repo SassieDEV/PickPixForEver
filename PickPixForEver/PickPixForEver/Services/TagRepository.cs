@@ -69,7 +69,7 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm.ToLower())).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -106,9 +106,31 @@ namespace PickPixForEver.Services
             return pictures;
         }
 
-        public Task<bool> UpdateItemAsync(Tag item)
+        public  async Task<bool> UpdateItemAsync(Tag item)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                using (var ctx = new PickPixDbContext(this.filePath))
+                {
+                    Tag tag = ctx.Tags.SingleOrDefault(A => A.TagId == item.TagId);
+                    if (tag != null)
+                    {
+                        tag.Name = item.Name;
+                        tag.TagType = item.TagType;
+                        tag.Updated = DateTime.Now;
+                        await ctx.SaveChangesAsync().ConfigureAwait(false);
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return result;
         }
     }
 }

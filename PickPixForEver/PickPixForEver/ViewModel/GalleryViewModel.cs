@@ -24,6 +24,8 @@ namespace PickPixForEver.ViewModel
         public Command LoadTagsCommand { get; set; }
         public Command LoadAlbumPicturesCommand { get; set; }
         public Command LoadTaggedPicturesCommand { get; set; }
+        public Command DeletePictureCommand { get; set; }
+
         public GalleryViewModel(string filePath)
         {
             PicturesDataStore = new PicturesRepository(filePath);
@@ -40,6 +42,7 @@ namespace PickPixForEver.ViewModel
             LoadAlbumPicturesCommand = new Command<int>(async (albumId) => await ExecuteLoadAlbumPicturesCommand(albumId).ConfigureAwait(false));
             LoadTaggedPicturesCommand = new Command<int>(async (tagId) => await ExecuteLoadTaggedPicturesCommand(tagId).ConfigureAwait(false));
             SearchItemComand = new Command<string>(async (searchTerm) => await ExecuteSearchPicturesCommand(searchTerm).ConfigureAwait(false));
+            DeletePictureCommand = new Command<int>(async (pictureId) => await ExecuteDeletePictureCommand(pictureId).ConfigureAwait(false));
         }
 
         private async Task ExecuteSearchPicturesCommand(string searchTerm)
@@ -83,6 +86,11 @@ namespace PickPixForEver.ViewModel
             Tags.Clear();
             var tags = await TagsDataStore.GetItemsAsync().ConfigureAwait(false);
             Tags = new ObservableCollection<Tag>(tags);
+        }
+
+        private async Task ExecuteDeletePictureCommand(int pictureId)
+        {
+             await PicturesDataStore.DeleteItemAsync(pictureId).ConfigureAwait(false);
         }
     }
 }
