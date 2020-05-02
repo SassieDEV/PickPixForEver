@@ -22,8 +22,9 @@ namespace PickPixForEver.Views
         public GalleryPage()
         {
             InitializeComponent();
+            this.StopMusic();
+            MusicSwitch.IsToggled = false;
             BindingContext = galleryViewModel = new GalleryViewModel(App.FilePath);
-
             MessagingCenter.Subscribe<AddPicturePage>(this, "OnPopupClosed", async (sender) =>
              {
                  galleryViewModel.LoadPicturesCommand.Execute(null);
@@ -37,12 +38,14 @@ namespace PickPixForEver.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            MusicSwitch.IsToggled = false;
             galleryViewModel.LoadPicturesCommand.Execute(null);
             galleryViewModel.LoadAlbumsCommand.Execute(null);
             galleryViewModel.LoadTagsCommand.Execute(null);
             BindListViews();
             DisplayPictures();
         }
+
 
         private void BindListViews()
         {
@@ -316,10 +319,6 @@ namespace PickPixForEver.Views
                     new SlideShowViewModel(
                       this.galleryViewModel.Pictures
                       .Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
-
-                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                player.Load("SlideshowMusic.mp3");
-                player.Play();
             }
             else
             {
@@ -342,14 +341,26 @@ namespace PickPixForEver.Views
             galleryViewModel.LoadPicturesCommand.Execute(null);
             DisplayPictures();
         }
-        private void btnMusicOn_Clicked(object sender, EventArgs e)
+        private void MusicSwitch_Toggled(object sender, ToggledEventArgs e)
+        {
+            if (MusicSwitch.IsToggled)
+            {
+                this.PlayMusic();
+            }
+            else
+            {
+                this.StopMusic();
+            }
+        }
+
+        private void PlayMusic()
         {
             var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
             player.Load("SlideshowMusic.mp3");
             player.Play();
         }
 
-        private void btnMusicOff_Clicked(object sender, EventArgs e)
+        private void StopMusic()
         {
             var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
             player.Stop();

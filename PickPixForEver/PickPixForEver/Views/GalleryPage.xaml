@@ -145,10 +145,10 @@
                            <StackLayout Orientation="Horizontal">
                             <Button HorizontalOptions="StartAndExpand" Text="View pictures in slide viewer" BackgroundColor="Transparent" TextColor="#2196F3" 
                               BorderWidth="1"   BorderColor="#22A558" x:Name="btnSlideShow" Clicked="btnSlideShow_Clicked"/>
-                            <Button HorizontalOptions="StartAndExpand" Text="Music On" BackgroundColor="Transparent" TextColor="#2196F3" 
-                              BorderWidth="1"   BorderColor="#22A558" x:Name="btnMusicOn" Clicked="btnMusicOn_Clicked"/>
-                            <Button HorizontalOptions="StartAndExpand" Text="Music Off" BackgroundColor="Transparent" TextColor="#2196F3" 
-                              BorderWidth="1"   BorderColor="#22A558" x:Name="btnMusicOff" Clicked="btnMusicOff_Clicked"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                                <Label Margin="0,3,0,0" Text="Turn music" TextColor="#2196F3"/>
+                                <Switch x:Name="MusicSwitch" OnColor="#2196F3" Toggled="MusicSwitch_Toggled"/>
+                            </StackLayout>
                             <Button x:Name="btnAdd" IsVisible="{Binding IsLoggedIn}" Clicked="btnAdd_Clicked" HorizontalOptions="EndAndExpand" Text="+ Add Picture(s)" Style="{StaticResource PrimaryButtonLarge}"/>
                         </StackLayout>
                         <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>

@@ -145,6 +145,7 @@
     <Content Include="event.png" />
     <Content Include="events.png" />
     <Content Include="gallery.png" />
+    <Content Include="logo.jpg" />
     <Content Include="logo.png" />
     <Content Include="logout.png" />
     <Content Include="people.png" />

@@ -36,10 +36,6 @@ namespace PickPixForEver.Views
             PopulateAlbumImages();
 
         }
-        private void btnAdd_Clicked(object sender, EventArgs e)
-        {
-
-        }
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
