@@ -290,6 +290,9 @@ namespace PickPixForEver.Views
                       this.galleryViewModel.Pictures
                       .Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
 
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load("SlideshowMusic.mp3");
+                player.Play();
             }
             else
             {
@@ -311,6 +314,18 @@ namespace PickPixForEver.Views
             txtSearch.Text = string.Empty;
             galleryViewModel.LoadPicturesCommand.Execute(null);
             DisplayPictures();
+        }
+        private void btnMusicOn_Clicked(object sender, EventArgs e)
+        {
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            player.Load("SlideshowMusic.mp3");
+            player.Play();
+        }
+
+        private void btnMusicOff_Clicked(object sender, EventArgs e)
+        {
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            player.Stop();
         }
     }
 }

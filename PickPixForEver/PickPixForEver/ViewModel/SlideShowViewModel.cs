@@ -39,6 +39,7 @@ namespace PickPixForEver.ViewModel
             {
                 _pictureNode = value;
                 OnPropertyChanged();
+
             }
         }
 
