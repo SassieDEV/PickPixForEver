@@ -4,12 +4,24 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PickPixForEver.Views.TagsPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Tags page placeholder!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" FontSize="Medium"/>
+             x:Class="PickPixForEver.Views.TagsPage"
+             BackgroundColor="{StaticResource DarkBackgroundColor}"
+             Title="{Binding Title}"
+             >
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout Margin="20,5,20,5" Grid.Row="0" >
+             <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" Color="#22A558"/>
         </StackLayout>
-    </ContentPage.Content>
+        <StackLayout Margin="20,20,20,5" Grid.Row="1">
+            <SearchBar TextChanged="SearchBar_TextChanged" Placeholder="Search Tags" />
+        </StackLayout>
+        <StackLayout x:Name="tagsStackLayout" Margin="20,20,20,5" Grid.Row="2">
+
+        </StackLayout>
+    </Grid>
 </ContentPage>

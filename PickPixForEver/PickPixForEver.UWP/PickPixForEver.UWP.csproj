@@ -111,6 +111,7 @@
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\logo.png" />
+    <Content Include="Assets\SlideshowMusic.mp3" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
     <Content Include="Assets\SmallTile.scale-400.png" />
@@ -138,9 +139,13 @@
     <Content Include="cover1.png" />
     <Content Include="cover2.png" />
     <Content Include="cover3.png" />
+    <Content Include="CustomIcon1.png" />
+    <Content Include="CustomIcon2.png" />
+    <Content Include="delete.png" />
     <Content Include="event.png" />
     <Content Include="events.png" />
     <Content Include="gallery.png" />
+    <Content Include="logo.jpg" />
     <Content Include="logo.png" />
     <Content Include="logout.png" />
     <Content Include="people.png" />
@@ -148,7 +153,11 @@
     <Content Include="place.png" />
     <Content Include="places.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="RelationIcon1.png" />
+    <Content Include="RelationIcon2.png" />
+    <Content Include="tagCover.png" />
     <Content Include="tags.png" />
+    <Content Include="tag_view.png" />
     <Content Include="upload.png" />
     <Content Include="user.png" />
   </ItemGroup>

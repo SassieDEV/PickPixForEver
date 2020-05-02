@@ -23,7 +23,6 @@ namespace PickPixForEver.ViewModel
             Albums = new ObservableCollection<Album>();
             LoadItemCommand = new Command(async () => await ExecuteLoadAlbumsCommand().ConfigureAwait(false));
             SearchItemComand = new Command<string>(async (searchTerm) => await ExecuteSearchAlbumsCommand(searchTerm).ConfigureAwait(false));
-
             // Handle "SaveAlbum" message
             MessagingCenter.Subscribe<AddAlbum, Album>(this, "SaveAlbum", async (sender, album) =>
             {
@@ -92,8 +91,10 @@ namespace PickPixForEver.ViewModel
             IsBusy = true;
             try
             {
-                Albums.Add(album);
+               
                 albumId = await DataStore.AddItemAsync(album).ConfigureAwait(false);
+                if(albumId!=-1)
+                Albums.Add(album);
             }
             catch (Exception ex)
             {
@@ -105,7 +106,7 @@ namespace PickPixForEver.ViewModel
             {
                 IsBusy = false;
             }
-            return (!(albumId == 0));
+            return (albumId != -1);
         }
     }
 }

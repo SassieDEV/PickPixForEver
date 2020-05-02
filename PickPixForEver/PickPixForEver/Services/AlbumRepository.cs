@@ -38,9 +38,9 @@ namespace PickPixForEver.Services
                     album.UpdatedAt = DateTime.Now;
                     album.Active = true;
                     album.UserId = this.UserId;
-                    var findExistingAlbum = await ctx.Albums.Where(s => s.Name == album.Name).SingleOrDefaultAsync().ConfigureAwait(false);
+                    var findExistingAlbum = await ctx.Albums.Where(s => s.Name.ToLower() == album.Name.ToLower()).SingleOrDefaultAsync().ConfigureAwait(false);
                     if (findExistingAlbum != null)
-                        return findExistingAlbum.Id;
+                        return -1;
                     var tracker = await ctx.Albums.AddAsync(album).ConfigureAwait(false);
                     await ctx.SaveChangesAsync().ConfigureAwait(false);
                 }
@@ -93,7 +93,7 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    albums = await Task.FromResult(ctx.Albums.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                    albums = await Task.FromResult(ctx.Albums.Where(S => S.Name.ToLower().Contains(searchTerm.ToLower())).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

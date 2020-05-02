@@ -21,7 +21,7 @@ namespace PickPixForEver.Views
         public AlbumDetailPage(AlbumDetailViewModel viewModel)
         {
             InitializeComponent();
-            
+
             this.viewModel = viewModel;
             if (viewModel!=null && viewModel.Album!=null)
             {
@@ -34,10 +34,6 @@ namespace PickPixForEver.Views
         {
             base.OnAppearing();
             PopulateAlbumImages();
-
-        }
-        private void btnAdd_Clicked(object sender, EventArgs e)
-        {
 
         }
 
@@ -64,7 +60,7 @@ namespace PickPixForEver.Views
             foreach (var picture in this.viewModel.Pictures)
             {
                 // stackTags.Children.Add(new Button() { Text = picture.Privacy });
-                Image image = new Image() { Source = ImageSource.FromStream(() => new MemoryStream(picture.ImageArray)) };
+                Image image = new Image() { Source = ImageSource.FromStream(() => new MemoryStream(picture.RawData)) };
 
                 Label notes = new Label();
                 notes.Text = picture.Notes;
@@ -104,7 +100,8 @@ namespace PickPixForEver.Views
         {
             if(this.viewModel.Pictures!=null && this.viewModel.Pictures.Count > 0)
             {
-                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => s.ImageArray).ToList()))).ConfigureAwait(false);
+                await Navigation.PushAsync(new SlideViewer(new SlideShowViewModel(this.viewModel.Pictures.Select(s => new KeyValuePair<int, byte[]>(s.Id, s.RawData)).ToList()))).ConfigureAwait(false);
+
             }
             else
             {
