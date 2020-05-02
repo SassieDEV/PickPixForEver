@@ -141,6 +141,7 @@
     <Content Include="cover3.png" />
     <Content Include="CustomIcon1.png" />
     <Content Include="CustomIcon2.png" />
+    <Content Include="delete.png" />
     <Content Include="event.png" />
     <Content Include="events.png" />
     <Content Include="gallery.png" />

@@ -156,7 +156,7 @@
                     <StackLayout Margin="10,5,20,5" Grid.Row="1">
                         <SearchBar x:Name="txtSearch" Placeholder="Search..." HorizontalOptions="FillAndExpand"  VerticalOptions="Start" TextChanged="txtSearch_TextChanged"/>
                     </StackLayout>
-                    <ScrollView Orientation="Vertical" Margin="10,5,20,5" Grid.Row="2" HeightRequest="800">
+                    <ScrollView Orientation="Vertical" Margin="10,5,20,5" Grid.Row="2" HeightRequest="650">
                         <StackLayout x:Name="stackAllImages" >
                         </StackLayout>
                     </ScrollView>

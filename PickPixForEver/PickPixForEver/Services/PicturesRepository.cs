@@ -77,7 +77,30 @@ namespace PickPixForEver.Services
 
         public Task<bool> DeleteItemAsync(int id)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                using (var dbContext = new PickPixDbContext(filePath))
+                {
+                    var pictureTags = dbContext.PictureTags.Where(p => p.PictureId == id).ToList();
+                    if (pictureTags != null && pictureTags.Count > 0)
+                        dbContext.PictureTags.RemoveRange(pictureTags);
+                    var pictureAlbums = dbContext.PictureAlbums.Where(p => p.PictureId == id).ToList();
+                    if (pictureAlbums != null && pictureAlbums.Count > 0)
+                        dbContext.PictureTags.RemoveRange(pictureTags);
+                    Picture picture = new Picture() { Id = id };
+                    dbContext.Pictures.Remove(picture);
+
+                    dbContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Implement logging here
+            }
+            return Task.FromResult(result);
+            
         }
 
         public async Task<Picture> FindItemAsync(int ID)

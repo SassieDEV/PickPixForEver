@@ -134,14 +134,17 @@ namespace PickPixForEver.Views
             Frame frame = new Frame();
             frame.BorderColor = Color.Gray;
             frame.CornerRadius = 5;
-            frame.Padding = 8;
+            frame.Padding = new Thickness(4,2,4,2);
+            StackLayout stack = new StackLayout();
+            stack.Orientation = StackOrientation.Vertical;
 
             Image image = new Image();
-            
+            image.HorizontalOptions = LayoutOptions.StartAndExpand;
+            image.VerticalOptions = LayoutOptions.StartAndExpand;
             image.Source = ImageSource.FromStream(() => new MemoryStream(imageArray.Item2));
             
-            image.HeightRequest = 120;
-            image.WidthRequest = 120;
+            image.HeightRequest = 170;
+            image.WidthRequest = 170;
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += (s, e) =>
             {
@@ -149,12 +152,36 @@ namespace PickPixForEver.Views
             };
 
             image.GestureRecognizers.Add(tapGestureRecognizer);
-            
 
-            frame.Content = image;
+            Image delImage = new Image();
+            delImage.HeightRequest = 25;
+            delImage.WidthRequest = 25;
+            delImage.Source = "delete.png";
+            delImage.HorizontalOptions = LayoutOptions.End;
+            delImage.VerticalOptions = LayoutOptions.End;
+            var delImageTapped = new TapGestureRecognizer();
+            delImageTapped.Tapped += (s,e)=> {
+                DelImageTapped_Tapped(imageArray.Item1);
+            };
+            delImage.GestureRecognizers.Add(delImageTapped);
+            stack.Children.Add(image);
+            stack.Children.Add(delImage);
+            frame.Content = stack;
 
             return frame;
         }
+
+        private async void DelImageTapped_Tapped(int pictureId)
+        {
+            var answer = await DisplayAlert("Delete", "Are you sure you want to delete the selected image?", "Yes", "No").ConfigureAwait(true);
+            if (answer)
+            {
+                galleryViewModel.DeletePictureCommand.Execute(pictureId);
+                galleryViewModel.LoadPicturesCommand.Execute(null);
+                DisplayPictures();
+            }
+        }
+
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
