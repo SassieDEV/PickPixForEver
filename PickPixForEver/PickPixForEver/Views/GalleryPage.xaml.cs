@@ -27,7 +27,6 @@ namespace PickPixForEver.Views
             MessagingCenter.Subscribe<AddPicturePage>(this, "OnPopupClosed", async (sender) =>
              {
                  galleryViewModel.LoadPicturesCommand.Execute(null);
-                 galleryViewModel.LoadPicturesCommand.Execute(null);
                  galleryViewModel.LoadAlbumsCommand.Execute(null);
                  galleryViewModel.LoadTagsCommand.Execute(null);
                  BindListViews();
@@ -63,8 +62,8 @@ namespace PickPixForEver.Views
             lvPlace.HeightRequest = 40 * (places.Count <= 3 ? places.Count : 3);
             lvPeople.HeightRequest = 40 * (people.Count <= 3 ? people.Count : 3);
             lvEvent.HeightRequest = 40 * (events.Count <= 3 ? events.Count : 3);
-            lvRelation.HeightRequest = 40 * (relationship.Count <= 3 ? events.Count : 3);
-            lvCustom.HeightRequest = 40 * (custom.Count <= 3 ? events.Count : 3);
+            lvRelation.HeightRequest = 40 * (relationship.Count <= 3 ? relationship.Count : 3);
+            lvCustom.HeightRequest = 40 * (custom.Count <= 3 ? custom.Count : 3);
 
         }
         private void DisplayPictures()

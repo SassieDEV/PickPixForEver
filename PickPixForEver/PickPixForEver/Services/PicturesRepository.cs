@@ -60,7 +60,7 @@ namespace PickPixForEver.Services
             {
                 using (var dbContext = new PickPixDbContext(filePath))
                 {
-                    Tag findExistingTag = await dbContext.Tags.Where(s => (s.Name == tag.Name) && (s.TagType == tag.TagType)).FirstOrDefaultAsync().ConfigureAwait(false);
+                    Tag findExistingTag = await dbContext.Tags.Where(s => (s.Name.ToLower() == tag.Name.ToLower()) && (s.TagType == tag.TagType)).FirstOrDefaultAsync().ConfigureAwait(false);
                     if (findExistingTag != null)
                         return findExistingTag.TagId;
                     var tracker = await dbContext.Tags.AddAsync(tag).ConfigureAwait(false);

@@ -69,7 +69,7 @@ namespace PickPixForEver.Services
             {
                 using (var ctx = new PickPixDbContext(this.filePath))
                 {
-                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm)).ToList()).ConfigureAwait(false);
+                    tags = await Task.FromResult(ctx.Tags.Where(S => S.Name.ToLower().Contains(searchTerm.ToLower())).ToList()).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
